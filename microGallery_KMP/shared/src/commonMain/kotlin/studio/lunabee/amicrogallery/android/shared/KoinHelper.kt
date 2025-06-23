@@ -5,8 +5,6 @@ import kotlinx.coroutines.IO
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
-import org.koin.core.module.dsl.factoryOf
-import org.koin.dsl.binds
 import org.koin.dsl.module
 import studio.lunabee.amicrogallery.android.local.RoomAppDatabase
 import studio.lunabee.amicrogallery.android.local.buildRoomDatabase

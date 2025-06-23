@@ -14,7 +14,6 @@ kotlin {
             implementation(libs.lbKtorKermit)
 
             implementation(projects.data)
-            //implementation(projects.dataTemplate)
             implementation(projects.error)
         }
     }

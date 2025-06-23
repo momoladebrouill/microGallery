@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name="studio.lunabee.amicrogallery.android.app.microGalleryApplication"
+        android:name="studio.lunabee.amicrogallery.MicroGalleryApplication"
         android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="unusedAttribute">
         <activity
-            android:name="studio.lunabee.amicrogallery.android.app.MainActivity"
+            android:name="studio.lunabee.amicrogallery.MainActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
