@@ -8,25 +8,15 @@ import studio.lunabee.compose.presenter.asResult
 class CalendarReducer(
     override val coroutineScope: CoroutineScope,
     override val emitUserAction: (CalendarAction) -> Unit,
-) : LBSingleReducer<CalendarUiState, CalendarNavScope, CalendarAction> (){
+) : LBSingleReducer<CalendarUiState, CalendarNavScope, CalendarAction> () {
 
-    override suspend fun reduce(actualState: CalendarUiState,
+    override suspend fun reduce(
+        actualState: CalendarUiState,
         action: CalendarAction,
-        performNavigation: (CalendarNavScope.() -> Unit) -> Unit): ReduceResult<CalendarUiState> {
-        return when(action) {
-            CalendarAction.Beginning -> actualState.asResult()
+        performNavigation: (CalendarNavScope.() -> Unit) -> Unit,
+    ): ReduceResult<CalendarUiState> {
+        return when (action) {
             is CalendarAction.StopRefreshing -> actualState.copy(rootNode = action.foundNode).asResult()
         }
     }
-/*
-    override suspend fun reduce(actualState: CalendarUiState,
-        action: CalendarAction,
-        performNavigation: (CalendarNavScope.() -> Unit) -> Unit): ReduceResult<CalendarUiState> {
-        return when(action) {
-            is CalendarAction.Beginning -> actualState
-            is CalendarAction.StopRefreshing -> CalendarUiState.GotTree(action.foundNode.data).asResult()
-        }
-
-    }
-*/
 }

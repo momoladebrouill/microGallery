@@ -6,7 +6,7 @@ import com.lunabee.ktor.LBKtorKermit
 import io.ktor.client.HttpClient
 import studio.lunabee.amicrogallery.android.error.CoreError
 
-class CoreHttpClient (
+class CoreHttpClient(
     val baseRemoteUrl: String,
 ) {
     val httpClient = HttpClient {

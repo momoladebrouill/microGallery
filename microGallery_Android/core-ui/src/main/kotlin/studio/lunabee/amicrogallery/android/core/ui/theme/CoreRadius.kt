@@ -1,5 +1,7 @@
 package studio.lunabee.amicrogallery.android.core.ui.theme
 
+import androidx.compose.ui.unit.dp
+
 object CoreRadius {
-    // Here goes your radius values:
+    val RadiusMedium = 16.dp
 }

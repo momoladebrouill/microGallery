@@ -4,6 +4,5 @@ import studio.lunabee.compose.presenter.PresenterUiState
 import studio.lunabee.microgallery.android.domain.Node
 
 data class CalendarUiState(
-    val textUiShown : String,
-    val rootNode : Node?
+    val rootNode: Node?,
 ) : PresenterUiState

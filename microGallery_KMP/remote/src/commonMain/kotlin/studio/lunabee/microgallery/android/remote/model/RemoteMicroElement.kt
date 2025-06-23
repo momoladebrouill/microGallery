@@ -8,19 +8,20 @@ import studio.lunabee.microgallery.android.domain.Picture
 
 @Serializable
 data class RemoteMicroElement(
-    val type : String,
-    val name : String,
-    val contents: List<RemoteMicroElement>?
+    val type: String,
+    val name: String,
+    val contents: List<RemoteMicroElement>?,
 ) {
-    fun toData() : Node {
-        return when(type){
+    fun toData(): Node {
+        return when (type) {
             "directory" -> Directory(
                 name = name,
-                content = (contents?.map { it.toData()})!!
+                content = (contents?.map { it.toData() })!!,
             )
             "file" -> Picture(
                 name = name,
-                fullPath = null
+                fullResPath = null,
+                lowResPath = null,
             )
             else ->
                 throw CoreError("found a new type in request")

@@ -7,24 +7,31 @@ import studio.lunabee.microgallery.android.remote.service.RootService
 import studio.lunabee.microgallery.android.repository.datasource.remote.TreeRemoteDatasource
 
 class TreeRemoteDatasourceImpl(
-    private val rootService: RootService
-) : TreeRemoteDatasource{
-    override suspend fun fetchRoot() : Node {
-        val rootNode : Node =  rootService.fetchRootList()[0].toData()
-        return giveFullNameToFiles(node = rootNode, path="")
-
+    private val rootService: RootService,
+) : TreeRemoteDatasource {
+    override suspend fun fetchRoot(): Node {
+        val rootNode: Node = rootService.fetchRootList()[0].toData()
+        return giveFullNameToFiles(node = rootNode)
     }
 }
 
-fun giveFullNameToFiles(node: Node, path: String) : Node{
-    return when(node){
+fun giveFullNameToFiles(node: Node, path: String = ""): Node {
+    return when (node) {
         is Directory -> Directory(
             name = node.name,
-            content = node.content.map {child : Node -> giveFullNameToFiles(child, "$path/${node.name}")}
+            content = node.content.map { child: Node -> giveFullNameToFiles(child, "$path/${node.name}") },
         )
-        is Picture -> Picture(
-            name = node.name,
-            fullPath = "$path/${node.name}"
-        )
+        is Picture -> {
+            val fullPath = "$path/${node.name}"
+            Picture(
+                name = node.name,
+                fullResPath = fullPath,
+                lowResPath = fullPath
+                    // low res is in another directory named ranged_70percent following same architecture
+                    .replace("/ranged/", "/ranged70_percent/")
+                    // low res is a webp instead of JPG/jpg
+                    .replace(Regex("(?i)\\.jpg$"), ".webp"),
+            )
+        }
     }
 }

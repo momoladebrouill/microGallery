@@ -13,6 +13,7 @@ import studio.lunabee.amicrogallery.di.presentersModule
 class MicroGalleryApplication : Application() {
     override fun onCreate() {
         super.onCreate()
+
         KoinHelper.init {
             androidLogger(level = Level.INFO)
             androidContext(this@MicroGalleryApplication)
@@ -21,8 +22,6 @@ class MicroGalleryApplication : Application() {
             modules(calendarModule)
             modules(calendarRepoModule)
             modules(remoteDatasourceModule)
-
-
         }
     }
 }

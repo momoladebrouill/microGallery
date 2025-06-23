@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import dev.chrisbanes.haze.HazeState
 import studio.lunabee.amicrogallery.calendar.CalendarDestination
 import studio.lunabee.amicrogallery.calendar.CalendarNavScope
 import studio.lunabee.amicrogallery.lastmonth.LastMonthDestination
@@ -24,6 +25,7 @@ private const val TAG = "MainNavGraph"
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun MainNavGraph(
+    hazeState: HazeState,
     contentPadding: PaddingValues,
     navHostController: NavHostController,
     startDestination: KClass<*>,
@@ -37,6 +39,7 @@ fun MainNavGraph(
             ) {
                 CalendarDestination.composable(
                     navGraphBuilder = this,
+                    hazeState = hazeState,
                     navScope = object : CalendarNavScope {
                         override val navigateToMicroYear = { year: Int ->
                             Log.d(TAG, "must navigate to year $year")

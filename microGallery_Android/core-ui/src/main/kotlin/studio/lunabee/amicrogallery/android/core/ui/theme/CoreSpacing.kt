@@ -10,6 +10,8 @@ import androidx.compose.ui.unit.dp
 
 object CoreSpacing {
     val SpacingMedium = 16.dp
+    val SpacingSmall = 4.dp
+    val SpacingLarge = 32.dp
 }
 
 @Composable

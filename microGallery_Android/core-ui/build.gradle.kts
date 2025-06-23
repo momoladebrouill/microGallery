@@ -19,13 +19,12 @@ dependencies {
     implementation(libs.androidxComposeFoundation)
     implementation(libs.androidxComposeMaterial3)
     implementation(libs.androidxComposeUi)
-    implementation(libs.composeMaterial3)
-    implementation(libs.navigation.runtime.android)
-    implementation(libs.uiTextGoogleFonts)
-
     api(libs.coilCompose)
-    implementation(libs.ktorAndroid)
+    implementation(libs.composeMaterial3)
     implementation("io.coil-kt.coil3:coil-network-ktor3:3.2.0")
+    implementation(libs.ktorAndroid)
+    implementation(libs.navigationRuntimeAndroid)
+    implementation(libs.uiTextGoogleFonts)
 
     api(projects.coreRes)
 }

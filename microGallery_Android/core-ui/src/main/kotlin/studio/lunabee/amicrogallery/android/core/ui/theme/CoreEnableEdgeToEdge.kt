@@ -5,6 +5,7 @@ import android.os.Build
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
+import androidx.core.view.WindowCompat
 
 fun ComponentActivity.coreEnableEdgeToEdge(isDark: Boolean = true) {
     // Don't use SystemBarStyle.auto for navigation bar because it always add a scrim (cf doc)
@@ -18,6 +19,7 @@ fun ComponentActivity.coreEnableEdgeToEdge(isDark: Boolean = true) {
         statusBarStyle = statusBarStyle,
         navigationBarStyle = navigationBarStyle,
     )
+    WindowCompat.setDecorFitsSystemWindows(window, false) // 👈 Allows content to draw behind system bars
 
     // For API29(Q) or higher and 3-button navigation,
     // the following code must be written to make the navigation color completely transparent.

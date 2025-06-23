@@ -14,4 +14,7 @@
         <item>novembre</item>
         <item>décembre</item>
     </string-array>
+    <string name="loading">Loading picture %s in webp</string>
+    <string name="waitingForData">Downloading data</string>
+    <string name="notLong">Should not take too long</string>
 </resources>

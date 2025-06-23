@@ -15,5 +15,4 @@ val presentersModule = module {
 
 val calendarModule = module {
     single { UpdateTreeUseCase(get()) }
-
 }

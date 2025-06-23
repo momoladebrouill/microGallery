@@ -22,7 +22,7 @@ fun MicroGalleryImage(
     alignment: Alignment = Alignment.Center,
     colorFilter: ColorFilter? = null,
     errorPainter: Painter? = null,
-){
+) {
     AsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
             .data(url)

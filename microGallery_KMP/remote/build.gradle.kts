@@ -23,14 +23,9 @@ kotlin {
             implementation(libs.lbKtorKermit)
 
             implementation(projects.data)
-            implementation(projects.repository)
             implementation(projects.domain)
             implementation(projects.error)
+            implementation(projects.repository)
         }
     }
 }
-
-
-
-
-

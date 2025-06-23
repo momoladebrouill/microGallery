@@ -9,6 +9,7 @@
         android:name="studio.lunabee.amicrogallery.MicroGalleryApplication"
         android:allowBackup="false"
 
+
         android:usesCleartextTraffic="true"
 
         android:dataExtractionRules="@xml/data_extraction_rules"
