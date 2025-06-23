@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="calendar_icon_button">See timed photos</string>
+    <string name="untimed_icon_button">See photos without timestamp</string>
+    <string name="lastmonth_icon_button">See photos of the last month</string>
+</resources>

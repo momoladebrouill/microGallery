@@ -22,8 +22,7 @@ data class PlaceHolderEntity(
     version = 1,
 )
 @ConstructedBy(AppDatabaseConstructor::class)
-abstract class RoomAppDatabase : RoomDatabase() {
-}
+abstract class RoomAppDatabase : RoomDatabase()
 
 expect class RoomPlatformBuilder {
     fun builder(): RoomDatabase.Builder<RoomAppDatabase>
