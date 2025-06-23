@@ -15,7 +15,6 @@ kotlin {
             implementation(libs.androidxSqliteBundled)
 
             implementation(projects.data)
-            // implementation(projects.dataTemplate)
             implementation(projects.local)
         }
     }

@@ -1,10 +1,7 @@
 plugins {
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.lbAndroidApplication)
-    // id("kotlin-kapt")
-    // alias(libs.plugins.daggerHilt)
     alias(libs.plugins.lbAndroidFlavors)
-    // alias(libs.plugins.ksp)
 }
 
 android {

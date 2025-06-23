@@ -8,8 +8,6 @@ kotlin {
             implementation(projects.data)
             implementation(projects.local)
             implementation(projects.domain)
-
-         //   implementation(projects.remote)
         }
     }
 }
