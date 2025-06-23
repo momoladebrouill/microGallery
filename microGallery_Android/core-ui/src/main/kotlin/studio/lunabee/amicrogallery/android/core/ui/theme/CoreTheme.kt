@@ -27,8 +27,6 @@ fun CoreTheme(
             LocalCoreRadius provides CoreRadius,
             LocalCoreSpacing provides CoreSpacing,
             LocalCoreTypography provides CoreTypography,
-            // Uncomment to set a default colors for all text/tint...
-            // LocalContentColor provides colors.textDefault,
             content = content,
         )
     }

@@ -38,6 +38,7 @@ navigationRuntimeJvmstubs = "2.9.0"
 skie = "0.10.2-preview.2.1.20"
 uiTextGoogleFont="1.8.2"
 uiToolingPreviewDesktop = "1.7.0"
+coreKtx = "1.16.0"
 
 [libraries]
 
@@ -83,6 +84,7 @@ navigationComposeJvmstubs = { group = "androidx.navigation", name = "navigation-
 navigationRuntimeJvmstubs = { group = "androidx.navigation", name = "navigation-runtime-jvmstubs", version.ref = "navigationRuntimeJvmstubs" }
 uiTextGoogleFonts = {group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref="uiTextGoogleFont"}
 uiToolingPreviewDesktop = { group = "androidx.compose.ui", name = "ui-tooling-preview-desktop", version.ref = "uiToolingPreviewDesktop" }
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 
 [plugins]
 
