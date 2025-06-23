@@ -1,5 +1,7 @@
 package studio.lunabee.amicrogallery.settings
 
+import android.content.Context
+import android.content.pm.PackageManager
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,14 +26,26 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import studio.lunabee.amicrogallery.android.core.ui.theme.CoreSpacing
 import studio.lunabee.amicrogallery.app.R
+
+
+fun getAppVersion(context: Context): String {
+    return try {
+        val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
+        packageInfo.versionName ?: "Unknown"
+    } catch (e: PackageManager.NameNotFoundException) {
+        "Unknown"
+    }
+}
 
 @Composable
 fun SettingsScreen(modifier : Modifier = Modifier){
-    val boxes = listOf(
+    val boxes: List<@Composable () -> Unit> = listOf(
         // Title
         @Composable
         {Column {
@@ -40,7 +54,6 @@ fun SettingsScreen(modifier : Modifier = Modifier){
                 style = MaterialTheme.typography.titleLarge
             )
         }},
-
 
         // IP adresses
         @Composable
@@ -147,6 +160,7 @@ fun SettingsScreen(modifier : Modifier = Modifier){
                     onCheckedChange = { newValue: Boolean -> Unit }
                 )
             }
+            Spacer(Modifier.height(CoreSpacing.SpacingLarge))
             Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
                 Button(
                     onClick = {}
@@ -190,21 +204,28 @@ fun SettingsScreen(modifier : Modifier = Modifier){
                     text = stringResource(R.string.nphotos, 14572)
                 )
             }
-        }}
+        }},
     )
-    LazyColumn (modifier =
-        modifier
-            .background(colorScheme.background),
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(24.dp)
+    Column {
+        LazyColumn(modifier =
+            modifier
+                .background(colorScheme.background),
+            contentPadding = PaddingValues(CoreSpacing.SpacingMedium),
+            verticalArrangement = Arrangement.spacedBy(CoreSpacing.SpacingLarge)
 
-    ){
-        items(boxes) { box ->
-            Column {
-                box()
-                Spacer(Modifier.height(24.dp))
-                HorizontalDivider(modifier = Modifier.fillMaxWidth())
+        ) {
+            items(boxes) { box ->
+                Column {
+                    box()
+                    Spacer(Modifier.height(CoreSpacing.SpacingLarge))
+                    HorizontalDivider(modifier = Modifier.fillMaxWidth())
+                }
             }
+        }
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center)
+        {
+            Text(stringResource(R.string.application_name) + getAppVersion(LocalContext.current),
+                style = MaterialTheme.typography.labelSmall)
         }
     }
 
