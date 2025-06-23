@@ -85,6 +85,7 @@ navigationComposeJvmstubs = { group = "androidx.navigation", name = "navigation-
 navigationRuntimeJvmstubs = { group = "androidx.navigation", name = "navigation-runtime-jvmstubs", version.ref = "navigationRuntimeJvmstubs" }
 uiTextGoogleFonts = {group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref="uiTextGoogleFont"}
 uiToolingPreviewDesktop = { group = "androidx.compose.ui", name = "ui-tooling-preview-desktop", version.ref = "uiToolingPreviewDesktop" }
+coilCompose ={group = "io.coil-kt.coil3", name="coil-compose", version.ref = "coilCompose"}
 
 [plugins]
 

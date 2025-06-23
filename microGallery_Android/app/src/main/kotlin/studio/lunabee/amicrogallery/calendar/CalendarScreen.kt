@@ -3,6 +3,7 @@ package studio.lunabee.amicrogallery.calendar
 import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -20,6 +21,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.unit.dp
 import studio.lunabee.amicrogallery.android.core.ui.component.image.MicroGalleryImage
+import studio.lunabee.amicrogallery.android.core.ui.theme.CoreSpacing
 import studio.lunabee.amicrogallery.app.R
 
 import studio.lunabee.microgallery.android.domain.Directory
@@ -71,11 +73,18 @@ fun ShowFlatNode(node: Node, depth: Int) {
         }
         is Picture -> {
             Text(
-                text = node.name,
+                text = getLabelName(node.fullPath ?: node.name),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = paddingStart, top = 2.dp, bottom = 2.dp)
+                    .padding(top = 8.dp, bottom = 4.dp),
+                style = MaterialTheme.typography.bodySmall
             )
+            MicroGalleryImage(
+                url = "http://92.150.239.130" + node.fullPath,
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.padding(PaddingValues(CoreSpacing.Bottom_row_spacing.dp)))
         }
     }
 }
