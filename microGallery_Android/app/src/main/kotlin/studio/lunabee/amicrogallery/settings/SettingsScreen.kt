@@ -29,10 +29,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.unit.dp
 import studio.lunabee.amicrogallery.android.core.ui.theme.CoreSpacing
 import studio.lunabee.amicrogallery.app.R
-
 
 fun getAppVersion(context: Context): String {
     return try {
@@ -44,169 +42,181 @@ fun getAppVersion(context: Context): String {
 }
 
 @Composable
+fun TitleSettingsEntry(modifier:Modifier = Modifier){
+    Text(
+        text = stringResource(R.string.settings),
+        style = MaterialTheme.typography.titleLarge,
+        modifier = modifier
+    )
+}
+
+@Composable
+fun IPAddressesSettingsEntry(modifier : Modifier = Modifier){
+    Column(modifier = modifier) {
+    Text(
+        text = stringResource(R.string.adress_of_server),
+        style = MaterialTheme.typography.titleMedium
+    )
+
+    OutlinedTextField(
+        value = "",
+        singleLine = true,
+        shape = shapes.large,
+        modifier = Modifier,
+        colors = TextFieldDefaults.colors(
+            focusedContainerColor = colorScheme.surface,
+            unfocusedContainerColor = colorScheme.surface,
+            disabledContainerColor = colorScheme.surface,
+        ),
+        onValueChange = { newValue: String -> Unit },
+        label = { Text(stringResource(R.string.ipv4)) },
+        isError = false,
+        keyboardOptions = KeyboardOptions.Default.copy(
+            imeAction = ImeAction.Done
+        ),
+        keyboardActions = KeyboardActions(
+            onDone = { }
+        )
+    )
+
+    OutlinedTextField(
+        value = "",
+        singleLine = true,
+        shape = shapes.large,
+        modifier = Modifier,
+        colors = TextFieldDefaults.colors(
+            focusedContainerColor = colorScheme.surface,
+            unfocusedContainerColor = colorScheme.surface,
+            disabledContainerColor = colorScheme.surface,
+        ),
+        onValueChange = { newValue: String -> Unit },
+        label = { Text(stringResource(R.string.ipv6)) },
+        isError = false,
+        keyboardOptions = KeyboardOptions.Default.copy(
+            imeAction = ImeAction.Done
+        ),
+        keyboardActions = KeyboardActions(
+            onDone = { }
+        )
+    )
+}}
+
+@Composable
+fun PreviewSettingsEntry(modifier : Modifier = Modifier) {
+    Column(modifier = modifier) {
+        Text(
+            text = stringResource(R.string.previsualisation_options),
+            style = MaterialTheme.typography.titleMedium
+        )
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween)
+        {
+
+            Column {
+                Text(
+                    text = stringResource(R.string.preview_in_hd),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+                Text(
+                    text = stringResource(R.string.consumes_more),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+            Checkbox(
+                modifier = Modifier.align(alignment = Alignment.CenterVertically),
+                checked = true,
+                onCheckedChange = { newValue: Boolean -> Unit }
+            )
+        }
+    }
+}
+
+@Composable
+fun CacheSettingsEntry(modifier : Modifier = Modifier){
+    Column(modifier = modifier) {
+        Text(
+            text = stringResource(R.string.cache),
+            style = MaterialTheme.typography.titleMedium
+        )
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween)
+        {
+
+            Column {
+                Text(
+                    text = stringResource(R.string.use_cache),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+                Text(
+                    text = stringResource(R.string.consume_less_but_more_storage),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+            Checkbox(
+                modifier = Modifier.align(alignment = Alignment.CenterVertically),
+                checked = true,
+                onCheckedChange = { newValue: Boolean -> Unit }
+            )
+        }
+        Spacer(Modifier.height(CoreSpacing.SpacingLarge))
+        Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
+            Button(
+                onClick = {}
+            ) {
+                Text(
+                    text = stringResource(R.string.empty_cache)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun ServerStatisticsSettingsEntry(modifier : Modifier = Modifier) {
+    Column(modifier = modifier) {
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            Text(
+                text = stringResource(R.string.server_statistics),
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.align(alignment = Alignment.CenterVertically)
+            )
+            Button(
+                onClick = {}
+            ) {
+                Text(text = stringResource(R.string.refresh))
+            }
+        }
+
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            Text(
+                text = stringResource(R.string.temperature)
+            )
+            Text(
+                text = stringResource(R.string.celcius, 42)
+            )
+        }
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            Text(
+                text = stringResource(R.string.quantity_of_pictures)
+            )
+            Text(
+                text = stringResource(R.string.nphotos, 14572)
+            )
+        }
+    }
+}
+
+
+@Composable
 fun SettingsScreen(modifier : Modifier = Modifier){
-    val boxes: List<@Composable () -> Unit> = listOf(
-        // Title
-        @Composable
-        {Column {
-            Text(
-                text = stringResource(R.string.settings),
-                style = MaterialTheme.typography.titleLarge
-            )
-        }},
-
-        // IP adresses
-        @Composable
-        {Column {
-            Text(
-                text = stringResource(R.string.adress_of_server),
-                style = MaterialTheme.typography.titleMedium
-            )
-
-            OutlinedTextField(
-                value = "",
-                singleLine = true,
-                shape = shapes.large,
-                modifier = Modifier,
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = colorScheme.surface,
-                    unfocusedContainerColor = colorScheme.surface,
-                    disabledContainerColor = colorScheme.surface,
-                ),
-                onValueChange = { newValue: String -> Unit },
-                label = { Text(stringResource(R.string.ipv4)) },
-                isError = false,
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    imeAction = ImeAction.Done
-                ),
-                keyboardActions = KeyboardActions(
-                    onDone = { }
-                )
-            )
-
-            OutlinedTextField(
-                value = "",
-                singleLine = true,
-                shape = shapes.large,
-                modifier = Modifier,
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = colorScheme.surface,
-                    unfocusedContainerColor = colorScheme.surface,
-                    disabledContainerColor = colorScheme.surface,
-                ),
-                onValueChange = { newValue: String -> Unit },
-                label = { Text(stringResource(R.string.ipv6)) },
-                isError = false,
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    imeAction = ImeAction.Done
-                ),
-                keyboardActions = KeyboardActions(
-                    onDone = { }
-                )
-            )
-        }},
-
-        // Previsualisation options
-        @Composable
-        {Column {
-            Text(
-                text = stringResource(R.string.previsualisation_options),
-                style = MaterialTheme.typography.titleMedium
-            )
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween)
-            {
-
-                Column {
-                    Text(
-                        text = stringResource(R.string.preview_in_hd),
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                    Text(
-                        text = stringResource(R.string.consumes_more),
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
-                Checkbox(
-                    modifier = Modifier.align(alignment = Alignment.CenterVertically),
-                    checked = true,
-                    onCheckedChange = { newValue: Boolean -> Unit }
-                )
-            }
-        }},
-
-        // Cache
-        @Composable
-        {Column {
-            Text(
-                text = stringResource(R.string.cache),
-                style = MaterialTheme.typography.titleMedium
-            )
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween)
-            {
-
-                Column {
-                    Text(
-                        text = stringResource(R.string.use_cache),
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                    Text(
-                        text = stringResource(R.string.consume_less_but_more_storage),
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
-                Checkbox(
-                    modifier = Modifier.align(alignment = Alignment.CenterVertically),
-                    checked = true,
-                    onCheckedChange = { newValue: Boolean -> Unit }
-                )
-            }
-            Spacer(Modifier.height(CoreSpacing.SpacingLarge))
-            Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
-                Button(
-                    onClick = {}
-                ) {
-                    Text(
-                        text = stringResource(R.string.empty_cache)
-                    )
-                }
-            }
-        }},
-
-        // Server statistics
-        @Composable
-        {Column {
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                Text(
-                    text = stringResource(R.string.server_statistics),
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.align(alignment = Alignment.CenterVertically)
-                )
-                Button(
-                    onClick = {}
-                ) {
-                    Text(text = stringResource(R.string.refresh))
-                }
-            }
-
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                Text(
-                    text = stringResource(R.string.temperature)
-                )
-                Text(
-                    text = stringResource(R.string.celcius, 42)
-                )
-            }
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                Text(
-                    text = stringResource(R.string.quantity_of_pictures)
-                )
-                Text(
-                    text = stringResource(R.string.nphotos, 14572)
-                )
-            }
-        }},
+    val settingsEntries: List<@Composable (modifier : Modifier) -> Unit> = listOf(
+        // mod as a short term for modifier
+        {mod -> TitleSettingsEntry(mod)},
+        {mod -> IPAddressesSettingsEntry(mod)},
+        {mod -> PreviewSettingsEntry(mod)},
+        {mod -> CacheSettingsEntry(mod)},
+        {mod -> ServerStatisticsSettingsEntry(mod)}
     )
     Column {
+        val entryModifier = Modifier
         LazyColumn(modifier =
             modifier
                 .background(colorScheme.background),
@@ -214,9 +224,9 @@ fun SettingsScreen(modifier : Modifier = Modifier){
             verticalArrangement = Arrangement.spacedBy(CoreSpacing.SpacingLarge)
 
         ) {
-            items(boxes) { box ->
+            items(settingsEntries) { entry ->
                 Column {
-                    box()
+                    entry(entryModifier)
                     Spacer(Modifier.height(CoreSpacing.SpacingLarge))
                     HorizontalDivider(modifier = Modifier.fillMaxWidth())
                 }
