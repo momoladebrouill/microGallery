@@ -15,12 +15,18 @@ val LocalCoreSpacing: ProvidableCompositionLocal<CoreSpacing> = staticCompositio
 val LocalCoreTypography: ProvidableCompositionLocal<CoreTypography> = staticCompositionLocalOf { error("no provided") }
 
 @Composable
-fun CoreTheme(
+fun MicroGalleryTheme(
     content: @Composable () -> Unit,
 ) {
-    val colors = if (isSystemInDarkTheme()) CoreColorDarkTheme else CoreColorLightTheme
-    MaterialTheme(
-        colorScheme = if (isSystemInDarkTheme()) darkColorScheme() else lightColorScheme(),
+    val colors =
+        if (isSystemInDarkTheme()) {
+            CoreColorDarkTheme
+        } else {
+            CoreColorLightTheme
+        }
+
+    MaterialTheme( // map the ButtonDefaultColor etc
+        colorScheme = mapMaterialColorScheme(isSystemInDarkTheme(), colors),
     ) {
         CompositionLocalProvider(
             LocalCoreColor provides colors,
@@ -32,7 +38,7 @@ fun CoreTheme(
     }
 }
 
-object CoreTheme {
+object MicroGalleryTheme {
     val colors: CoreColorTheme
         @Composable
         get() = LocalCoreColor.current
@@ -48,4 +54,25 @@ object CoreTheme {
     val radius: CoreRadius
         @Composable
         get() = LocalCoreRadius.current
+}
+
+fun mapMaterialColorScheme(
+    darkTheme: Boolean,
+    coreColors: CoreColorTheme,
+) = if (darkTheme) {
+    darkColorScheme(
+        primary = coreColors.main,
+        onPrimary = coreColors.onMain,
+        background = coreColors.background,
+        onBackground = coreColors.onBackground,
+    )
+} else {
+    lightColorScheme(
+        primary = coreColors.main,
+        onPrimary = coreColors.onMain,
+        background = coreColors.background,
+        onBackground = coreColors.onBackground,
+        surface = coreColors.background,
+        onSurface = coreColors.onBackground,
+    )
 }
