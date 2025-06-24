@@ -33,7 +33,7 @@ import studio.lunabee.amicrogallery.app.R
 
 fun Context.getAppVersion(): String {
     return try {
-        val packageInfo = packageManager.getPackageInfo(context.packageName, 0)
+        val packageInfo = packageManager.getPackageInfo(packageName, 0)
         packageInfo.versionName ?: "Unknown"
     } catch (e: PackageManager.NameNotFoundException) {
         "Unknown"
@@ -228,7 +228,7 @@ fun SettingsScreen(settingsUiState: SettingsUiState) {
         }
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
             Text(
-                stringResource(R.string.application_name) + getAppVersion(LocalContext.current),
+                stringResource(R.string.application_name) + LocalContext.current.getAppVersion(),
                 style = MaterialTheme.typography.labelSmall,
             )
         }
