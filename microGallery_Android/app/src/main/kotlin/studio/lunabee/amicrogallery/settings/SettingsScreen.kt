@@ -32,9 +32,9 @@ import androidx.compose.ui.text.input.ImeAction
 import studio.lunabee.amicrogallery.android.core.ui.theme.CoreSpacing
 import studio.lunabee.amicrogallery.app.R
 
-fun getAppVersion(context: Context): String {
+fun Context.getAppVersion(): String {
     return try {
-        val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
+        val packageInfo = packageManager.getPackageInfo(context.packageName, 0)
         packageInfo.versionName ?: "Unknown"
     } catch (e: PackageManager.NameNotFoundException) {
         "Unknown"
