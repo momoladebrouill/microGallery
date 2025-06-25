@@ -1,6 +1,5 @@
 package studio.lunabee.amicrogallery.loading
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,14 +11,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import com.lunabee.lbcore.model.LBResult
 import studio.lunabee.amicrogallery.android.core.ui.theme.CoreSpacing
-import studio.lunabee.amicrogallery.android.error.CoreError
 import studio.lunabee.amicrogallery.app.R
-import studio.lunabee.microgallery.android.domain.Node
 
 @Composable
 fun LoadingScreen(loadingUiState: LoadingUiState, onAction: (LoadingAction) -> Unit) {

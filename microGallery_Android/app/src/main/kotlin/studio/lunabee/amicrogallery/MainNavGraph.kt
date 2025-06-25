@@ -13,6 +13,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 
 import studio.lunabee.amicrogallery.dashboard.DashboardDestination
+import studio.lunabee.amicrogallery.lastmonth.LastMonthDestination
+import studio.lunabee.amicrogallery.lastmonth.LastMonthNavScope
 import studio.lunabee.amicrogallery.loading.LoadingDestination
 import studio.lunabee.amicrogallery.loading.LoadingNavScope
 import kotlin.reflect.KClass
@@ -40,12 +42,18 @@ fun MainNavGraph(
                     navGraphBuilder = this,
                     navScope = object : LoadingNavScope {
                         override val navigateToDashboard = {
+                            //navHostController.navigate(LastMonthDestination("vinculo"))
                             navHostController.navigate(DashboardDestination)
                         }
                     },
                 )
 
+                LastMonthDestination.composable(
+                    navGraphBuilder = this,
+                    navScope = object : LastMonthNavScope {
 
+                    }
+                )
             }
         }
     }

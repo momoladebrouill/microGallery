@@ -3,7 +3,6 @@ package studio.lunabee.amicrogallery.calendar
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -44,14 +43,14 @@ import studio.lunabee.amicrogallery.android.core.ui.component.image.MicroGallery
 import studio.lunabee.amicrogallery.android.core.ui.theme.CoreRadius
 import studio.lunabee.amicrogallery.android.core.ui.theme.CoreSpacing
 import studio.lunabee.amicrogallery.app.R
-import studio.lunabee.microgallery.android.domain.Directory
-import studio.lunabee.microgallery.android.domain.Node
-import studio.lunabee.microgallery.android.domain.Picture
+import studio.lunabee.microgallery.android.data.Directory
+import studio.lunabee.microgallery.android.data.Node
+import studio.lunabee.microgallery.android.data.Picture
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalHazeMaterialsApi::class)
 @Composable
 fun CalendarScreen(calendarUiState: CalendarUiState, hazeState: HazeState?) {
-    ShowPhotos(calendarUiState.rootNode!!, hazeState!!)
+    ShowPhotos(calendarUiState.rootNode, hazeState!!)
 }
 
 

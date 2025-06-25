@@ -15,6 +15,7 @@ object CalendarDestination : Destination {
     @OptIn(ExperimentalSharedTransitionApi::class)
     fun composable(navGraphBuilder: NavGraphBuilder, navScope: CalendarNavScope, hazeState: HazeState) {
         navGraphBuilder.composable<CalendarDestination> {
+
             val presenter: CalendarPresenter = koinViewModel()
             presenter.hazeState = hazeState
             presenter.invoke(navScope)

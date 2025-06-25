@@ -8,8 +8,7 @@ import kotlinx.coroutines.launch
 
 import studio.lunabee.compose.presenter.LBSinglePresenter
 import studio.lunabee.compose.presenter.LBSingleReducer
-import studio.lunabee.microgallery.android.domain.Node
-import studio.lunabee.microgallery.android.domain.calendar.usecase.UpdateTreeUseCase
+import studio.lunabee.microgallery.android.domain.loading.usecase.UpdateTreeUseCase
 
 class LoadingPresenter(
     private val updateTreeUseCase: UpdateTreeUseCase,
@@ -29,11 +28,11 @@ class LoadingPresenter(
 
     private fun refreshEvent() {
         viewModelScope.launch {
-            when (val result : LBResult<Node> = updateTreeUseCase()) {
+            when (val result : LBResult<Unit> = updateTreeUseCase()) {
                 is LBResult.Success -> {
                     emitUserAction(LoadingAction.FoundData())
                 }
-                is LBResult.Failure<Node> -> {
+                is LBResult.Failure<Unit> -> {
                     emitUserAction(LoadingAction.Error(result.throwable?.message))
                 }
             }

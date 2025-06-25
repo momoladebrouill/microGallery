@@ -7,7 +7,6 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.data)
             implementation(projects.domain)
-            implementation(projects.local)
         }
     }
 }

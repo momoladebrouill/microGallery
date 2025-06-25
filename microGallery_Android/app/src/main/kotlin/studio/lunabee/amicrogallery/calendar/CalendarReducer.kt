@@ -16,8 +16,7 @@ class CalendarReducer(
         action: CalendarAction,
         performNavigation: (CalendarNavScope.() -> Unit) -> Unit,
     ): ReduceResult<CalendarUiState> {
-        return when (action) {
-            is CalendarAction.StopRefreshing -> actualState.copy(rootNode = action.foundNode).asResult()
-        }
+        return actualState.asResult()
+
     }
 }

@@ -27,9 +27,6 @@ object KoinHelper {
 
 expect val PlatformSpecificModule: Module
 
-private val LocalModule: Module = module {
-    single<RoomAppDatabase> { buildRoomDatabase(builder = get(), context = Dispatchers.IO) }
-}
 
 private val RemoteModule: Module = module {
     single { CoreHttpClient(baseRemoteUrl = "http://92.150.239.130") }

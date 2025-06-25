@@ -1,8 +1,11 @@
 package studio.lunabee.microgallery.android.domain.calendar
 
-import studio.lunabee.microgallery.android.domain.Node
+import kotlinx.coroutines.flow.Flow
+import studio.lunabee.microgallery.android.data.Node
+import studio.lunabee.microgallery.android.data.Picture
 
 interface CalendarRepository {
-    suspend fun fetchRootNode(): Node
-    suspend fun getRootNode() : Node
+    suspend fun getYears() : Flow<List<Int>>
+    suspend fun getMonthsInYear(year : Int) : List<Int>
+    suspend fun getPicturesInMonth(year : Int, month : Int) : List<Picture>
 }

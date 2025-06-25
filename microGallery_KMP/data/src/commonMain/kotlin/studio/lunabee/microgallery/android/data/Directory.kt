@@ -1,4 +1,4 @@
-package studio.lunabee.microgallery.android.domain
+package studio.lunabee.microgallery.android.data
 
 data class Directory(
     override val name: String,

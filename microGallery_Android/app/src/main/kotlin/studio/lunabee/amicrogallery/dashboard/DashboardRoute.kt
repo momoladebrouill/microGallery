@@ -1,6 +1,5 @@
 package studio.lunabee.amicrogallery.dashboard
 
-import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
@@ -31,7 +30,7 @@ fun DashboardRoute(navController: NavHostController) {
     DashboardScreen(
         hazeState = hazeState,
         navHostController = navController,
-        startDestination = CalendarDestination::class
+        startDestination = CalendarDestination::class,
     )
 }
 
