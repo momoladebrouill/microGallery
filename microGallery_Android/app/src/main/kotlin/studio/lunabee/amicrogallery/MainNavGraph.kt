@@ -4,9 +4,7 @@ import android.util.Log
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -26,14 +24,12 @@ private const val TAG = "MainNavGraph"
 @Composable
 fun MainNavGraph(
     hazeState: HazeState,
-    contentPadding: PaddingValues,
     navHostController: NavHostController,
     startDestination: KClass<*>,
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         SharedTransitionLayout {
             NavHost(
-                modifier = Modifier.padding(contentPadding),
                 navController = navHostController,
                 startDestination = startDestination,
             ) {

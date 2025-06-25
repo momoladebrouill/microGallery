@@ -14,7 +14,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            coreEnableEdgeToEdge(isSystemInDarkTheme()) // does not work as expected
+            coreEnableEdgeToEdge(isSystemInDarkTheme())
             val navHostController = rememberNavController()
             RedMaterialTheme {
                 RootDrawer(
