@@ -19,7 +19,6 @@ class MainActivity : ComponentActivity() {
             RedMaterialTheme {
                 RootDrawer(
                     navHostController = navHostController,
-                    startDestination = CalendarDestination::class,
                 )
             }
         }

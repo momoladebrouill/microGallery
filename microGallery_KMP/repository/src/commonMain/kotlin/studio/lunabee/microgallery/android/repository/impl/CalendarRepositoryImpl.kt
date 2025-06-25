@@ -11,4 +11,8 @@ class CalendarRepositoryImpl(
     override suspend fun fetchRootNode(): Node {
         return treeRemoteDatasource.fetchRoot()
     }
+
+    override suspend fun getRootNode() : Node {
+        return treeRemoteDatasource.getRoot()
+    }
 }

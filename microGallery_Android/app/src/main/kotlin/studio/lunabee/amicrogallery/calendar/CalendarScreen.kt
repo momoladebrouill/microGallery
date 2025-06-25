@@ -51,26 +51,10 @@ import studio.lunabee.microgallery.android.domain.Picture
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalHazeMaterialsApi::class)
 @Composable
 fun CalendarScreen(calendarUiState: CalendarUiState, hazeState: HazeState?) {
-    if (calendarUiState.rootNode == null) {
-        LoadingScreen()
-    } else {
-        ShowPhotos(calendarUiState.rootNode, hazeState!!)
-    }
+    ShowPhotos(calendarUiState.rootNode!!, hazeState!!)
 }
 
-@Composable
-fun LoadingScreen() {
-    Column {
-        Text(
-            text = stringResource(R.string.waitingForData),
-            style = MaterialTheme.typography.titleLarge,
-        )
-        Text(
-            text = stringResource(R.string.notLong),
-            style = MaterialTheme.typography.bodyLarge,
-        )
-    }
-}
+
 
 @Composable
 fun rememberNextYear(state: LazyListState, key: String) = remember(state) {

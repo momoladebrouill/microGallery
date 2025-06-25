@@ -9,6 +9,6 @@ class UpdateTreeUseCase(
     val calendarRepository: CalendarRepository,
 ) {
     suspend operator fun invoke(): LBResult<Node> = CoreError.runCatching {
-        return LBResult.Success(calendarRepository.fetchRootNode())
+        return LBResult.Success(calendarRepository.getRootNode())
     }
 }

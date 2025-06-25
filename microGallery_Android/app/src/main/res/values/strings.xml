@@ -18,4 +18,6 @@
     <string name="waitingForData">Downloading data</string>
     <string name="notLong">Should not take too long</string>
     <string name="calendar_title">%s %s</string>
+    <string name="errorOccured">An Error Occured while loading</string>
+    <string name="reload">Reload</string>
 </resources>

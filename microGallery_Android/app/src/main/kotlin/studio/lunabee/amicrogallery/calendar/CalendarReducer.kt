@@ -6,6 +6,7 @@ import studio.lunabee.compose.presenter.ReduceResult
 import studio.lunabee.compose.presenter.asResult
 
 class CalendarReducer(
+
     override val coroutineScope: CoroutineScope,
     override val emitUserAction: (CalendarAction) -> Unit,
 ) : LBSingleReducer<CalendarUiState, CalendarNavScope, CalendarAction> () {

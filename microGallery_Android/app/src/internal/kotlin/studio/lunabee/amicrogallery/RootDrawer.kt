@@ -16,28 +16,23 @@ import androidx.navigation.NavHostController
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.materials.ExperimentalHazeMaterialsApi
 import studio.lunabee.amicrogallery.bottomBar.MicroGalleryBottomBar
+import studio.lunabee.amicrogallery.loading.LoadingDestination
 import kotlin.reflect.KClass
 
 @Composable
 fun RootDrawer(
     navHostController: NavHostController,
-    startDestination: KClass<*>,
 ) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
 
     ModalNavigationDrawer(
         drawerState = drawerState,
         content = {
-            MicroGalleryRootScreen { hazeState, modifier ->
+            MicroGalleryRootScreen {  modifier ->
                 Box {
                     MainNavGraph(
-                        hazeState = hazeState,
                         navHostController = navHostController,
-                        startDestination = startDestination,
-                    )
-                    MicroGalleryBottomBar(
-                        navController = navHostController,
-                        modifier = Modifier.align(alignment = Alignment.BottomCenter).navigationBarsPadding(),
+                        startDestination = LoadingDestination::class
                     )
                 }
             }
@@ -50,14 +45,14 @@ fun RootDrawer(
 @Composable
 fun MicroGalleryRootScreen(
     modifier: Modifier = Modifier,
-    content: @Composable (HazeState, Modifier) -> Unit,
+    content: @Composable (modifier : Modifier) -> Unit,
 ) {
-    val hazeState = remember { HazeState() }
+
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background),
     ) {
-        content(hazeState, Modifier.fillMaxSize())
+        content(Modifier.fillMaxSize())
     }
 }

@@ -9,9 +9,18 @@ import studio.lunabee.microgallery.android.repository.datasource.remote.TreeRemo
 class TreeRemoteDatasourceImpl(
     private val rootService: RootService,
 ) : TreeRemoteDatasource {
+
+    private var rootNodeCache : Node? = null
+
     override suspend fun fetchRoot(): Node {
         val rootNode: Node = rootService.fetchRootList()[0].toData()
         return giveFullNameToFiles(node = rootNode)
+    }
+
+    override suspend fun getRoot() : Node {
+        if(rootNodeCache == null)
+            rootNodeCache = fetchRoot()
+        return rootNodeCache!!
     }
 }
 
