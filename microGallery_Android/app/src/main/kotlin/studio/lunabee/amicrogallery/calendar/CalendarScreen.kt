@@ -128,11 +128,11 @@ fun CalendarScreen(calendarUiState: CalendarUiState,
 
                 val animatedColor =
                     if (isNext) {
-                        lerp(MaterialTheme.colorScheme.tertiary, MaterialTheme.colorScheme.primary, interpolationValue)
+                        lerp(MaterialTheme.colorScheme.secondary, MaterialTheme.colorScheme.primary, interpolationValue)
                     } else if (isStuck) {
                         MaterialTheme.colorScheme.primary
                     } else {
-                        MaterialTheme.colorScheme.tertiary
+                        MaterialTheme.colorScheme.secondary
                     }
 
                 Box(
@@ -201,7 +201,7 @@ fun CalendarScreen(calendarUiState: CalendarUiState,
                                     fireAction(CalendarAction.AskForExpand(display.name, year))
                             },
                             contentPadding = PaddingValues(0.dp),
-                            modifier = Modifier.background(MaterialTheme.colorScheme.surfaceDim),
+                            modifier = Modifier.background(MaterialTheme.colorScheme.tertiary),
                             colors = ButtonColors(Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent),
                             shapes = ButtonShapes(RoundedCornerShape(CoreRadius.RadiusMedium), RoundedCornerShape(CoreRadius.RadiusMedium)),
 
@@ -225,7 +225,7 @@ fun CalendarScreen(calendarUiState: CalendarUiState,
 fun ShowMonth(month: String) {
     Text(
         text = getLabelName(month),
-        color = MaterialTheme.colorScheme.onSurface,
+        color = MaterialTheme.colorScheme.onTertiary,
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = CoreSpacing.SpacingMedium, top = CoreSpacing.SpacingMedium, bottom = CoreSpacing.SpacingSmall),

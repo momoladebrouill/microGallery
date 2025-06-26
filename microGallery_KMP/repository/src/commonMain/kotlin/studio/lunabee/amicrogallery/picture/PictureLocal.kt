@@ -11,4 +11,5 @@ interface PictureLocal {
     suspend fun freshStart()
     suspend fun getMonthsInYear(year : String) : List<String>
     suspend fun getPicturesInMonth(year : String, month : String) : List<Picture>
+    suspend fun getPicturesUntimed() : List<Picture>
 }

@@ -40,4 +40,7 @@ private val pictureDao: PictureDao,
         return pictureDao.getPicturesInMonth(year,month).map(PictureEntity::toPicture)
     }
 
+    override suspend fun getPicturesUntimed(): List<Picture> {
+        return pictureDao.getPicturesUntimed().map( PictureEntity::toPicture )
+    }
 }

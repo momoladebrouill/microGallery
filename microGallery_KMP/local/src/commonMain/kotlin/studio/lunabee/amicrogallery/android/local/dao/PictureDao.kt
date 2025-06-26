@@ -30,4 +30,7 @@ interface PictureDao {
 
     @Query("SELECT * FROM $PhotosTable WHERE year = :year AND month = :month")
     suspend fun getPicturesInMonth(year : String,month : String) : List<PictureEntity>
+
+    @Query("SELECT * FROM $PhotosTable WHERE year = 'untimed' AND month IS NULL")
+    suspend fun getPicturesUntimed() : List<PictureEntity>
 }

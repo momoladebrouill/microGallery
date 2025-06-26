@@ -13,6 +13,8 @@ class UntimedReducer(
         action: UntimedAction,
         performNavigation: (UntimedNavScope.() -> Unit) -> Unit,
     ): ReduceResult<UntimedUiState> {
-        return actualState.asResult()
+        return when(action){
+            is UntimedAction.GotTheList -> actualState.copy(images = action.images).asResult()
+        }
     }
 }

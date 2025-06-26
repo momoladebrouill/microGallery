@@ -5,11 +5,15 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import studio.lunabee.compose.presenter.LBSinglePresenter
 import studio.lunabee.compose.presenter.LBSingleReducer
+import studio.lunabee.microgallery.android.data.Picture
+import studio.lunabee.microgallery.android.domain.untimed.UntimedRepository
 
 class UntimedPresenter(
     savedStateHandle: SavedStateHandle,
+    val untimedRepository: UntimedRepository
 ) : LBSinglePresenter<UntimedUiState, UntimedNavScope, UntimedAction>() {
 
     private val params: UntimedDestination = savedStateHandle.toRoute()
@@ -22,9 +26,20 @@ class UntimedPresenter(
             emitUserAction = ::emitUserAction
         )
     }
+
+    init {
+        grabPicturesList()
+    }
+
+    fun grabPicturesList(){
+        viewModelScope.launch {
+            val photos : List<Picture> = untimedRepository.getPicturesUntimed()
+            emitUserAction(UntimedAction.GotTheList(photos))
+        }
+    }
     
 
-    override fun getInitialState(): UntimedUiState = UntimedUiState
+    override fun getInitialState(): UntimedUiState = UntimedUiState(listOf())
 
     override val content: @Composable (UntimedUiState) -> Unit = { UntimedScreen(it) }
 }
