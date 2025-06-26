@@ -2,24 +2,20 @@ package studio.lunabee.amicrogallery.android.local
 
 import androidx.room.ConstructedBy
 import androidx.room.Database
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
 import androidx.sqlite.SQLiteConnection
 import androidx.sqlite.SQLiteDriver
 import androidx.sqlite.execSQL
 import studio.lunabee.amicrogallery.android.local.dao.PictureDao
-import studio.lunabee.amicrogallery.android.local.entity.FolderEntity
 import studio.lunabee.amicrogallery.android.local.entity.PictureEntity
 import kotlin.coroutines.CoroutineContext
-
 
 @Database(
     entities = [
         PictureEntity::class,
     ],
-    version = 1,
+    version = 2,
 )
 @ConstructedBy(AppDatabaseConstructor::class)
 abstract class RoomAppDatabase : RoomDatabase() {
@@ -49,19 +45,17 @@ fun buildRoomDatabase(
 ): RoomAppDatabase {
     return builder
         .builder()
-        /*.addCallback(
+        .addCallback(
             object : RoomDatabase.Callback() {
                 override fun onCreate(connection: SQLiteConnection) {
                     super.onCreate(connection)
-                    connection.execSQL("INSERT INTO $AppVisitTable (id) VALUES ('${AppVisitEntity.UniqueId}')")
-                    connection.execSQL(
-                        "INSERT INTO $VariantTable (id, environment) " +
-                            "VALUES ('${VariantEntity.UniqueId}', '${defaultEnvironment.rawValue}')",
-                    )
+                    connection.execSQL("DELETE FROM PhotosTable")
+
                 }
             },
-        )*/
+        )
         // TODO here goes future migrations.
+        .fallbackToDestructiveMigration(true)
         .setDriver(builder.getDriver())
         .setQueryCoroutineContext(context = context)
         .build()

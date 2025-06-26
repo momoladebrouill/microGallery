@@ -19,6 +19,15 @@ interface PictureDao {
     @Query("SELECT * FROM $PhotosTable")
     fun getPicturesEntities(): Flow<List<PictureEntity>>
 
-    @Query("SELECT DISCTINCT(year) FROM $PhotosTable")
-    fun getYears() : Flow<List<Int>>
+    @Query("DELETE FROM $PhotosTable")
+    suspend fun freshStart()
+
+    @Query("SELECT DISTINCT year FROM $PhotosTable WHERE year <> 'untimed' ")
+    suspend fun getYears() : List<String>
+
+    @Query("SELECT DISTINCT month FROM $PhotosTable WHERE year = :year")
+    suspend fun getMonthsInYear(year : String) : List<String>
+
+    @Query("SELECT * FROM $PhotosTable WHERE year = :year AND month = :month")
+    suspend fun getPicturesInMonth(year : String,month : String) : List<PictureEntity>
 }

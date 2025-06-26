@@ -12,15 +12,16 @@ class CalendarRepositoryImpl(
     private val pictureLocal: PictureLocal,
 ) : CalendarRepository {
 
-    override suspend fun getMonthsInYear(year: Int): List<Int> {
-        TODO("Not yet implemented")
+    override suspend fun getMonthsInYear(year: String): List<String> {
+        return pictureLocal.getMonthsInYear(year = year)
     }
 
-    override suspend fun getPicturesInMonth(year: Int, month: Int): List<Picture> {
-        TODO("Not yet implemented")
+    override suspend fun getPicturesInMonth(year: String,
+        month: String): List<Picture> {
+        return pictureLocal.getPicturesInMonth(year, month)
     }
 
-    override suspend fun getYears(): Flow<List<Int>> {
+    override suspend fun getYears(): List<String> {
         return pictureLocal.getYears()
     }
 }

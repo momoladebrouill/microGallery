@@ -62,7 +62,7 @@ fun DashboardScreen(
                     navGraphBuilder = this,
                     navScope = object : UntimedNavScope {},
                 )
-                LastMonthDestination.composable(
+                LastMonthDestination(link = "vinculo").composable(
                     navGraphBuilder = this,
                     navScope = object : LastMonthNavScope {},
                 )

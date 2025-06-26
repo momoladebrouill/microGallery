@@ -55,7 +55,7 @@ fun MicroGalleryBottomBar(
             activated = currentBackStackEntry?.destination?.hierarchy?.any { it.hasRoute(UntimedDestination::class) } == true,
         )
         NavBarButton(
-            onClick = { navController.navigate(LastMonthDestination) },
+            onClick = { navController.navigate(LastMonthDestination(link="clicked from bottom bar")) },
             icon = painterResource(R.drawable.month_24px),
             description = stringResource(R.string.lastmonth_icon_button),
             activated = currentBackStackEntry?.destination?.hierarchy?.any { it.hasRoute(LastMonthDestination::class) } == true,

@@ -15,7 +15,6 @@ data class RemoteMicroElement(
     fun toData(): Node {
         return when (type) {
             "directory" -> Directory(
-                id = 5L,
                 name = name,
                 content = (contents?.map { it.toData() })!!,
             )
@@ -24,6 +23,8 @@ data class RemoteMicroElement(
                 name = name,
                 fullResPath = null,
                 lowResPath = null,
+                year = null,
+                month = null
             )
             else ->
                 throw CoreError("found a new type in request")

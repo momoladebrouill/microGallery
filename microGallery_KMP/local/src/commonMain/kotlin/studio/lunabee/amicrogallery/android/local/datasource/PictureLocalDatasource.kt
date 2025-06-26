@@ -1,6 +1,7 @@
 package studio.lunabee.amicrogallery.android.local.datasource
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import studio.lunabee.amicrogallery.android.local.dao.PictureDao
 import studio.lunabee.amicrogallery.android.local.entity.PictureEntity
@@ -22,7 +23,21 @@ private val pictureDao: PictureDao,
         pictureDao.insertPicturesEntity(PictureEntity.fromPicture(picture))
     }
 
-    override suspend fun getYears(): Flow<List<Int>> {
+    override suspend fun getYears(): List<String> {
         return pictureDao.getYears()
     }
+
+    override suspend fun freshStart() {
+        pictureDao.freshStart()
+    }
+
+    override suspend fun getMonthsInYear(year: String) : List<String>{
+        return pictureDao.getMonthsInYear(year)
+    }
+
+    override suspend fun getPicturesInMonth(year: String,
+        month: String): List<Picture> {
+        return pictureDao.getPicturesInMonth(year,month).map(PictureEntity::toPicture)
+    }
+
 }

@@ -8,10 +8,11 @@ import kotlinx.coroutines.launch
 
 import studio.lunabee.compose.presenter.LBSinglePresenter
 import studio.lunabee.compose.presenter.LBSingleReducer
+import studio.lunabee.microgallery.android.domain.loading.LoadingRepository
 import studio.lunabee.microgallery.android.domain.loading.usecase.UpdateTreeUseCase
 
 class LoadingPresenter(
-    private val updateTreeUseCase: UpdateTreeUseCase,
+    val loadingRepository: LoadingRepository
 ) : LBSinglePresenter<LoadingUiState, LoadingNavScope, LoadingAction>() {
     override val flows: List<Flow<LoadingAction>> = emptyList()
 
@@ -28,7 +29,7 @@ class LoadingPresenter(
 
     private fun refreshEvent() {
         viewModelScope.launch {
-            when (val result : LBResult<Unit> = updateTreeUseCase()) {
+            when (val result : LBResult<Unit> = UpdateTreeUseCase(loadingRepository).invoke()) {
                 is LBResult.Success -> {
                     emitUserAction(LoadingAction.FoundData())
                 }

@@ -13,19 +13,18 @@ class LoadingRepositoryImpl(
 ) : LoadingRepository {
     override suspend fun fetchRootNode() {
         treeRemoteDatasource.fetchRoot()
-        val rootNode : Node = treeRemoteDatasource.getRoot()
-        storeNodeLocally(rootNode)
-    }
-
-    suspend fun storeNodeLocally(node: Node){
-        when(node){
-            is Picture -> pictureLocal.insertPicture(node)
-            is Directory -> {
-                for(child in node.content){
-                    storeNodeLocally(child) // TODO : better
+        val rootNode : Directory = treeRemoteDatasource.getRoot() as Directory
+        pictureLocal.freshStart()
+        for(year in rootNode.content){
+            val yearDir : Directory = year as Directory
+            if(year.name == "untimed")
+                pictureLocal.insertPictures(yearDir.content.map { it as Picture })
+            else{
+                for(month in yearDir.content){
+                    val monthDir = month as Directory
+                    pictureLocal.insertPictures(monthDir.content.map { it as Picture })
                 }
             }
         }
     }
-
 }

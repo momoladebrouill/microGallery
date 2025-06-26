@@ -7,7 +7,6 @@ import org.koin.core.logger.Level
 import studio.lunabee.amicrogallery.android.shared.KoinHelper
 import studio.lunabee.amicrogallery.android.shared.calendarRepoModule
 import studio.lunabee.amicrogallery.android.shared.remoteDatasourceModule
-import studio.lunabee.amicrogallery.di.loadingModule
 import studio.lunabee.amicrogallery.di.presentersModule
 
 class MicroGalleryApplication : Application() {
@@ -22,7 +21,7 @@ class MicroGalleryApplication : Application() {
 
             modules(calendarRepoModule)
             modules(remoteDatasourceModule)
-            modules(loadingModule)
+
         }
     }
 }

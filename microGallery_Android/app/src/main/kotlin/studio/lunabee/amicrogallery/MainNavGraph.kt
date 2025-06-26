@@ -48,7 +48,7 @@ fun MainNavGraph(
                     },
                 )
 
-                LastMonthDestination.composable(
+                LastMonthDestination(link="vinculo").composable(
                     navGraphBuilder = this,
                     navScope = object : LastMonthNavScope {
 

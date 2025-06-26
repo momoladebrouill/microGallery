@@ -14,18 +14,23 @@ class TreeRemoteDatasourceImpl(
     private var rootNodeCache : Node? = null
 
     override suspend fun fetchRoot(){
-        val rootNode: Node = rootService.fetchRootList()[0].toData()
-        rootNodeCache = giveFullNameToFiles(node = rootNode)
+        val rootNode: Directory = rootService.fetchRootList()[0].toData() as Directory
+
+        rootNodeCache =
+            Directory(
+                name = "0",
+                content = rootNode.content.map(::giveFullNameToFiles)
+            )
+
     }
 
-    override fun getRoot() : Node {
-        if(rootNodeCache == null)
-            throw CoreError("trying to get Root Node but not fetched")
-        return rootNodeCache!!
+    override fun getRoot(): Node {
+        return rootNodeCache ?: throw CoreError("Attempted to retrieve root node, but it has not been fetched.")
     }
+
 }
 
-fun giveFullNameToFiles(node: Node, path: String = "", year:String = "", month:String =""): Node {
+fun giveFullNameToFiles(node: Node, path: String= "/disque/photos/ranged", year:String? = null, month:String? = null ): Node {
     return when (node) {
         is Directory -> Directory(
             name = node.name,
@@ -33,14 +38,14 @@ fun giveFullNameToFiles(node: Node, path: String = "", year:String = "", month:S
                 giveFullNameToFiles(
                     node = child,
                     path = "$path/${node.name}",
-                    year = if(year == "") node.name else year, //if year is not defined, it's a year directory
-                    month = if(month == "" && year != "") node.name else month //if year is definied but not month, it's a month
+                    year = year ?: node.name , //if year is not defined, it's a year directory
+                    month = if(year != null) node.name else month //if year is definied but not month, it's a month
                 ) },
         )
         is Picture -> {
             val fullPath = "$path/${node.name}"
             Picture(
-                id=5L,
+                id=0,
                 name = node.name,
                 fullResPath = fullPath,
                 lowResPath = fullPath
