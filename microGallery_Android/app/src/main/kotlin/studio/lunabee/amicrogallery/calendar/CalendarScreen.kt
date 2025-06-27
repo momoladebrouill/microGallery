@@ -113,7 +113,12 @@ fun ShowPhotos(rootNode: Node, hazeState: HazeState) {
         state = lazyListState,
     ) {
         val rootDir: Directory = rootNode as Directory
-
+		IconButton(onClick = { onAction(CalendarAction.JumpToSettings()) }) {
+            Icon(
+                painterResource(R.drawable.settings_24px),
+                contentDescription = "Settings menu",
+            )
+        }
         for (yearNode in rootDir.content) {
             val key = "year:${yearNode.name}"
             stickyHeader(key = key) {

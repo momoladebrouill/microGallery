@@ -3,7 +3,7 @@ package studio.lunabee.amicrogallery.calendar
 import kotlinx.coroutines.CoroutineScope
 import studio.lunabee.compose.presenter.LBSingleReducer
 import studio.lunabee.compose.presenter.ReduceResult
-import studio.lunabee.compose.presenter.asResult
+import studio.lunabee.compose.presenter.withSideEffect
 
 class CalendarReducer(
     override val coroutineScope: CoroutineScope,
@@ -17,6 +17,11 @@ class CalendarReducer(
     ): ReduceResult<CalendarUiState> {
         return when (action) {
             is CalendarAction.StopRefreshing -> actualState.copy(rootNode = action.foundNode).asResult()
+            is CalendarAction.JumpToSettings -> {
+                actualState withSideEffect {
+                    performNavigation { navigateToSettings() }
+                }
+            }
         }
     }
 }

@@ -14,6 +14,8 @@ import studio.lunabee.amicrogallery.calendar.CalendarDestination
 import studio.lunabee.amicrogallery.calendar.CalendarNavScope
 import studio.lunabee.amicrogallery.lastmonth.LastMonthDestination
 import studio.lunabee.amicrogallery.lastmonth.LastMonthNavScope
+import studio.lunabee.amicrogallery.settings.SettingsDestination
+import studio.lunabee.amicrogallery.settings.SettingsNavScope
 import studio.lunabee.amicrogallery.untimed.UntimedDestination
 import studio.lunabee.amicrogallery.untimed.UntimedNavScope
 import kotlin.reflect.KClass
@@ -41,6 +43,8 @@ fun MainNavGraph(
                             Log.d(TAG, "must navigate to year $year")
                             Unit
                         }
+                        override val navigateToSettings: () -> Unit
+                            get() = { navHostController.navigate(SettingsDestination) }
                     },
                 )
                 UntimedDestination.composable(
@@ -50,6 +54,10 @@ fun MainNavGraph(
                 LastMonthDestination.composable(
                     navGraphBuilder = this,
                     navScope = object : LastMonthNavScope {},
+                )
+                SettingsDestination.composable(
+                    navGraphBuilder = this,
+                    navScope = object : SettingsNavScope {},
                 )
             }
         }

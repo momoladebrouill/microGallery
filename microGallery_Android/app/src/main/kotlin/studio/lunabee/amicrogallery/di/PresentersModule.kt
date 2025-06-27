@@ -4,6 +4,7 @@ import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 import studio.lunabee.amicrogallery.calendar.CalendarPresenter
 import studio.lunabee.amicrogallery.lastmonth.LastMonthPresenter
+import studio.lunabee.amicrogallery.settings.SettingsPresenter
 import studio.lunabee.amicrogallery.untimed.UntimedPresenter
 import studio.lunabee.microgallery.android.domain.calendar.usecase.UpdateTreeUseCase
 
@@ -11,6 +12,7 @@ val presentersModule = module {
     viewModelOf(::CalendarPresenter)
     viewModelOf(::LastMonthPresenter)
     viewModelOf(::UntimedPresenter)
+    viewModelOf(::SettingsPresenter)
 }
 
 val calendarModule = module {
