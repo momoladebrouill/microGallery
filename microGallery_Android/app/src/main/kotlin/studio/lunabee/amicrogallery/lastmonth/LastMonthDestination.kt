@@ -6,15 +6,11 @@ import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
 
 @Serializable
-data class LastMonthDestination(
-    val link: String
-) {
-    //companion object {
-        fun composable(navGraphBuilder: NavGraphBuilder, navScope: LastMonthNavScope) {
-            navGraphBuilder.composable<LastMonthDestination> {
-                val presenter: LastMonthPresenter = koinViewModel()
-                presenter.invoke(navScope)
-            }
+data object LastMonthDestination{
+    fun composable(navGraphBuilder: NavGraphBuilder, navScope: LastMonthNavScope) {
+        navGraphBuilder.composable<LastMonthDestination> {
+            val presenter: LastMonthPresenter = koinViewModel()
+            presenter.invoke(navScope)
         }
-    //}
+    }
 }

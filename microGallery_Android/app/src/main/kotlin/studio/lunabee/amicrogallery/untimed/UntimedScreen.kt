@@ -44,59 +44,59 @@ fun UntimedScreen(
     val hazeState = remember { HazeState() }
     val listState = rememberLazyListState()
 
-        LazyColumn(modifier = Modifier.fillMaxSize(),
-            state = listState) {
-            stickyHeader {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(MaterialTheme.colorScheme.primary)
-                        .hazeEffect(
-                            state = hazeState,
-                            style = HazeMaterials.ultraThin(
-                                MaterialTheme.colorScheme.primary
-                            ),
+    LazyColumn(modifier = Modifier.fillMaxSize(),
+        state = listState) {
+        stickyHeader {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.primary)
+                    .hazeEffect(
+                        state = hazeState,
+                        style = HazeMaterials.ultraThin(
+                            MaterialTheme.colorScheme.primary
                         ),
-                ) {
-                    Column {
-                        Spacer(modifier = Modifier.height(CoreSpacing.SpacingMedium))
-                        Text(
-                            text =
-                                stringResource(R.string.untimed_title),
-                            color = MaterialTheme.colorScheme.onPrimary,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .statusBarsPadding()
-                                .padding(
-                                    start = CoreSpacing.SpacingMedium,
-                                    bottom = CoreSpacing.SpacingSmall,
-                                ),
-                            style = MaterialTheme.typography.titleLarge,
-                        )
-                    }
+                    ),
+            ) {
+                Column {
+                    Spacer(modifier = Modifier.height(CoreSpacing.SpacingMedium))
+                    Text(
+                        text =
+                            stringResource(R.string.untimed_title),
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .statusBarsPadding()
+                            .padding(
+                                start = CoreSpacing.SpacingMedium,
+                                bottom = CoreSpacing.SpacingSmall,
+                            ),
+                        style = MaterialTheme.typography.titleLarge,
+                    )
                 }
             }
-            items(uiState.images) { picture ->
-                Button(
-                    onClick = { /* TODO : jump in order to preview image in full screen clicked */ },
-                    contentPadding = PaddingValues(0.dp),
-                    modifier = Modifier.padding(PaddingValues(CoreSpacing.SpacingMedium)),
-                    shapes = ButtonShapes(RoundedCornerShape(CoreRadius.RadiusMedium), RoundedCornerShape(CoreRadius.RadiusMedium)),
+        }
+        items(uiState.images) { picture ->
+            Button(
+                onClick = { /* TODO : jump in order to preview image in full screen clicked */ },
+                contentPadding = PaddingValues(0.dp),
+                modifier = Modifier.padding(PaddingValues(CoreSpacing.SpacingMedium)),
+                shapes = ButtonShapes(RoundedCornerShape(CoreRadius.RadiusMedium), RoundedCornerShape(CoreRadius.RadiusMedium)),
 
-                    ) {
-                    Box {
-                        Text(text = stringResource(R.string.loading, picture.name), modifier = Modifier.align(Alignment.Center))
-                        MicroGalleryImage(
-                            url = "http://92.150.239.130" + picture.lowResPath,
-                            // TODO : better MicroGalleryImage to call with only a Picture (fallback to highRes etc)
-                            modifier = Modifier
-                                .hazeSource(state = hazeState)
-                                .wrapContentHeight(),
-                        )
-                    }
+                ) {
+                Box {
+                    Text(text = stringResource(R.string.loading, picture.name), modifier = Modifier.align(Alignment.Center))
+                    MicroGalleryImage(
+                        url = "http://92.150.239.130" + picture.lowResPath,
+                        // TODO : better MicroGalleryImage to call with only a Picture (fallback to highRes etc)
+                        modifier = Modifier
+                            .hazeSource(state = hazeState)
+                            .wrapContentHeight(),
+                    )
                 }
-                Spacer(modifier = Modifier.padding(PaddingValues(CoreSpacing.SpacingMedium)))
             }
+            Spacer(modifier = Modifier.padding(PaddingValues(CoreSpacing.SpacingMedium)))
+        }
 
     }
 

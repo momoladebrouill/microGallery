@@ -22,6 +22,7 @@ import studio.lunabee.amicrogallery.calendar.CalendarDestination
 import studio.lunabee.amicrogallery.core.ui.R
 import studio.lunabee.amicrogallery.lastmonth.LastMonthDestination
 import studio.lunabee.amicrogallery.untimed.UntimedDestination
+import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -55,7 +56,7 @@ fun MicroGalleryBottomBar(
             activated = currentBackStackEntry?.destination?.hierarchy?.any { it.hasRoute(UntimedDestination::class) } == true,
         )
         NavBarButton(
-            onClick = { navController.navigate(LastMonthDestination(link="clicked from bottom bar")) },
+            onClick = { navController.navigate(LastMonthDestination) },
             icon = painterResource(R.drawable.month_24px),
             description = stringResource(R.string.lastmonth_icon_button),
             activated = currentBackStackEntry?.destination?.hierarchy?.any { it.hasRoute(LastMonthDestination::class) } == true,

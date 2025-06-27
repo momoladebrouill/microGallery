@@ -1,6 +1,5 @@
 package studio.lunabee.microgallery.android.domain.calendar
 
-import kotlinx.coroutines.flow.Flow
 import studio.lunabee.microgallery.android.data.Picture
 
 interface CalendarRepository {

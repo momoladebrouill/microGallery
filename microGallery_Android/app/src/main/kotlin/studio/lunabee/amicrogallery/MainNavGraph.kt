@@ -1,17 +1,14 @@
 package studio.lunabee.amicrogallery
 
-import android.annotation.SuppressLint
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-
 import studio.lunabee.amicrogallery.dashboard.DashboardDestination
 import studio.lunabee.amicrogallery.lastmonth.LastMonthDestination
 import studio.lunabee.amicrogallery.lastmonth.LastMonthNavScope
@@ -48,7 +45,7 @@ fun MainNavGraph(
                     },
                 )
 
-                LastMonthDestination(link="vinculo").composable(
+                LastMonthDestination.composable(
                     navGraphBuilder = this,
                     navScope = object : LastMonthNavScope {
 

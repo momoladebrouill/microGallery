@@ -3,13 +3,10 @@ package studio.lunabee.amicrogallery.calendar
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewModelScope
 import dev.chrisbanes.haze.HazeState
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import studio.lunabee.compose.presenter.LBSinglePresenter
 import studio.lunabee.compose.presenter.LBSingleReducer
-import studio.lunabee.microgallery.android.data.Node
 import studio.lunabee.microgallery.android.data.Picture
 import studio.lunabee.microgallery.android.domain.calendar.CalendarRepository
 

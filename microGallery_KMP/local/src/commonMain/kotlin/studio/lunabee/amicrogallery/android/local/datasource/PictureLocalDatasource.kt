@@ -1,7 +1,6 @@
 package studio.lunabee.amicrogallery.android.local.datasource
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import studio.lunabee.amicrogallery.android.local.dao.PictureDao
 import studio.lunabee.amicrogallery.android.local.entity.PictureEntity
