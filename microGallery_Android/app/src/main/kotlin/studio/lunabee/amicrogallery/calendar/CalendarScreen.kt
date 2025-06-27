@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
@@ -27,7 +26,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
@@ -37,15 +35,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.hazeEffect
-import dev.chrisbanes.haze.hazeSource
 import dev.chrisbanes.haze.materials.ExperimentalHazeMaterialsApi
 import dev.chrisbanes.haze.materials.HazeMaterials
-import studio.lunabee.amicrogallery.android.core.ui.component.image.MicroGalleryImage
 import studio.lunabee.amicrogallery.android.core.ui.theme.CoreRadius
 import studio.lunabee.amicrogallery.android.core.ui.theme.CoreSpacing
 import studio.lunabee.amicrogallery.app.R
 import studio.lunabee.amicrogallery.calendar.displayed.MonthDisplay
 import studio.lunabee.amicrogallery.calendar.displayed.PhotoDisplay
+import studio.lunabee.amicrogallery.photo.MicroGalleryButtonImage
 import studio.lunabee.microgallery.android.data.Picture
 
 @Composable
@@ -143,7 +140,7 @@ fun CalendarScreen(calendarUiState: CalendarUiState,
                                 text =
                                     stringResource(
                                         R.string.calendar_title,
-                                        getLabelName(month.toString()), // month can be null
+                                        getMonthName(month.toString()), // month can be null
                                         year,
                                     ),
                                 color = MaterialTheme.colorScheme.onPrimary,
@@ -203,7 +200,7 @@ fun CalendarScreen(calendarUiState: CalendarUiState,
                     }
 
                     is PhotoDisplay -> {
-                        ShowChild(display.picture, modifier = Modifier.hazeSource(state = hazeState))
+                        ShowChild(display.picture, hazeState = hazeState, fireAction = fireAction)
                     }
                 }
 
@@ -216,7 +213,7 @@ fun CalendarScreen(calendarUiState: CalendarUiState,
 @Composable
 fun ShowMonth(month: String) {
     Text(
-        text = getLabelName(month),
+        text = getMonthName(month),
         color = MaterialTheme.colorScheme.onTertiary,
         modifier = Modifier
             .fillMaxWidth()
@@ -227,29 +224,13 @@ fun ShowMonth(month: String) {
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun ShowChild(picture: Picture, modifier: Modifier = Modifier) {
-    Button(
-        onClick = { /* TODO : jump in order to preview image in full screen clicked */ },
-        contentPadding = PaddingValues(0.dp),
-        modifier = Modifier.padding(PaddingValues(CoreSpacing.SpacingMedium)),
-        shapes = ButtonShapes(RoundedCornerShape(CoreRadius.RadiusMedium), RoundedCornerShape(CoreRadius.RadiusMedium)),
-
-        ) {
-        Box {
-            Text(text = stringResource(R.string.loading, picture.name), modifier = Modifier.align(Alignment.Center))
-            MicroGalleryImage(
-                url = "http://92.150.239.130" + picture.lowResPath,
-                // TODO : better MicroGalleryImage to call with only a Picture (fallback to highRes etc)
-                modifier = modifier
-                    .wrapContentHeight(),
-            )
-        }
-    }
+fun ShowChild(picture: Picture, hazeState: HazeState, fireAction : (CalendarAction) -> Unit ) {
+    MicroGalleryButtonImage(picture, hazeState = hazeState, showMe = {pictureId -> fireAction(CalendarAction.ShowPhoto(pictureId))})
     Spacer(modifier = Modifier.padding(PaddingValues(CoreSpacing.SpacingMedium)))
 }
 
 @Composable
-fun getLabelName(value: String): String {
+fun getMonthName(value: String): String {
     val task = runCatching {
         val number = value.toInt()
         if (number < 13) {

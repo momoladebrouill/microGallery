@@ -39,7 +39,6 @@ data class PictureEntity(
                 year = picture.year,
                 month = picture.month,
             )
-
         }
     }
 }

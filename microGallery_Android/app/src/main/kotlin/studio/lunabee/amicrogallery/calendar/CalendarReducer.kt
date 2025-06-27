@@ -4,6 +4,7 @@ import kotlinx.coroutines.CoroutineScope
 import studio.lunabee.compose.presenter.LBSingleReducer
 import studio.lunabee.compose.presenter.ReduceResult
 import studio.lunabee.compose.presenter.asResult
+import studio.lunabee.compose.presenter.withSideEffect
 
 class CalendarReducer(
 
@@ -33,6 +34,10 @@ class CalendarReducer(
             is CalendarAction.AskForCollapse -> actualState.copy(
                 expandedMonths = actualState.expandedMonths - Pair(action.year, action.month)
             ).asResult()
+
+            is CalendarAction.ShowPhoto -> actualState withSideEffect {
+                performNavigation {navigateToPhotoViewer(action.pictureId)}
+            }
         }
 
     }

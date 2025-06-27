@@ -18,6 +18,8 @@ import studio.lunabee.amicrogallery.calendar.CalendarDestination
 import studio.lunabee.amicrogallery.calendar.CalendarNavScope
 import studio.lunabee.amicrogallery.lastmonth.LastMonthDestination
 import studio.lunabee.amicrogallery.lastmonth.LastMonthNavScope
+import studio.lunabee.amicrogallery.photoviewer.PhotoViewerDestination
+import studio.lunabee.amicrogallery.photoviewer.PhotoViewerNavScope
 import studio.lunabee.amicrogallery.untimed.UntimedDestination
 import studio.lunabee.amicrogallery.untimed.UntimedNavScope
 import kotlin.reflect.KClass
@@ -48,6 +50,12 @@ fun DashboardScreen(
                 navController = navHostController,
                 startDestination = startDestination,
             ) {
+
+                PhotoViewerDestination(pictureId = 0).composable(
+                    navGraphBuilder = this,
+                    navScope = object : PhotoViewerNavScope {}
+                )
+
                 CalendarDestination.composable(
                     navGraphBuilder = this,
                     hazeState = hazeState,
@@ -56,21 +64,32 @@ fun DashboardScreen(
                             Log.d(TAG, "must navigate to year $year")
                             Unit
                         }
+                        override val navigateToPhotoViewer: (Long) -> Unit = { photoId : Long ->
+                            navHostController.navigate(PhotoViewerDestination(photoId))
+                        }
                     },
                 )
                 UntimedDestination.composable(
                     navGraphBuilder = this,
-                    navScope = object : UntimedNavScope {},
+                    navScope = object : UntimedNavScope {
+                        override val navigateToPhotoViewer: (Long) -> Unit = { photoId : Long ->
+                            navHostController.navigate(PhotoViewerDestination(photoId))
+                        }
+                    },
                 )
                 LastMonthDestination.composable(
                     navGraphBuilder = this,
-                    navScope = object : LastMonthNavScope {},
+                    navScope = object : LastMonthNavScope {
+                        override val navigateToPhotoViewer: (Long) -> Unit = { photoId : Long ->
+                            navHostController.navigate(PhotoViewerDestination(photoId))
+                        }
+                    },
                 )
             }
         }
         MicroGalleryBottomBar(
             navController = navHostController,
-            modifier = Modifier.align(alignment = Alignment.BottomCenter).navigationBarsPadding(),
+            modifier = Modifier.align(alignment = Alignment.BottomCenter)
         )
     }
 }

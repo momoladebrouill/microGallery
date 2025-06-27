@@ -6,4 +6,8 @@ sealed interface UntimedAction{
     data class GotTheList(
         val images : List<Picture>
     ) : UntimedAction
+
+    data class ShowPhoto(
+        val photoId : Long
+    ) : UntimedAction
 }

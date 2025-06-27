@@ -31,5 +31,9 @@ sealed interface CalendarAction {
         val month: String,
         val year : String
     ) : CalendarAction
+
+    data class ShowPhoto(
+        val pictureId : Long
+    ) : CalendarAction
 }
 

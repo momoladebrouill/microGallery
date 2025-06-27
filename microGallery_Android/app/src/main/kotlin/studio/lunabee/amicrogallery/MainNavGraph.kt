@@ -45,12 +45,6 @@ fun MainNavGraph(
                     },
                 )
 
-                LastMonthDestination.composable(
-                    navGraphBuilder = this,
-                    navScope = object : LastMonthNavScope {
-
-                    }
-                )
             }
         }
     }

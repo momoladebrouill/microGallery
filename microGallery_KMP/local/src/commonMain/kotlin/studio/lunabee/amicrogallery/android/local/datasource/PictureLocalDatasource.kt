@@ -14,14 +14,6 @@ private val pictureDao: PictureDao,
         pictureDao.insertPicturesEntities(pictures.map(PictureEntity::fromPicture))
     }
 
-    override fun getPictures(): Flow<List<Picture>> {
-        return pictureDao.getPicturesEntities().map { list -> list.map { it.toPicture() } }
-    }
-
-    override suspend fun insertPicture(picture: Picture) {
-        pictureDao.insertPicturesEntity(PictureEntity.fromPicture(picture))
-    }
-
     override suspend fun getYears(): List<String> {
         return pictureDao.getYears()
     }
@@ -42,4 +34,9 @@ private val pictureDao: PictureDao,
     override suspend fun getPicturesUntimed(): List<Picture> {
         return pictureDao.getPicturesUntimed().map( PictureEntity::toPicture )
     }
+
+    override suspend fun getPictureById(id: Long): Picture {
+        return pictureDao.getPictureEntityFromId(id = id).toPicture()
+    }
+
 }

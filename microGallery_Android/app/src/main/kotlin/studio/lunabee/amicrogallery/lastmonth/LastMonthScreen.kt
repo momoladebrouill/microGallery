@@ -38,18 +38,21 @@ import studio.lunabee.amicrogallery.android.core.ui.component.image.MicroGallery
 import studio.lunabee.amicrogallery.android.core.ui.theme.CoreRadius
 import studio.lunabee.amicrogallery.android.core.ui.theme.CoreSpacing
 import studio.lunabee.amicrogallery.app.R
+import studio.lunabee.amicrogallery.calendar.CalendarAction
+import studio.lunabee.amicrogallery.photo.MicroGalleryButtonImage
 import studio.lunabee.amicrogallery.core.ui.R as CoreUi
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun LastMonthScreen(
     uiState: LastMonthUiState,
+    fireAction: (LastMonthAction) -> Unit
 ) {
     val hazeState = remember { HazeState() }
     if (uiState.pictures.isEmpty())
         EmptyList()
     else
-        HasElements(uiState, hazeState)
+        HasElements(uiState, hazeState, fireAction = fireAction)
 }
 
 
@@ -69,7 +72,7 @@ fun EmptyList(){
 
 @OptIn(ExperimentalHazeMaterialsApi::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun HasElements(uiState: LastMonthUiState, hazeState: HazeState) {
+fun HasElements(uiState: LastMonthUiState, hazeState: HazeState, fireAction : (LastMonthAction) -> Unit) {
     val listState = rememberLazyListState()
     LazyColumn(modifier = Modifier.fillMaxSize(),
         state = listState) {
@@ -104,24 +107,7 @@ fun HasElements(uiState: LastMonthUiState, hazeState: HazeState) {
             }
         }
         items(uiState.pictures) { picture ->
-            Button(
-                onClick = { /* TODO : jump in order to preview image in full screen clicked */ },
-                contentPadding = PaddingValues(0.dp),
-                modifier = Modifier.padding(PaddingValues(CoreSpacing.SpacingMedium)),
-                shapes = ButtonShapes(RoundedCornerShape(CoreRadius.RadiusMedium), RoundedCornerShape(CoreRadius.RadiusMedium)),
-
-                ) {
-                Box {
-                    Text(text = stringResource(R.string.loading, picture.name), modifier = Modifier.align(Alignment.Center))
-                    MicroGalleryImage(
-                        url = "http://92.150.239.130" + picture.lowResPath,
-                        // TODO : better MicroGalleryImage to call with only a Picture (fallback to highRes etc)
-                        modifier = Modifier
-                            .hazeSource(state = hazeState)
-                            .wrapContentHeight(),
-                    )
-                }
-            }
+            MicroGalleryButtonImage(picture, hazeState, showMe = {fireAction(LastMonthAction.ShowPhoto(it))})
             Spacer(modifier = Modifier.padding(PaddingValues(CoreSpacing.SpacingMedium)))
         }
 

@@ -4,6 +4,7 @@ import kotlinx.coroutines.CoroutineScope
 import studio.lunabee.compose.presenter.LBSingleReducer
 import studio.lunabee.compose.presenter.ReduceResult
 import studio.lunabee.compose.presenter.asResult
+import studio.lunabee.compose.presenter.withSideEffect
 
 class LastMonthReducer(
     override val coroutineScope: CoroutineScope,
@@ -16,6 +17,9 @@ class LastMonthReducer(
     ): ReduceResult<LastMonthUiState> {
         return when(action){
             is LastMonthAction.GotTheList -> actualState.copy(pictures = action.pictures).asResult()
+            is LastMonthAction.ShowPhoto -> actualState withSideEffect {
+                performNavigation {navigateToPhotoViewer(action.photoId)}
+            }
         }
     }
 }

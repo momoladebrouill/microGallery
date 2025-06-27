@@ -18,21 +18,21 @@ fun RootDrawer(
     navHostController: NavHostController,
 ) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
-
+    MicroGalleryRootScreen {  modifier ->
+        Box {
+            MainNavGraph(
+                navHostController = navHostController,
+                startDestination = LoadingDestination::class
+            )
+        }
+    }/*
     ModalNavigationDrawer(
         drawerState = drawerState,
         content = {
-            MicroGalleryRootScreen {  modifier ->
-                Box {
-                    MainNavGraph(
-                        navHostController = navHostController,
-                        startDestination = LoadingDestination::class
-                    )
-                }
-            }
+
         },
         drawerContent = { DebugMenu(navHostController = navHostController) },
-    )
+    )*/
 }
 
 @OptIn(ExperimentalHazeMaterialsApi::class)

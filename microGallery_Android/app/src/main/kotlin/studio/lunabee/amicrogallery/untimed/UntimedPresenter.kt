@@ -41,5 +41,5 @@ class UntimedPresenter(
 
     override fun getInitialState(): UntimedUiState = UntimedUiState(listOf())
 
-    override val content: @Composable (UntimedUiState) -> Unit = { UntimedScreen(it) }
+    override val content: @Composable (UntimedUiState) -> Unit = { UntimedScreen(it, ::emitUserAction) }
 }

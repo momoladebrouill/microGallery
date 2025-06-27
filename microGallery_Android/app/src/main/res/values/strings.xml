@@ -23,4 +23,5 @@
     <string name="untimed_title">Date less pictures</string>
     <string name="lastmonth_title">This month</string>
     <string name="nothing_this_month">No photo for this month</string>
+    <string name="share">Share</string>
 </resources>

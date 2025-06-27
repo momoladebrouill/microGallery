@@ -6,4 +6,8 @@ sealed interface LastMonthAction{
     data class GotTheList(
         val pictures : List<Picture>
     ) : LastMonthAction
+
+    data class ShowPhoto(
+        val photoId : Long
+    ) : LastMonthAction
 }

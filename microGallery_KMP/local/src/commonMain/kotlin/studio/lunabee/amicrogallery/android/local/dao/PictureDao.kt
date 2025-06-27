@@ -11,13 +11,7 @@ import studio.lunabee.amicrogallery.android.local.entity.PictureEntity
 @Dao
 interface PictureDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertPicturesEntities(friends: List<PictureEntity>)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertPicturesEntity(picture: PictureEntity)
-
-    @Query("SELECT * FROM $PhotosTable")
-    fun getPicturesEntities(): Flow<List<PictureEntity>>
+    suspend fun insertPicturesEntities(pictures: List<PictureEntity>)
 
     @Query("DELETE FROM $PhotosTable")
     suspend fun freshStart()
@@ -33,4 +27,7 @@ interface PictureDao {
 
     @Query("SELECT * FROM $PhotosTable WHERE year = 'untimed' AND month IS NULL")
     suspend fun getPicturesUntimed() : List<PictureEntity>
+
+    @Query("SELECT * FROM $PhotosTable WHERE id = :id")
+    suspend fun getPictureEntityFromId(id : Long) : PictureEntity
 }

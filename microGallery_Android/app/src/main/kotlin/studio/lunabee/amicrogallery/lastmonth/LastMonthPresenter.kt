@@ -42,5 +42,5 @@ class LastMonthPresenter(
 
     override fun getInitialState(): LastMonthUiState = LastMonthUiState(listOf<Picture>())
 
-    override val content: @Composable (LastMonthUiState) -> Unit = { LastMonthScreen(it) }
+    override val content: @Composable (LastMonthUiState) -> Unit = { LastMonthScreen(it, fireAction = ::emitUserAction) }
 }
