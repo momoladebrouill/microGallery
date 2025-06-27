@@ -54,7 +54,7 @@ fun PhotoViewerScreen(
     var offset by remember { mutableStateOf(Offset.Zero) }
     val state = rememberTransformableState { zoomChange, offsetChange, rotationChange ->
         scale *= zoomChange
-        rotation += rotationChange
+        //rotation += rotationChange
         offset += offsetChange * 5.0f
     }
     val context = LocalContext.current
@@ -77,7 +77,7 @@ fun PhotoViewerScreen(
                     offset = Offset.Zero
                 },
                 onDoubleTap = {
-                    rotation = rotation + 90.0f
+                    rotation = rotation + 45.0f
                 }
             )
         }
@@ -111,7 +111,7 @@ fun PhotoViewerScreen(
                 .graphicsLayer(
                     scaleX = scale,
                     scaleY = scale,
-                    rotationX = rotation,
+                    rotationZ = rotation,
                     translationX = offset.x,
                     translationY = offset.y
                 )

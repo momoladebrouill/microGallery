@@ -9,8 +9,10 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
@@ -20,16 +22,20 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonShapes
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -44,6 +50,7 @@ import studio.lunabee.amicrogallery.calendar.displayed.MonthDisplay
 import studio.lunabee.amicrogallery.calendar.displayed.PhotoDisplay
 import studio.lunabee.amicrogallery.photo.MicroGalleryButtonImage
 import studio.lunabee.microgallery.android.data.Picture
+import studio.lunabee.amicrogallery.core.ui.R as CoreUi
 
 @Composable
 fun rememberNextYear(state: LazyListState, key: String) = remember(state) {
@@ -86,63 +93,79 @@ fun CalendarScreen(calendarUiState: CalendarUiState,
     hazeState: HazeState,
     fireAction : (CalendarAction) -> Unit) {
     val lazyListState = rememberLazyListState()
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxHeight()
-            .background(MaterialTheme.colorScheme.background),
-        state = lazyListState,
-    ) {
-        for (year in calendarUiState.years) {
-            val key = "year:$year"
-            stickyHeader(key = key) {
-                val isNext by rememberNextYear(lazyListState, key = key) // es ce que c'est la bar qui touche la top bar
-                val currentShownYear by rememberActiveYear(lazyListState)
-                val currentShownMonth by rememberActiveMonth(lazyListState)
-                val isStuck = currentShownYear?.key == key // is this the bar stuck at the top
+    Box(modifier = Modifier.fillMaxWidth()) {
 
-                val statusBarPadding = WindowInsets.statusBars.asPaddingValues().calculateTopPadding() + CoreSpacing.SpacingMedium
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxHeight()
+                .background(MaterialTheme.colorScheme.background),
+            state = lazyListState,
+        ) {
+            for (year in calendarUiState.years) {
+                val key = "year:$year"
+                stickyHeader(key = key) {
+                    val isNext by rememberNextYear(lazyListState, key = key) // es ce que c'est la bar qui touche la top bar
+                    val currentShownYear by rememberActiveYear(lazyListState)
+                    val currentShownMonth by rememberActiveMonth(lazyListState)
+                    val isStuck = currentShownYear?.key == key // is this the bar stuck at the top
 
-                val density = LocalDensity.current.density
-                val currentFirstHeightInDp = (currentShownYear?.size ?: 1) / density
-                val currentFirstOffsetInDp = -(currentShownYear?.offset ?: 0) / density
-                val interpolationValue = currentFirstOffsetInDp / currentFirstHeightInDp
-                val animatedPadding =
-                    if (isNext) {
-                        CoreSpacing.SpacingMedium + (statusBarPadding - CoreSpacing.SpacingMedium) * interpolationValue
-                    } else if (isStuck) {
-                        statusBarPadding
-                    } else {
-                        CoreSpacing.SpacingMedium
-                    }
+                    val statusBarPadding = WindowInsets.statusBars.asPaddingValues().calculateTopPadding() + CoreSpacing.SpacingMedium
 
-                val animatedColor =
-                    if (isNext) {
-                        lerp(MaterialTheme.colorScheme.secondary, MaterialTheme.colorScheme.primary, interpolationValue)
-                    } else if (isStuck) {
-                        MaterialTheme.colorScheme.primary
-                    } else {
-                        MaterialTheme.colorScheme.secondary
-                    }
+                    val density = LocalDensity.current.density
+                    val currentFirstHeightInDp = (currentShownYear?.size ?: 1) / density
+                    val currentFirstOffsetInDp = -(currentShownYear?.offset ?: 0) / density
+                    val interpolationValue = currentFirstOffsetInDp / currentFirstHeightInDp
+                    val animatedPadding =
+                        if (isNext) {
+                            CoreSpacing.SpacingMedium + (statusBarPadding - CoreSpacing.SpacingMedium) * interpolationValue
+                        } else if (isStuck) {
+                            statusBarPadding
+                        } else {
+                            CoreSpacing.SpacingMedium
+                        }
 
-                Box(
-                    modifier = Modifier
-                        .background(animatedColor)
-                        .hazeEffect(
-                            state = hazeState,
-                            style = HazeMaterials.ultraThin(
-                                animatedColor,
+                    val animatedColor =
+                        if (isNext) {
+                            lerp(MaterialTheme.colorScheme.secondary, MaterialTheme.colorScheme.primary, interpolationValue)
+                        } else if (isStuck) {
+                            MaterialTheme.colorScheme.primary
+                        } else {
+                            MaterialTheme.colorScheme.secondary
+                        }
+
+                    Box(
+                        modifier = Modifier
+                            .background(animatedColor)
+                            .hazeEffect(
+                                state = hazeState,
+                                style = HazeMaterials.ultraThin(
+                                    animatedColor,
+                                ),
                             ),
-                        ),
-                ) {
-                    if (isStuck)
-                        Crossfade(targetState = currentShownMonth) { month->
+                    ) {
+                        if (isStuck)
+                            Crossfade(targetState = currentShownMonth) { month ->
+                                Text(
+                                    text =
+                                        stringResource(
+                                            R.string.calendar_title,
+                                            getMonthName(month.toString()), // month can be null
+                                            year,
+                                        ),
+                                    color = MaterialTheme.colorScheme.onPrimary,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(
+                                            top = animatedPadding,
+                                            start = CoreSpacing.SpacingMedium,
+                                            bottom = CoreSpacing.SpacingSmall,
+                                        ),
+                                    style = MaterialTheme.typography.titleLarge,
+                                )
+                            }
+                        else
                             Text(
-                                text =
-                                    stringResource(
-                                        R.string.calendar_title,
-                                        getMonthName(month.toString()), // month can be null
-                                        year,
-                                    ),
+                                text = year,
                                 color = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -153,58 +176,59 @@ fun CalendarScreen(calendarUiState: CalendarUiState,
                                     ),
                                 style = MaterialTheme.typography.titleLarge,
                             )
+                    }
+                }
+                var currentMonth: String? = null
+                items(
+                    items = calendarUiState.getItemsToShow(year),
+                    key = { display ->
+                        when (display) {
+                            is MonthDisplay -> {
+                                currentMonth = display.name;"month:$year/${display.name}"
+                            }
+
+                            is PhotoDisplay -> "picture:${display.picture.name}/${currentMonth}"
                         }
-                    else
-                        Text(
-                            text = year,
-                            color = MaterialTheme.colorScheme.onPrimary,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(
-                                    top = animatedPadding,
-                                    start = CoreSpacing.SpacingMedium,
-                                    bottom = CoreSpacing.SpacingSmall,
-                                ),
-                            style = MaterialTheme.typography.titleLarge,
-                        )
-                }
-            }
-            var currentMonth : String? = null
-            items(
-                items = calendarUiState.getItemsToShow(year),
-                key = {
-                    display -> when(display) {
-                        is MonthDisplay -> {currentMonth = display.name ;"month:$year/${display.name}"}
-                        is PhotoDisplay -> "picture:${display.picture.name}/${currentMonth}"
-                }
-                      },
-            ) { display ->
-                when (display) {
-                    is MonthDisplay -> {
-                        Button(
-                            onClick = {
+                    },
+                ) { display ->
+                    when (display) {
+                        is MonthDisplay -> {
+                            Button(
+                                onClick = {
 
-                                if(Pair(year, display.name) in calendarUiState.expandedMonths)
-                                    fireAction(CalendarAction.AskForCollapse(display.name, year))
-                                else
-                                    fireAction(CalendarAction.AskForExpand(display.name, year))
-                            },
-                            contentPadding = PaddingValues(0.dp),
-                            modifier = Modifier.background(MaterialTheme.colorScheme.tertiary),
-                            colors = ButtonColors(Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent),
-                            shapes = ButtonShapes(RoundedCornerShape(CoreRadius.RadiusMedium), RoundedCornerShape(CoreRadius.RadiusMedium)),
+                                    if (Pair(year, display.name) in calendarUiState.expandedMonths)
+                                        fireAction(CalendarAction.AskForCollapse(display.name, year))
+                                    else
+                                        fireAction(CalendarAction.AskForExpand(display.name, year))
+                                },
+                                contentPadding = PaddingValues(0.dp),
+                                modifier = Modifier.background(MaterialTheme.colorScheme.tertiary),
+                                colors = ButtonColors(Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent),
+                                shapes = ButtonShapes(RoundedCornerShape(CoreRadius.RadiusMedium),
+                                    RoundedCornerShape(CoreRadius.RadiusMedium)),
 
-                            ) {
-                            ShowMonth(display.name)
+                                ) {
+                                ShowMonth(display.name)
+                            }
+                        }
+
+                        is PhotoDisplay -> {
+                            ShowChild(display.picture, hazeState = hazeState, fireAction = fireAction)
                         }
                     }
 
-                    is PhotoDisplay -> {
-                        ShowChild(display.picture, hazeState = hazeState, fireAction = fireAction)
-                    }
                 }
-
             }
+        }
+
+        IconButton(
+            onClick = { fireAction(CalendarAction.JumpToSettings())},
+            modifier = Modifier.align(Alignment.TopEnd).statusBarsPadding()
+        ) {
+            Icon(
+                painter = painterResource(CoreUi.drawable.settings_24px),
+                contentDescription = stringResource(R.string.settings),
+            )
         }
     }
 
@@ -220,33 +244,6 @@ fun ShowMonth(month: String) {
             .padding(start = CoreSpacing.SpacingMedium, top = CoreSpacing.SpacingMedium, bottom = CoreSpacing.SpacingSmall),
         style = MaterialTheme.typography.headlineMedium,
     )
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import studio.lunabee.amicrogallery.core.ui.R
-
-@Composable
-fun CalendarScreen(calendarUiState: CalendarUiState, onAction: (CalendarAction) -> Unit) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-    ) {
-        Text(
-            text = "Welcome to Calendar Screen",
-        )
-        IconButton(onClick = { onAction(CalendarAction.JumpToSettings()) }) {
-            Icon(
-                painterResource(R.drawable.settings_24px),
-                contentDescription = "Settings menu",
-            )
-        }
-    }
 }
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)

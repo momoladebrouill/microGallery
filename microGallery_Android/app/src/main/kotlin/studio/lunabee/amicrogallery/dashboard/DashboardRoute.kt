@@ -20,6 +20,8 @@ import studio.lunabee.amicrogallery.lastmonth.LastMonthDestination
 import studio.lunabee.amicrogallery.lastmonth.LastMonthNavScope
 import studio.lunabee.amicrogallery.photoviewer.PhotoViewerDestination
 import studio.lunabee.amicrogallery.photoviewer.PhotoViewerNavScope
+import studio.lunabee.amicrogallery.settings.SettingsDestination
+import studio.lunabee.amicrogallery.settings.SettingsNavScope
 import studio.lunabee.amicrogallery.untimed.UntimedDestination
 import studio.lunabee.amicrogallery.untimed.UntimedNavScope
 import kotlin.reflect.KClass
@@ -60,10 +62,9 @@ fun DashboardScreen(
                     navGraphBuilder = this,
                     hazeState = hazeState,
                     navScope = object : CalendarNavScope {
-                        override val navigateToMicroYear = { year: Int ->
-                            Log.d(TAG, "must navigate to year $year")
-                            Unit
-                        }
+
+                        override val navigateToSettings: () -> Unit = { navHostController.navigate(SettingsDestination) }
+
                         override val navigateToPhotoViewer: (Long) -> Unit = { photoId : Long ->
                             navHostController.navigate(PhotoViewerDestination(photoId))
                         }
@@ -84,6 +85,10 @@ fun DashboardScreen(
                             navHostController.navigate(PhotoViewerDestination(photoId))
                         }
                     },
+                )
+                SettingsDestination.composable(
+                    navGraphBuilder = this,
+                    navScope = object : SettingsNavScope {},
                 )
             }
         }

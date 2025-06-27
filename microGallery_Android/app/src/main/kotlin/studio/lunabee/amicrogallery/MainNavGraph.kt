@@ -28,43 +28,32 @@ private const val TAG = "MainNavGraph"
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun MainNavGraph(
-    contentPadding: PaddingValues,
     navHostController: NavHostController,
     startDestination: KClass<*>,
-){
+) {
     val navController = rememberNavController()
-    Box(modifier = Modifier.fillMaxSize()) {
-        SharedTransitionLayout {
-            NavHost(
-                modifier = Modifier.padding(contentPadding),
-                navController = navHostController,
-                startDestination = startDestination,
-            ) {
+    SharedTransitionLayout {
+        NavHost(
+            navController = navHostController,
+            startDestination = startDestination,
+        ) {
 
-                DashboardDestination.composable(
-                    navGraphBuilder = this,
-                    navScope = object : CalendarNavScope {
-                        override val navigateToSettings: () -> Unit
-                            get() = { navHostController.navigate(SettingsDestination) }
-                    },
-                    navController = navController
-                )
+            DashboardDestination.composable(
+                navGraphBuilder = this,
+                navController = navController
+            )
 
-                LoadingDestination.composable(
-                    navGraphBuilder = this,
-                    navScope = object : LoadingNavScope {
-                        override val navigateToDashboard = {
-                            //navHostController.navigate(LastMonthDestination("vinculo"))
-                            navHostController.navigate(DashboardDestination)
-                        }
-                    },
-                )
-                SettingsDestination.composable(
-                    navGraphBuilder = this,
-                    navScope = object : SettingsNavScope {},
-                )
+            LoadingDestination.composable(
+                navGraphBuilder = this,
+                navScope = object : LoadingNavScope {
+                    override val navigateToDashboard = {
+                        navHostController.navigate(DashboardDestination)
+                    }
+                },
+            )
 
-            }
+
         }
     }
 }
+
