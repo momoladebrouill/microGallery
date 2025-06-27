@@ -18,6 +18,9 @@ class CalendarReducer(
         performNavigation: (CalendarNavScope.() -> Unit) -> Unit,
     ): ReduceResult<CalendarUiState> {
         return when(action){
+			is CalendarAction.JumpToSettings -> actualState withSideEffect {
+                    performNavigation { navigateToSettings() }
+                }
             is CalendarAction.GotYears -> actualState.copy(years = action.years).asResult()
             is CalendarAction.GotMonthsOfYears -> actualState.copy(monthsOfYears = action.monthsOfYears).asResult()
             is CalendarAction.ForgetMYPhotos -> actualState.copy(

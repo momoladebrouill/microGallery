@@ -3,6 +3,7 @@ package studio.lunabee.amicrogallery.calendar
 import studio.lunabee.microgallery.android.data.Picture
 
 sealed interface CalendarAction {
+    class JumpToSettings : CalendarAction
     data class GotYears(
         val years: List<String>
     ) : CalendarAction

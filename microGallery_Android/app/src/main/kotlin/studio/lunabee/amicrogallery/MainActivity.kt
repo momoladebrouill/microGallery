@@ -5,8 +5,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.navigation.compose.rememberNavController
+import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme
 import studio.lunabee.amicrogallery.android.core.ui.theme.coreEnableEdgeToEdge
-import studio.lunabee.amicrogallery.android.core.ui.theme.redmaterial.RedMaterialTheme
+
+
 
 class MainActivity : ComponentActivity() {
 
@@ -15,7 +17,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             coreEnableEdgeToEdge(isSystemInDarkTheme())
             val navHostController = rememberNavController()
-            RedMaterialTheme {
+            MicroGalleryTheme {
                 RootDrawer(
                     navHostController = navHostController,
                 )
