@@ -40,10 +40,10 @@ class CalendarPresenter(
                     rootNode = result.data
                     emitUserAction(CalendarAction.StopRefreshing(result.data!!))
                 }
-                is LBResult.Failure -> { /*TODO : Act upon failure*/ }
+                is LBResult.Failure -> { /*TODO : Act upon failure, largely fixed in other PR*/ }
             }
         }
     }
 
-    override val content: @Composable ((CalendarUiState) -> Unit) = { CalendarScreen(it, hazeState) }
+    override val content: @Composable ((CalendarUiState) -> Unit) = { CalendarScreen(it, ::emitUserAction) }
 }

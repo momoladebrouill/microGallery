@@ -1,3 +1,5 @@
 package studio.lunabee.amicrogallery.settings
 
-interface SettingsAction
+sealed interface SettingsAction {
+    object JumpBack : SettingsAction
+}

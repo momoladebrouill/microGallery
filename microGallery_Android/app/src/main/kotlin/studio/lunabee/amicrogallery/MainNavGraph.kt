@@ -39,10 +39,6 @@ fun MainNavGraph(
                     navGraphBuilder = this,
                     hazeState = hazeState,
                     navScope = object : CalendarNavScope {
-                        override val navigateToMicroYear = { year: Int ->
-                            Log.d(TAG, "must navigate to year $year")
-                            Unit
-                        }
                         override val navigateToSettings: () -> Unit
                             get() = { navHostController.navigate(SettingsDestination) }
                     },
@@ -57,7 +53,11 @@ fun MainNavGraph(
                 )
                 SettingsDestination.composable(
                     navGraphBuilder = this,
-                    navScope = object : SettingsNavScope {},
+                    navScope = object : SettingsNavScope {
+                        override fun jumpBack() {
+                            navHostController.popBackStack()
+                        }
+                    },
                 )
             }
         }

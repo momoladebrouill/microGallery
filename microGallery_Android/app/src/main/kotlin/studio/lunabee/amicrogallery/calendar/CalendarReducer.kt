@@ -3,6 +3,7 @@ package studio.lunabee.amicrogallery.calendar
 import kotlinx.coroutines.CoroutineScope
 import studio.lunabee.compose.presenter.LBSingleReducer
 import studio.lunabee.compose.presenter.ReduceResult
+import studio.lunabee.compose.presenter.asResult
 import studio.lunabee.compose.presenter.withSideEffect
 
 class CalendarReducer(

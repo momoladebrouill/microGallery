@@ -35,4 +35,5 @@
     <string name="quantity_of_pictures">"Number of photos: "</string>
     <string name="nphotos">%,d photos</string>
     <string name="refresh">Refresh</string>
+    <string name="navigate_back">Navigate to previous screen</string>
 </resources>
