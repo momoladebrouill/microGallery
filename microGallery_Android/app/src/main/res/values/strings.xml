@@ -1,3 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings">Settings</string>
+    <string name="adress_of_server">IP adress of storage server</string>
+    <string name="ipv4">ip adress v4</string>
+    <string name="ipv6">ip adress v6</string>
+    <string name="previsualisation_options">Preview option</string>
+    <string name="preview_in_hd">Preview pictures in the highest definition</string>
+    <string name="consumes_more">consumes more data</string>
+    <string name="cache">Cache</string>
+    <string name="use_cache">Use a cache</string>
+    <string name="consume_less_but_more_storage">Consumes less data but use more storage</string>
+    <string name="empty_cache">Clear cache</string>
+    <string name="server_statistics">Remote statistics</string>
+    <string name="celcius">%d °C</string>
+    <string name="temperature">Temperature:</string>
+    <string name="quantity_of_pictures">"Number of photos: "</string>
+    <string name="nphotos">%,d photos</string>
+    <string name="refresh">Refresh</string>
 </resources>
