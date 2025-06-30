@@ -36,4 +36,5 @@
     <string name="nphotos">%,d photos</string>
     <string name="refresh">Refresh</string>
     <string name="navigate_back">Navigate to previous screen</string>
+    <string name="select_year">Select a year</string>
 </resources>

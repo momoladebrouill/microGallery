@@ -23,6 +23,7 @@ class CalendarReducer(
                     performNavigation { navigateToSettings() }
                 }
             }
+            is CalendarAction.JumpToYear -> actualState.asResult() // TODO : implement this
         }
     }
 }

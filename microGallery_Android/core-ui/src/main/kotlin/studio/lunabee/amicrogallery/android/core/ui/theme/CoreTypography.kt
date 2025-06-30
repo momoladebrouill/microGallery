@@ -14,53 +14,53 @@ val provider = GoogleFont.Provider(
     certificates = R.array.com_google_android_gms_fonts_certs,
 )
 
-val bodyFontFamily = FontFamily(
+val curlyFontFamily = FontFamily(
     Font(
         googleFont = GoogleFont("Comic Neue"),
         fontProvider = provider,
     ),
 )
 
-val displayFontFamily = FontFamily(
+val sharpFontFamily = FontFamily(
     Font(
-        googleFont = GoogleFont("Alatsi"),
+        googleFont = GoogleFont("Oswald"),
         fontProvider = provider,
     ),
 )
 
 object CoreTypography {
     val header = TextStyle(
-        fontFamily = displayFontFamily,
+        fontFamily = sharpFontFamily,
         fontSize = 42.sp,
         fontWeight = FontWeight.W900,
     )
     val title = TextStyle(
-        fontFamily = displayFontFamily,
+        fontFamily = sharpFontFamily,
         fontSize = 22.sp,
         fontWeight = FontWeight.W700,
     )
 
     val action = TextStyle(
-        fontFamily = bodyFontFamily,
-        fontSize = 16.sp,
+        fontFamily = sharpFontFamily,
+        fontSize = 18.sp,
         fontWeight = FontWeight.W600,
     )
 
     val labelBold = TextStyle(
-        fontFamily = bodyFontFamily,
+        fontFamily = curlyFontFamily,
         fontSize = 16.sp,
         fontWeight = FontWeight.W600,
     )
 
     val bodyBold = TextStyle(
-        fontFamily = bodyFontFamily,
+        fontFamily = curlyFontFamily,
         fontSize = 14.sp,
         fontWeight = FontWeight.W500,
     )
 
     val body = TextStyle(
-        fontFamily = bodyFontFamily,
-        fontSize = 14.sp,
+        fontFamily = curlyFontFamily,
+        fontSize = 16.sp,
         fontWeight = FontWeight.W400,
     )
 }
