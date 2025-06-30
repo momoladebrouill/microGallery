@@ -17,5 +17,3 @@ val presentersModule = module {
     viewModelOf(::LoadingPresenter)
     viewModelOf(::PhotoViewerPresenter)
 }
-
-

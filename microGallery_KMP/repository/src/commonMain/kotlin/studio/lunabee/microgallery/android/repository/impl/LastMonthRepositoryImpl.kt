@@ -10,5 +10,4 @@ class LastMonthRepositoryImpl(
     override suspend fun getLastMonthPictures(year: String, month: String): List<Picture> {
         return pictureLocal.getPicturesInMonth(year = year, month = month)
     }
-
 }

@@ -1,4 +1,4 @@
-package studio.lunabee.amicrogallery.untimed 
+package studio.lunabee.amicrogallery.untimed
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable

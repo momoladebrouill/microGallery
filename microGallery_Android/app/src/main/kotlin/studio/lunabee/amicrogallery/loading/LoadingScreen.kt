@@ -18,14 +18,14 @@ import studio.lunabee.amicrogallery.app.R
 
 @Composable
 fun LoadingScreen(loadingUiState: LoadingUiState, onAction: (LoadingAction) -> Unit) {
-    when(loadingUiState){
+    when (loadingUiState) {
         is LoadingUiState.Default -> WaitingForResponse()
         is LoadingUiState.Error -> ShowError(loadingUiState.errorMessage, onAction)
     }
 }
 
 @Composable
-fun WaitingForResponse(){
+fun WaitingForResponse() {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.align(Alignment.Center)) {
             Text(
@@ -43,23 +43,23 @@ fun WaitingForResponse(){
 }
 
 @Composable
-fun ShowError(error: String?, onAction : (LoadingAction) -> Unit){
+fun ShowError(error: String?, onAction: (LoadingAction) -> Unit) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.align(Alignment.Center), horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
                 text = stringResource(R.string.errorOccured),
                 style = MaterialTheme.typography.titleLarge,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
             Text(
                 text = error ?: "",
                 style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.padding(CoreSpacing.SpacingSmall)
+                modifier = Modifier.padding(CoreSpacing.SpacingSmall),
             )
             Button(
-                onClick = {onAction(LoadingAction.Reload())}
-            ){
+                onClick = { onAction(LoadingAction.Reload()) },
+            ) {
                 Text(text = stringResource(R.string.reload))
             }
         }

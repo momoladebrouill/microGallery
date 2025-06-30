@@ -4,5 +4,5 @@ import studio.lunabee.microgallery.android.data.Node
 
 interface TreeRemoteDatasource {
     suspend fun fetchRoot()
-    fun getRoot() : Node
+    fun getRoot(): Node
 }

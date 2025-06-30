@@ -12,10 +12,9 @@ import studio.lunabee.microgallery.android.domain.loading.LoadingRepository
 import studio.lunabee.microgallery.android.domain.loading.usecase.UpdateTreeUseCase
 
 class LoadingPresenter(
-    val loadingRepository: LoadingRepository
+    val loadingRepository: LoadingRepository,
 ) : LBSinglePresenter<LoadingUiState, LoadingNavScope, LoadingAction>() {
     override val flows: List<Flow<LoadingAction>> = emptyList()
-
 
     override fun getInitialState(): LoadingUiState = LoadingUiState.Default()
 
@@ -29,10 +28,11 @@ class LoadingPresenter(
 
     private fun refreshEvent() {
         viewModelScope.launch {
-            when (val result : LBResult<Unit> = UpdateTreeUseCase(loadingRepository).invoke()) {
+            when (val result: LBResult<Unit> = UpdateTreeUseCase(loadingRepository).invoke()) {
                 is LBResult.Success -> {
                     emitUserAction(LoadingAction.FoundData())
                 }
+
                 is LBResult.Failure<Unit> -> {
                     emitUserAction(LoadingAction.Error(result.throwable?.message))
                 }
@@ -40,12 +40,12 @@ class LoadingPresenter(
         }
     }
 
-    private fun onAction(action: LoadingAction){
-        if(action is LoadingAction.Reload){
+    private fun onAction(action: LoadingAction) {
+        if (action is LoadingAction.Reload) {
             refreshEvent()
         }
         viewModelScope.launch { emitUserAction(action) }
-
     }
+
     override val content: @Composable ((LoadingUiState) -> Unit) = { LoadingScreen(it, ::onAction) }
 }

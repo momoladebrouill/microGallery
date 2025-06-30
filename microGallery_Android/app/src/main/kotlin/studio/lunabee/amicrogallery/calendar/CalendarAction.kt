@@ -3,38 +3,40 @@ package studio.lunabee.amicrogallery.calendar
 import studio.lunabee.microgallery.android.data.Picture
 
 sealed interface CalendarAction {
-    class JumpToSettings : CalendarAction
-    data class GotYears(
-        val years: List<String>
+
+    class JumpToSettings : CalendarAction // Jump to settings screen
+
+    data class ShowPhoto( // Jump to photoViewer screen
+        val pictureId: Long,
     ) : CalendarAction
 
-    data class GotMonthsOfYears(
-        val monthsOfYears: Map<String, List<String>>
+    data class GotYears( // Got a db response for the list of different years
+        val years: List<String>,
     ) : CalendarAction
 
-    data class GotMY(
+    data class GotMonthsOfYears( // Got a db response for the months in the year X
+        val monthsOfYears: Map<String, List<String>>,
+    ) : CalendarAction
+
+    data class GotMY( // Got a db response for the list of pictures in month X year Y
         val month: String,
         val year: String,
-        val pictures: List<Picture>
+        val pictures: List<Picture>,
     ) : CalendarAction
 
-    data class ForgetMYPhotos(
+    data class ForgetMYPhotos( // Stop showing photos of month X from year Y
         val month: String,
-        val year: String
+        val year: String,
     ) : CalendarAction
 
-    data class AskForExpand(
+    // We first ask for changes in UI to update the showing list, then a db query is called
+    data class AskForExpand( // Ask to show pictures of month X year Y
         val month: String,
-        val year : String
+        val year: String,
     ) : CalendarAction
 
-    data class AskForCollapse(
+    data class AskForCollapse( // Ask to stop showing photos of month X year Y
         val month: String,
-        val year : String
-    ) : CalendarAction
-
-    data class ShowPhoto(
-        val pictureId : Long
+        val year: String,
     ) : CalendarAction
 }
-

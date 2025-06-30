@@ -23,7 +23,6 @@ object KoinHelper {
 
 expect val PlatformSpecificModule: Module
 
-
 private val RemoteModule: Module = module {
     single { CoreHttpClient(baseRemoteUrl = "http://92.150.239.130") }
 }

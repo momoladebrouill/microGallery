@@ -17,31 +17,30 @@ class CalendarReducer(
         action: CalendarAction,
         performNavigation: (CalendarNavScope.() -> Unit) -> Unit,
     ): ReduceResult<CalendarUiState> {
-        return when(action){
-			is CalendarAction.JumpToSettings -> actualState withSideEffect {
-                    performNavigation { navigateToSettings() }
-                }
+        return when (action) {
+            is CalendarAction.JumpToSettings -> actualState withSideEffect { performNavigation { navigateToSettings() } }
+            is CalendarAction.ShowPhoto -> actualState withSideEffect { performNavigation { navigateToPhotoViewer(action.pictureId) } }
+
             is CalendarAction.GotYears -> actualState.copy(years = action.years).asResult()
             is CalendarAction.GotMonthsOfYears -> actualState.copy(monthsOfYears = action.monthsOfYears).asResult()
+
             is CalendarAction.ForgetMYPhotos -> actualState.copy(
-                photosOfMonth = actualState.photosOfMonth.filter { (pair, _) -> pair !=  Pair(action.year, action.month)},
-                expandedMonths = actualState.expandedMonths - setOf(Pair(action.year, action.month))
+                photosOfMonth = actualState.photosOfMonth.filter { (pair, _) -> pair != Pair(action.year, action.month) },
+                expandedMonths = actualState.expandedMonths - setOf(Pair(action.year, action.month)),
             ).asResult()
+
             is CalendarAction.GotMY -> actualState.copy(
-                photosOfMonth = actualState.photosOfMonth + ( Pair(action.year, action.month) to action.pictures),
+                photosOfMonth = actualState.photosOfMonth + (Pair(action.year, action.month) to action.pictures),
             ).asResult()
+
+            // the presenter called for the db query, we just update year the list of things to show in UI
             is CalendarAction.AskForExpand -> actualState.copy(
-                expandedMonths = actualState.expandedMonths + Pair(action.year, action.month)
+                expandedMonths = actualState.expandedMonths + Pair(action.year, action.month),
             ).asResult()
 
             is CalendarAction.AskForCollapse -> actualState.copy(
-                expandedMonths = actualState.expandedMonths - Pair(action.year, action.month)
+                expandedMonths = actualState.expandedMonths - Pair(action.year, action.month),
             ).asResult()
-
-            is CalendarAction.ShowPhoto -> actualState withSideEffect {
-                performNavigation {navigateToPhotoViewer(action.pictureId)}
-            }
         }
-
     }
 }

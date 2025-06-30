@@ -14,8 +14,8 @@ kotlin {
             implementation(libs.androidxRoomRuntime)
             implementation(libs.androidxSqliteBundled)
 
-            implementation(projects.repository)
             implementation(projects.data)
+            implementation(projects.repository)
         }
     }
 }

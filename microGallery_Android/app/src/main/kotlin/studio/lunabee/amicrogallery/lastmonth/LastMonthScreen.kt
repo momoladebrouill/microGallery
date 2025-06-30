@@ -10,13 +10,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonShapes
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
@@ -28,42 +24,40 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.hazeEffect
-import dev.chrisbanes.haze.hazeSource
 import dev.chrisbanes.haze.materials.ExperimentalHazeMaterialsApi
 import dev.chrisbanes.haze.materials.HazeMaterials
-import studio.lunabee.amicrogallery.android.core.ui.component.image.MicroGalleryImage
-import studio.lunabee.amicrogallery.android.core.ui.theme.CoreRadius
+import studio.lunabee.amicrogallery.android.core.ui.component.photo.MicroGalleryButtonImage
 import studio.lunabee.amicrogallery.android.core.ui.theme.CoreSpacing
 import studio.lunabee.amicrogallery.app.R
-import studio.lunabee.amicrogallery.calendar.CalendarAction
-import studio.lunabee.amicrogallery.photo.MicroGalleryButtonImage
 import studio.lunabee.amicrogallery.core.ui.R as CoreUi
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun LastMonthScreen(
     uiState: LastMonthUiState,
-    fireAction: (LastMonthAction) -> Unit
+    fireAction: (LastMonthAction) -> Unit,
 ) {
     val hazeState = remember { HazeState() }
-    if (uiState.pictures.isEmpty())
+    if (uiState.pictures.isEmpty()) {
         EmptyList()
-    else
+    } else {
         HasElements(uiState, hazeState, fireAction = fireAction)
+    }
 }
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EmptyList(){
-    Box(modifier = Modifier.fillMaxSize()){
-        Column(modifier =Modifier.align(alignment = Alignment.Center)) {
-            Icon(painter = painterResource(CoreUi.drawable.nopicture),
+fun EmptyList() {
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier.align(alignment = Alignment.Center)) {
+            Icon(
+                painter = painterResource(CoreUi.drawable.nopicture),
                 contentDescription = stringResource(R.string.nothing_this_month),
-                modifier = Modifier.fillMaxWidth(0.3f).align(Alignment.CenterHorizontally)
+                modifier = Modifier
+                    .fillMaxWidth(0.3f)
+                    .align(Alignment.CenterHorizontally),
             )
             Text(text = stringResource(R.string.nothing_this_month), style = MaterialTheme.typography.titleMedium)
         }
@@ -72,10 +66,12 @@ fun EmptyList(){
 
 @OptIn(ExperimentalHazeMaterialsApi::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun HasElements(uiState: LastMonthUiState, hazeState: HazeState, fireAction : (LastMonthAction) -> Unit) {
+fun HasElements(uiState: LastMonthUiState, hazeState: HazeState, fireAction: (LastMonthAction) -> Unit) {
     val listState = rememberLazyListState()
-    LazyColumn(modifier = Modifier.fillMaxSize(),
-        state = listState) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        state = listState,
+    ) {
         stickyHeader {
             Box(
                 modifier = Modifier
@@ -84,7 +80,7 @@ fun HasElements(uiState: LastMonthUiState, hazeState: HazeState, fireAction : (L
                     .hazeEffect(
                         state = hazeState,
                         style = HazeMaterials.ultraThin(
-                            MaterialTheme.colorScheme.primary
+                            MaterialTheme.colorScheme.primary,
                         ),
                     ),
             ) {
@@ -92,7 +88,7 @@ fun HasElements(uiState: LastMonthUiState, hazeState: HazeState, fireAction : (L
                     Spacer(modifier = Modifier.height(CoreSpacing.SpacingMedium))
                     Text(
                         text =
-                            stringResource(R.string.lastmonth_title),
+                        stringResource(R.string.lastmonth_title),
                         color = MaterialTheme.colorScheme.onPrimary,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -107,9 +103,8 @@ fun HasElements(uiState: LastMonthUiState, hazeState: HazeState, fireAction : (L
             }
         }
         items(uiState.pictures) { picture ->
-            MicroGalleryButtonImage(picture, hazeState, showMe = {fireAction(LastMonthAction.ShowPhoto(it))})
+            MicroGalleryButtonImage(picture, hazeState, showMe = { fireAction(LastMonthAction.ShowPhoto(it)) })
             Spacer(modifier = Modifier.padding(PaddingValues(CoreSpacing.SpacingMedium)))
         }
-
     }
 }

@@ -15,10 +15,10 @@ class LastMonthReducer(
         action: LastMonthAction,
         performNavigation: (LastMonthNavScope.() -> Unit) -> Unit,
     ): ReduceResult<LastMonthUiState> {
-        return when(action){
+        return when (action) {
             is LastMonthAction.GotTheList -> actualState.copy(pictures = action.pictures).asResult()
             is LastMonthAction.ShowPhoto -> actualState withSideEffect {
-                performNavigation {navigateToPhotoViewer(action.photoId)}
+                performNavigation { navigateToPhotoViewer(action.photoId) }
             }
         }
     }

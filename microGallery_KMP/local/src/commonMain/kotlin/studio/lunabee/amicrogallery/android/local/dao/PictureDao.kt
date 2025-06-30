@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import kotlinx.coroutines.flow.Flow
 import studio.lunabee.amicrogallery.android.local.entity.PhotosTable
 import studio.lunabee.amicrogallery.android.local.entity.PictureEntity
 
@@ -17,17 +16,17 @@ interface PictureDao {
     suspend fun freshStart()
 
     @Query("SELECT DISTINCT year FROM $PhotosTable WHERE year <> 'untimed' ")
-    suspend fun getYears() : List<String>
+    suspend fun getYears(): List<String>
 
     @Query("SELECT DISTINCT month FROM $PhotosTable WHERE year = :year")
-    suspend fun getMonthsInYear(year : String) : List<String>
+    suspend fun getMonthsInYear(year: String): List<String>
 
     @Query("SELECT * FROM $PhotosTable WHERE year = :year AND month = :month")
-    suspend fun getPicturesInMonth(year : String,month : String) : List<PictureEntity>
+    suspend fun getPicturesInMonth(year: String, month: String): List<PictureEntity>
 
     @Query("SELECT * FROM $PhotosTable WHERE year = 'untimed' AND month IS NULL")
-    suspend fun getPicturesUntimed() : List<PictureEntity>
+    suspend fun getPicturesUntimed(): List<PictureEntity>
 
     @Query("SELECT * FROM $PhotosTable WHERE id = :id")
-    suspend fun getPictureEntityFromId(id : Long) : PictureEntity
+    suspend fun getPictureEntityFromId(id: Long): PictureEntity
 }

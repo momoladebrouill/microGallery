@@ -19,7 +19,7 @@ import kotlin.coroutines.CoroutineContext
 )
 @ConstructedBy(AppDatabaseConstructor::class)
 abstract class RoomAppDatabase : RoomDatabase() {
-    abstract fun pictureDao() : PictureDao
+    abstract fun pictureDao(): PictureDao
 }
 
 expect class RoomPlatformBuilder {
@@ -31,7 +31,7 @@ expect class RoomPlatformBuilder {
  * Automatically generates actual implementation.
  */
 @Suppress("NO_ACTUAL_FOR_EXPECT")
-expect object AppDatabaseConstructor : RoomDatabaseConstructor<RoomAppDatabase>{
+expect object AppDatabaseConstructor : RoomDatabaseConstructor<RoomAppDatabase> {
     // Workaround to allow standalone module build, needed for Dokka
     // See https://youtrack.jetbrains.com/issue/KT-59739#how-to-fix-your-code
     override fun initialize(): RoomAppDatabase
@@ -50,7 +50,6 @@ fun buildRoomDatabase(
                 override fun onCreate(connection: SQLiteConnection) {
                     super.onCreate(connection)
                     connection.execSQL("DELETE FROM PhotosTable")
-
                 }
             },
         )

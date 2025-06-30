@@ -24,21 +24,23 @@ import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.hazeEffect
 import dev.chrisbanes.haze.materials.ExperimentalHazeMaterialsApi
 import dev.chrisbanes.haze.materials.HazeMaterials
+import studio.lunabee.amicrogallery.android.core.ui.component.photo.MicroGalleryButtonImage
 import studio.lunabee.amicrogallery.android.core.ui.theme.CoreSpacing
 import studio.lunabee.amicrogallery.app.R
-import studio.lunabee.amicrogallery.photo.MicroGalleryButtonImage
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalHazeMaterialsApi::class)
 @Composable
 fun UntimedScreen(
     uiState: UntimedUiState,
-    fireAction : (UntimedAction) -> Unit
+    fireAction: (UntimedAction) -> Unit,
 ) {
     val hazeState = remember { HazeState() }
     val listState = rememberLazyListState()
 
-    LazyColumn(modifier = Modifier.fillMaxSize(),
-        state = listState) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        state = listState,
+    ) {
         stickyHeader {
             Box(
                 modifier = Modifier
@@ -47,7 +49,7 @@ fun UntimedScreen(
                     .hazeEffect(
                         state = hazeState,
                         style = HazeMaterials.ultraThin(
-                            MaterialTheme.colorScheme.primary
+                            MaterialTheme.colorScheme.primary,
                         ),
                     ),
             ) {
@@ -55,7 +57,7 @@ fun UntimedScreen(
                     Spacer(modifier = Modifier.height(CoreSpacing.SpacingMedium))
                     Text(
                         text =
-                            stringResource(R.string.untimed_title),
+                        stringResource(R.string.untimed_title),
                         color = MaterialTheme.colorScheme.onPrimary,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -70,10 +72,8 @@ fun UntimedScreen(
             }
         }
         items(uiState.images) { picture ->
-            MicroGalleryButtonImage(picture, hazeState, {fireAction(UntimedAction.ShowPhoto(it))})
+            MicroGalleryButtonImage(picture, hazeState, { fireAction(UntimedAction.ShowPhoto(it)) })
             Spacer(modifier = Modifier.padding(PaddingValues(CoreSpacing.SpacingMedium)))
         }
-
     }
-
 }

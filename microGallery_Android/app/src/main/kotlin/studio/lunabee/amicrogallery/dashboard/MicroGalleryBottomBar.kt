@@ -1,13 +1,7 @@
-package studio.lunabee.amicrogallery.bottomBar
+package studio.lunabee.amicrogallery.dashboard
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FloatingToolbarColors
@@ -16,11 +10,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -32,26 +24,25 @@ import studio.lunabee.amicrogallery.calendar.CalendarDestination
 import studio.lunabee.amicrogallery.core.ui.R
 import studio.lunabee.amicrogallery.lastmonth.LastMonthDestination
 import studio.lunabee.amicrogallery.untimed.UntimedDestination
-import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun MicroGalleryBottomBar(
     navController: NavHostController,
-    modifier : Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val currentBackStackEntry: NavBackStackEntry? by navController.currentBackStackEntryAsState()
-    val upPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
 
-    val isOn = listOf(CalendarDestination, UntimedDestination, LastMonthDestination).map {
-        dest -> currentBackStackEntry?.destination?.hierarchy?.any { it.hasRoute(dest::class) } == true
-    }.contains(true)
+    // Show the bottom bar if any of the screens is displayed
+    val isOn = listOf(CalendarDestination, UntimedDestination, LastMonthDestination).any {
+            dest ->
+        currentBackStackEntry?.destination?.hierarchy?.any { it.hasRoute(dest::class) } == true
+    }
 
     AnimatedVisibility(
         visible = isOn,
-        modifier = modifier
+        modifier = modifier,
     ) {
-
         HorizontalFloatingToolbar(
             expanded = true,
             colors = FloatingToolbarColors(
@@ -60,7 +51,7 @@ fun MicroGalleryBottomBar(
                 toolbarContentColor = contentColorFor(MaterialTheme.colorScheme.primaryContainer),
                 fabContentColor = contentColorFor(MaterialTheme.colorScheme.onSecondaryContainer),
             ),
-            modifier = Modifier.navigationBarsPadding(),
+            modifier = Modifier.Companion.navigationBarsPadding(),
             expandedShadowElevation = CoreSpacing.SpacingSmall,
         ) {
             NavBarButton(

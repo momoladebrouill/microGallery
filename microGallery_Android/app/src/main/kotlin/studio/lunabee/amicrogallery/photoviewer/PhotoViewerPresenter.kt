@@ -13,7 +13,7 @@ import studio.lunabee.microgallery.android.domain.photoviewer.PhotoViewerReposit
 
 class PhotoViewerPresenter(
     savedStateHandle: SavedStateHandle,
-    val photoViewerRepository: PhotoViewerRepository
+    val photoViewerRepository: PhotoViewerRepository,
 ) : LBSinglePresenter<PhotoViewerUiState, PhotoViewerNavScope, PhotoViewerAction>() {
 
     private val params: PhotoViewerDestination = savedStateHandle.toRoute()
@@ -23,17 +23,17 @@ class PhotoViewerPresenter(
     override fun initReducer(): LBSingleReducer<PhotoViewerUiState, PhotoViewerNavScope, PhotoViewerAction> {
         return PhotoViewerReducer(
             coroutineScope = viewModelScope,
-            emitUserAction = ::emitUserAction
+            emitUserAction = ::emitUserAction,
         )
     }
 
-    init{
+    init {
         getPictureById(params.pictureId)
     }
 
-    fun getPictureById(pictureId : Long){
+    fun getPictureById(pictureId: Long) {
         viewModelScope.launch {
-            val pic : Picture = photoViewerRepository.getPictureById(pictureId)
+            val pic: Picture = photoViewerRepository.getPictureById(pictureId)
             emitUserAction(PhotoViewerAction.FoundPicture(pic))
         }
     }

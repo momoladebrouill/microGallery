@@ -1,9 +1,7 @@
-package studio.lunabee.amicrogallery.untimed 
+package studio.lunabee.amicrogallery.untimed
 
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.toRoute
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import studio.lunabee.compose.presenter.LBSinglePresenter
@@ -12,18 +10,15 @@ import studio.lunabee.microgallery.android.data.Picture
 import studio.lunabee.microgallery.android.domain.untimed.UntimedRepository
 
 class UntimedPresenter(
-    savedStateHandle: SavedStateHandle,
-    val untimedRepository: UntimedRepository
+    val untimedRepository: UntimedRepository,
 ) : LBSinglePresenter<UntimedUiState, UntimedNavScope, UntimedAction>() {
 
-    private val params: UntimedDestination = savedStateHandle.toRoute()
-
     override val flows: List<Flow<UntimedAction>> = listOf()
-    
+
     override fun initReducer(): LBSingleReducer<UntimedUiState, UntimedNavScope, UntimedAction> {
         return UntimedReducer(
             coroutineScope = viewModelScope,
-            emitUserAction = ::emitUserAction
+            emitUserAction = ::emitUserAction,
         )
     }
 
@@ -31,13 +26,12 @@ class UntimedPresenter(
         grabPicturesList()
     }
 
-    fun grabPicturesList(){
+    fun grabPicturesList() {
         viewModelScope.launch {
-            val photos : List<Picture> = untimedRepository.getPicturesUntimed()
+            val photos: List<Picture> = untimedRepository.getPicturesUntimed()
             emitUserAction(UntimedAction.GotTheList(photos))
         }
     }
-    
 
     override fun getInitialState(): UntimedUiState = UntimedUiState(listOf())
 

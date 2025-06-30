@@ -26,7 +26,7 @@ data class PictureEntity(
             fullResPath = fullResPath,
             lowResPath = lowResPath,
             year = year,
-            month = month
+            month = month,
         )
     }
 

@@ -7,7 +7,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Serializable
 data class PhotoViewerDestination(
-    val pictureId : Long
+    val pictureId: Long,
 ) {
     fun composable(navGraphBuilder: NavGraphBuilder, navScope: PhotoViewerNavScope) {
         navGraphBuilder.composable<PhotoViewerDestination> {

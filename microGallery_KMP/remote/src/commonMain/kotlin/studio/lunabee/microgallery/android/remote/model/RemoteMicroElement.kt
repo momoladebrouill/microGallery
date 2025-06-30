@@ -24,7 +24,7 @@ data class RemoteMicroElement(
                 fullResPath = null,
                 lowResPath = null,
                 year = null,
-                month = null
+                month = null,
             )
             else ->
                 throw CoreError("found a new type in request")

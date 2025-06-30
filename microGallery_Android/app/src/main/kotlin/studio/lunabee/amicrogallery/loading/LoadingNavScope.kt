@@ -1,5 +1,5 @@
 package studio.lunabee.amicrogallery.loading
 
-interface LoadingNavScope{
+interface LoadingNavScope {
     val navigateToDashboard: () -> Unit
 }

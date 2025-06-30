@@ -6,5 +6,5 @@ data class Picture(
     val fullResPath: String?,
     val lowResPath: String?,
     val year: String?,
-    val month: String?
+    val month: String?,
 ) : Node()

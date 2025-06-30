@@ -10,5 +10,4 @@ class UntimedRepositoryImpl(
     override suspend fun getPicturesUntimed(): List<Picture> {
         return pictureLocal.getPicturesUntimed()
     }
-
 }

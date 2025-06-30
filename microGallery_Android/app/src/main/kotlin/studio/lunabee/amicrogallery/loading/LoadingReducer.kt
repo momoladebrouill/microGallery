@@ -27,7 +27,6 @@ class LoadingReducer(
                 LoadingUiState.Error(action.errorMessage).asResult()
             }
             is LoadingAction.Reload -> LoadingUiState.Default().asResult()
-
         }
     }
 }

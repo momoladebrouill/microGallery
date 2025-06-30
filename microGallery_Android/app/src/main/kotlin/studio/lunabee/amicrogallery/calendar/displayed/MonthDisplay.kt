@@ -1,5 +1,5 @@
 package studio.lunabee.amicrogallery.calendar.displayed
 
 data class MonthDisplay(
-    val name : String
+    val name: String,
 ) : Display

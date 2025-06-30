@@ -41,4 +41,5 @@
     <string name="lastmonth_title">This month</string>
     <string name="nothing_this_month">No photo for this month</string>
     <string name="share">Share</string>
+    <string name="month_year">%s %s</string>
 </resources>
