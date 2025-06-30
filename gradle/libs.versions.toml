@@ -10,6 +10,7 @@ androidxCoreSplashscreen = "1.0.1"
 androidxDatastore = "1.1.7"
 androidxLifecycle = "2.9.1"
 androidxNavigationCompose = "2.9.0"
+androidxPaging = "3.3.6"
 androidxRoom = "2.7.1"
 androidxSqlite = "2.5.1"
 coilCompose = "3.2.0"
@@ -52,10 +53,13 @@ androidxComposeMaterial3 = { group = "androidx.compose.material3", name = "mater
 androidxComposeUi = { group = "androidx.compose.ui", name = "ui" }
 androidxLifecycleViewModelKtx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidxLifecycle" }
 androidxNavigationCompose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxNavigationCompose" }
+androidxPagingCommon = { group = "androidx.paging", name = "paging-common", version.ref = "androidxPaging" }
 androidxRoomCompiler = { group = "androidx.room", name = "room-compiler", version.ref = "androidxRoom" }
+androidxRoomPaging = { group = "androidx.room", name = "room-paging", version.ref = "androidxRoom" }
 androidxRoomRuntime = { group = "androidx.room", name = "room-runtime", version.ref = "androidxRoom" }
 androidxSqliteBundled = { group = "androidx.sqlite", name = "sqlite-bundled", version.ref = "androidxSqlite" }
 coilCompose ={group = "io.coil-kt.coil3", name="coil-compose", version.ref = "coilCompose"}
+coilNetwork = {group = "io.coil-kt.coil3",  name="coil-network-ktor3", version.ref = "coilCompose"}
 composeMaterial3 = {group = "androidx.compose.material3", name = "material3", version.ref="material3alpha"}
 coreKtx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugarJdkLibs" }

@@ -20,11 +20,14 @@ dependencies {
     implementation(libs.androidxComposeMaterial3)
     implementation(libs.androidxComposeUi)
     api(libs.coilCompose)
+    implementation(libs.coilNetwork)
     implementation(libs.composeMaterial3)
-    implementation("io.coil-kt.coil3:coil-network-ktor3:3.2.0")
+    implementation(libs.haze)
+    implementation(libs.hazeMaterials)
     implementation(libs.ktorAndroid)
     implementation(libs.navigationRuntimeAndroid)
     implementation(libs.uiTextGoogleFonts)
 
     api(projects.coreRes)
+    implementation(projects.data)
 }

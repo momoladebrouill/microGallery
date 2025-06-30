@@ -1,12 +1,6 @@
 package studio.lunabee.amicrogallery.lastmonth
 
 import studio.lunabee.compose.presenter.PresenterUiState
+import studio.lunabee.microgallery.android.data.Picture
 
-sealed interface LastMonthUiState : PresenterUiState {
-    val textUiShown: String
-    data class Default(
-        val count: Int,
-    ) : LastMonthUiState {
-        override val textUiShown: String = "hello from lastMonth drawer"
-    }
-}
+data class LastMonthUiState(val pictures: List<Picture>) : PresenterUiState

@@ -1,0 +1,3 @@
+package studio.lunabee.amicrogallery.photoviewer
+
+interface PhotoViewerNavScope
