@@ -13,8 +13,9 @@ class PictureLocalDatasource(
         pictureDao.insertPicturesEntities(pictures.map(PictureEntity::fromPicture))
     }
 
-    override suspend fun getYears(): List<String> {
-        return pictureDao.getYears()
+    override suspend fun getYearsAndExample(): List<Pair<String,String>> {
+        val years : List<String> = pictureDao.getYears()
+        return years.map {Pair(it,pictureDao.getRandomPictureInYear(it).fullResPath!!)}
     }
 
     override suspend fun freshStart() {

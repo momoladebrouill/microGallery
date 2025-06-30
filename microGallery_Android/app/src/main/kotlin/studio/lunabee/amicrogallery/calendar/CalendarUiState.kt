@@ -7,10 +7,11 @@ import studio.lunabee.compose.presenter.PresenterUiState
 import studio.lunabee.microgallery.android.data.Picture
 
 data class CalendarUiState(
-    val years: List<String>,
+    val years: List<Pair<String,String>>, // year number and path of the picture representing the year
     val monthsOfYears: Map<String, List<String>>,
     val photosOfMonth: Map<Pair<String, String>, List<Picture>>,
     val expandedMonths: Set<Pair<String, String>>,
+    val yearSelected : String? = null
 ) : PresenterUiState {
     // flatten the map to go from {month1 -> List<picture>, month2 -> List<picture>, ... } to [month1, pic, pic, pic, month2, pic, pic, pic]
     fun getItemsToShow(year: String): List<Display> {

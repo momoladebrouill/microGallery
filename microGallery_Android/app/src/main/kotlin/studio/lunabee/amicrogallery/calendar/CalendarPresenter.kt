@@ -31,9 +31,9 @@ class CalendarPresenter(
     // first get the list of years
     fun populateYears() {
         viewModelScope.launch {
-            val years: List<String> = calendarRepository.getYears()
-            emitUserAction(CalendarAction.GotYears(years))
-            populateMonths(years)
+            val yearsAndMonths: List<Pair<String,String>> = calendarRepository.getYearsAndExample()
+            emitUserAction(CalendarAction.GotYears(yearsAndMonths))
+            populateMonths(yearsAndMonths.map {(year,_)-> year})
         }
     }
 

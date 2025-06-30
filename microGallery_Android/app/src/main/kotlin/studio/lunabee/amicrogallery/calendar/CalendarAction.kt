@@ -11,7 +11,7 @@ sealed interface CalendarAction {
     ) : CalendarAction
 
     data class GotYears( // Got a db response for the list of different years
-        val years: List<String>,
+        val years: List<Pair<String,String>>,
     ) : CalendarAction
 
     data class GotMonthsOfYears( // Got a db response for the months in the year X
@@ -39,11 +39,11 @@ sealed interface CalendarAction {
         val month: String,
         val year: String,
     ) : CalendarAction
-    class JumpToSettings : CalendarAction
+
 
     data class JumpToYear(
         val year : String
     ) : CalendarAction
 
-    data class StopRefreshing(val foundNode: Node) : CalendarAction
+
 }

@@ -214,7 +214,7 @@ fun ServerStatisticsSettingsEntry(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun SettingsScreen() {
+
 fun SettingsScreen(settingsUiState: SettingsUiState, fireAction : (SettingsAction) -> Unit) {
     val settingsEntries: List<@Composable (modifier: Modifier) -> Unit> = listOf(
         // mod as a short term for modifier

@@ -75,7 +75,11 @@ fun DashboardScreen(
                 )
                 SettingsDestination.composable(
                     navGraphBuilder = this,
-                    navScope = object : SettingsNavScope {},
+                    navScope = object : SettingsNavScope {
+                        override fun jumpBack() {
+                            navHostController.navigateUp()
+                        }
+                    },
                 )
             }
         }

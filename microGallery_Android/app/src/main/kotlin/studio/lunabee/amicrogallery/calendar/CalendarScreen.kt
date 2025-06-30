@@ -3,27 +3,16 @@ package studio.lunabee.amicrogallery.calendar
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import android.annotation.SuppressLint
-import android.graphics.drawable.ShapeDrawable
-import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraintsScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListItemInfo
 import androidx.compose.foundation.lazy.LazyListState
@@ -35,12 +24,10 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.ButtonShapes
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Shapes
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -49,7 +36,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.layout.ContentScale
@@ -59,58 +45,43 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.hazeEffect
+import dev.chrisbanes.haze.hazeSource
 import dev.chrisbanes.haze.materials.ExperimentalHazeMaterialsApi
 import dev.chrisbanes.haze.materials.HazeMaterials
+import studio.lunabee.amicrogallery.android.core.ui.component.image.MicroGalleryImage
 import studio.lunabee.amicrogallery.android.core.ui.component.photo.MicroGalleryButtonImage
 import studio.lunabee.amicrogallery.android.core.ui.theme.CoreRadius
 import studio.lunabee.amicrogallery.android.core.ui.theme.CoreSpacing
 import studio.lunabee.amicrogallery.android.core.ui.theme.CoreTypography
 import studio.lunabee.amicrogallery.app.R
-import studio.lunabee.amicrogallery.calendar.displayed.MonthDisplay
-import studio.lunabee.amicrogallery.calendar.displayed.PhotoDisplay
 import studio.lunabee.microgallery.android.data.Picture
 import studio.lunabee.amicrogallery.core.ui.R as CoreUi
 
 @Composable
-fun rememberNextYear(state: LazyListState, key: String) = remember(state) {
+fun rememberNextMonth(state: LazyListState, key: String) = remember(state) {
     derivedStateOf {
-        val items = state.layoutInfo.visibleItemsInfo.filter { it.key.toString().startsWith("year:") }
+        val items = state.layoutInfo.visibleItemsInfo.filter { it.key.toString().startsWith("month:") }
         val nextElement = items.getOrNull(1) ?: return@derivedStateOf false
         val header = items.getOrNull(0) ?: return@derivedStateOf false
         nextElement.key == key && header.size >= nextElement.offset
     }
 }
 
+
+
 @Composable
 fun rememberActiveMonth(state: LazyListState) = remember(state) {
     derivedStateOf {
-        val topBar = state.layoutInfo.visibleItemsInfo.filter { it.key.toString().startsWith("year:") }.getOrNull(0)
-            ?: return@derivedStateOf false
-        val items = state.layoutInfo.visibleItemsInfo.filter {
-            (
-                it.key.toString().startsWith("month:")
-                    || it.key.toString().startsWith("picture:")
-                ) && it.offset >= topBar.size / 2
-        }
-        val header = items.getOrNull(0) ?: return@derivedStateOf null
-        getMonthFromKey(header.key.toString())
-    }
-}
-
-@Composable
-fun rememberActiveYear(state: LazyListState) = remember(state) {
-    derivedStateOf {
-        val items = state.layoutInfo.visibleItemsInfo.filter { it.key.toString().startsWith("year:") }
+        val items = state.layoutInfo.visibleItemsInfo.filter { it.key.toString().startsWith("month:") }
         val header = items.getOrNull(0) ?: return@derivedStateOf null
         header
     }
 }
 
 fun getMonthFromKey(key: String): String {
-    return key.substringAfter("/")
+    return key.substringAfter(":")
 }
 
 @Composable
@@ -125,72 +96,14 @@ fun calculateInterpolationValue(currentShownYear: LazyListItemInfo?): Float {
 @Composable
 fun CalendarScreen(
     calendarUiState: CalendarUiState,
-    fireAction: (CalendarAction) -> Unit,
+    fireAction: (CalendarAction) -> Unit
 ) {
-    val hazeState = remember { HazeState() }
-    val lazyListState = rememberLazyListState()
-    Box(modifier = Modifier.fillMaxWidth()) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxHeight()
-                .background(MaterialTheme.colorScheme.background),
-            state = lazyListState,
-        ) {
-            for (year in calendarUiState.years) {
-                val key = "year:$year"
-                stickyHeader(key = key) {
-                    ShowYearLabel(
-                        lazyListState = lazyListState,
-                        year = year,
-                        key = key,
-                        hazeState = hazeState,
-                    )
-                }
-                // the current month that we're scrolling through
-                var currentMonth: String? = null
-                items(
-                    items = calendarUiState.getItemsToShow(year),
-                    key = { display ->
-                        when (display) {
-                            is MonthDisplay -> {
-                                currentMonth = display.name
-                                "month:$year/${display.name}"
-                            }
-                            // place the month after the / to be obtained later
-                            is PhotoDisplay -> "picture:${display.picture.name}/$currentMonth"
-                        }
-                    },
-                ) { display -> // the display item
-                    when (display) {
-                        is MonthDisplay -> {
-                            Button(
-                                onClick = {
-                                    if (Pair(year, display.name) in calendarUiState.expandedMonths) {
-                                        // if this month is already expanded
-                                        fireAction(CalendarAction.AskForCollapse(display.name, year))
-                                    } else {
-                                        fireAction(CalendarAction.AskForExpand(display.name, year))
-                                    }
-                                },
-                                contentPadding = PaddingValues(0.dp),
-                                modifier = Modifier.background(MaterialTheme.colorScheme.tertiary),
-                                colors = ButtonColors(Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent),
-                                shapes = ButtonShapes(
-                                    RoundedCornerShape(CoreRadius.RadiusMedium),
-                                    RoundedCornerShape(CoreRadius.RadiusMedium),
-                                ),
-                            ) {
-                                ShowMonth(display.name)
-                            }
-                        }
 
-                        is PhotoDisplay -> {
-                            ShowPic(display.picture, hazeState = hazeState, fireAction = fireAction)
-                        }
-                    }
-                }
-            }
-        }
+    Box(modifier = Modifier.fillMaxWidth()) {
+        if (calendarUiState.yearSelected != null)
+            ScrollTroughYear(calendarUiState, fireAction)
+        else
+            ShowYears(calendarUiState.years, fireAction)
 
         IconButton(
             onClick = { fireAction(CalendarAction.JumpToSettings()) },
@@ -202,8 +115,50 @@ fun CalendarScreen(
                 painter = painterResource(CoreUi.drawable.settings_24px),
                 contentDescription = stringResource(R.string.settings),
             )
-fun ShowPhotos(rootNode: Node, hazeState: HazeState, onAction: (CalendarAction) -> Unit) {
-    val rootDir = rootNode as Directory
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+fun ScrollTroughYear(calendarUiState: CalendarUiState, fireAction: (CalendarAction) -> Unit) {
+    val lazyListState = rememberLazyListState()
+    val hazeState = remember { HazeState() }
+    val year = calendarUiState.yearSelected!!
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxHeight()
+            .background(MaterialTheme.colorScheme.background),
+        state = lazyListState,
+    ) {
+
+        for (month in calendarUiState.monthsOfYears[year] ?: listOf()) {
+            val key = "month:$month"
+            stickyHeader(key = key) {
+                ShowMonthLabel(
+                    lazyListState = lazyListState,
+                    year = year,
+                    month = month,
+                    key = key,
+                    hazeState = hazeState,
+                )
+            }
+            fireAction(CalendarAction.AskForExpand(month, year))
+            items(calendarUiState.photosOfMonth[Pair(year, month)] ?: listOf()){
+                ShowPic(
+                    picture = it,
+                    hazeState = hazeState,
+                    fireAction = fireAction
+                )
+            }
+        }
+
+    }
+}
+
+@Composable
+fun ShowYears(years: List<Pair<String, String>>, onAction: (CalendarAction) -> Unit) {
+
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
         modifier = Modifier.statusBarsPadding()
@@ -220,13 +175,13 @@ fun ShowPhotos(rootNode: Node, hazeState: HazeState, onAction: (CalendarAction) 
                 )
             }
         }
-        items(rootDir.content){
-            if(it.name != "untimed")
-            ShowYear(it as Directory, navigateToYear = {onAction(CalendarAction.JumpToYear(it.name))})
+        items(years) { (year, fullResExample) ->
+            ShowYearButton(year, fullResExample, navigateToYear = { onAction(CalendarAction.JumpToYear(year)) })
         }
     }
 
 }
+
 fun Modifier.square(): Modifier = this.then(
     this.layout { measurable, constraints ->
         val size = minOf(constraints.maxWidth, constraints.maxHeight)
@@ -244,7 +199,7 @@ fun Modifier.square(): Modifier = this.then(
 
 @OptIn(ExperimentalHazeMaterialsApi::class)
 @Composable
-fun ShowYear(year : Directory, navigateToYear : () -> Unit){
+fun ShowYearButton(yearName: String, fullResExample: String, navigateToYear: () -> Unit) {
     Button(
         onClick = navigateToYear,
         modifier = Modifier.fillMaxHeight(0.3f),
@@ -255,23 +210,22 @@ fun ShowYear(year : Directory, navigateToYear : () -> Unit){
         shape = RoundedCornerShape(CoreRadius.RadiusLarge),
         contentPadding = PaddingValues(horizontal = CoreSpacing.SpacingSmall, vertical = CoreSpacing.SpacingMedium)
 
-    ){
+    ) {
         val hazeState = HazeState()
         Column {
             Box() {
                 MicroGalleryImage(
-                    url = "http://92.150.239.130" + (((year.content[0] as Directory).content.shuffled()[0]) as Picture).fullResPath,
+                    url = "http://92.150.239.130$fullResExample",
                     modifier = Modifier
                         .square()
                         .clip(RoundedCornerShape(CoreRadius.RadiusLarge))
-                        .hazeSource(state = hazeState)
-                    ,
+                        .hazeSource(state = hazeState),
                     contentScale = ContentScale.Crop
                 )
                 Box(
                     modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom =CoreSpacing.SpacingSmall)
+                        .align(Alignment.BottomCenter)
+                        .padding(bottom = CoreSpacing.SpacingSmall)
                         .clip(RoundedCornerShape(CoreRadius.RadiusSmall))
                         .fillMaxWidth(0.7f)
                 ) {
@@ -295,26 +249,25 @@ fun ShowYear(year : Directory, navigateToYear : () -> Unit){
                 }
             }
             Text(
-                text = year.name,
+                text = yearName,
                 style = CoreTypography.action,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
 
         }
     }
-
+}
 
 @OptIn(ExperimentalHazeMaterialsApi::class)
 @Composable
-fun ShowYearLabel(lazyListState: LazyListState, year: String, key: String, hazeState: HazeState) {
-    val isNext by rememberNextYear(lazyListState, key = key) // is this header touching the top header ?
-    val currentShownYear by rememberActiveYear(lazyListState)
+fun ShowMonthLabel(lazyListState: LazyListState, year: String, month:String, key: String, hazeState: HazeState) {
+    val isNext by rememberNextMonth(lazyListState, key = key) // is this header touching the top header ?
     val currentShownMonth by rememberActiveMonth(lazyListState)
-    val isStuck = currentShownYear?.key == key // is this the bar stuck at the top ?
+    val isStuck = currentShownMonth?.key == key // is this the bar stuck at the top ?
 
     val statusBarPadding = WindowInsets.statusBars.asPaddingValues().calculateTopPadding() + CoreSpacing.SpacingMedium
 
-    val interpolationValue = calculateInterpolationValue(currentShownYear)
+    val interpolationValue = calculateInterpolationValue(currentShownMonth)
 
     val animatedPadding =
         if (isNext) {
@@ -339,20 +292,18 @@ fun ShowYearLabel(lazyListState: LazyListState, year: String, key: String, hazeS
             .background(animatedColor)
             .hazeEffect(
                 state = hazeState,
-                style = HazeMaterials.ultraThin(
-                    animatedColor,
-                ),
+                style = HazeMaterials.ultraThin(animatedColor),
             ),
     ) {
         if (isStuck) {
-            Crossfade(targetState = currentShownMonth) { month ->
+            Crossfade(targetState = currentShownMonth!!.key) { monthKey ->
                 Text(
                     text =
-                    stringResource(
-                        R.string.calendar_title,
-                        getMonthName(month.toString()), // month can be null
-                        year,
-                    ),
+                        stringResource(
+                            R.string.calendar_title,
+                            getMonthName(getMonthFromKey(monthKey.toString())), // month can be null
+                            year,
+                        ),
                     color = MaterialTheme.colorScheme.onPrimary,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -361,12 +312,12 @@ fun ShowYearLabel(lazyListState: LazyListState, year: String, key: String, hazeS
                             start = CoreSpacing.SpacingMedium,
                             bottom = CoreSpacing.SpacingSmall,
                         ),
-                    style = MaterialTheme.typography.titleLarge,
+                    style = CoreTypography.header,
                 )
             }
         } else {
             Text(
-                text = year,
+                text = getMonthName(month),
                 color = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -375,22 +326,10 @@ fun ShowYearLabel(lazyListState: LazyListState, year: String, key: String, hazeS
                         start = CoreSpacing.SpacingMedium,
                         bottom = CoreSpacing.SpacingSmall,
                     ),
-                style = MaterialTheme.typography.titleLarge,
+                style = CoreTypography.header,
             )
         }
     }
-}
-
-@Composable
-fun ShowMonth(month: String) { // we set here only the text, not the background
-    Text(
-        text = getMonthName(month),
-        color = MaterialTheme.colorScheme.onTertiary,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = CoreSpacing.SpacingMedium, top = CoreSpacing.SpacingMedium, bottom = CoreSpacing.SpacingSmall),
-        style = MaterialTheme.typography.headlineMedium,
-    )
 }
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
@@ -399,7 +338,6 @@ fun ShowPic(picture: Picture, hazeState: HazeState, fireAction: (CalendarAction)
     MicroGalleryButtonImage(picture, hazeState = hazeState, showMe = { pictureId -> fireAction(CalendarAction.ShowPhoto(pictureId)) })
     Spacer(modifier = Modifier.padding(PaddingValues(CoreSpacing.SpacingMedium)))
 }
-
 
 @Composable
 fun getMonthName(value: String): String {

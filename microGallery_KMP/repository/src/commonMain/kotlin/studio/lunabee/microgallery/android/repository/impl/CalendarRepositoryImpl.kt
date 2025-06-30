@@ -19,7 +19,7 @@ class CalendarRepositoryImpl(
         return pictureLocal.getPicturesInMonth(year, month)
     }
 
-    override suspend fun getYears(): List<String> {
-        return pictureLocal.getYears()
+    override suspend fun getYearsAndExample(): List<Pair<String,String>> {
+        return pictureLocal.getYearsAndExample()
     }
 }
