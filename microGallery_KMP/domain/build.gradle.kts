@@ -11,7 +11,6 @@ kotlin {
 
             api(projects.data)
             api(projects.error)
-            implementation(projects.repository)
         }
     }
 }

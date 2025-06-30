@@ -22,7 +22,6 @@ kotlin {
 
             implementation(projects.domain)
             implementation(projects.local)
-            implementation(projects.localRoom)
             implementation(projects.remote)
             implementation(projects.remoteKtor)
             implementation(projects.repository)

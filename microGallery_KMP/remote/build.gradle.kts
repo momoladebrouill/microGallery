@@ -1,6 +1,15 @@
+
+
 plugins {
     `kmp-library-jvm-convention`
+    alias(libs.plugins.kotlinxSerialization)
 }
+
+/*
+android {
+    namespace = "studio.lunabee.amicrogallery.kmp.remote"
+}
+*/
 
 kotlin {
     sourceSets {
@@ -14,7 +23,9 @@ kotlin {
             implementation(libs.lbKtorKermit)
 
             implementation(projects.data)
+            implementation(projects.domain)
             implementation(projects.error)
+            implementation(projects.repository)
         }
     }
 }
