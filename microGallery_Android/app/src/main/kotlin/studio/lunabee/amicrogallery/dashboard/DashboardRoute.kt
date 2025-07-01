@@ -41,7 +41,7 @@ fun DashboardScreen(
                 navController = navHostController,
                 startDestination = startDestination,
             ) {
-                PhotoViewerDestination(pictureId = 0).composable(
+                PhotoViewerDestination().composable(
                     navGraphBuilder = this,
                     navScope = object : PhotoViewerNavScope {},
                 )

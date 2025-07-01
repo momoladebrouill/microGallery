@@ -2,11 +2,15 @@ package studio.lunabee.amicrogallery.calendar
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewModelScope
+import com.lunabee.lbcore.model.LBResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import studio.lunabee.amicrogallery.loading.LoadingAction
 import studio.lunabee.compose.presenter.LBSinglePresenter
 import studio.lunabee.compose.presenter.LBSingleReducer
 import studio.lunabee.microgallery.android.domain.calendar.CalendarRepository
+import studio.lunabee.microgallery.android.domain.calendar.usecase.LoadTreeUseCase
+import studio.lunabee.microgallery.android.domain.loading.usecase.UpdateTreeUseCase
 
 class CalendarPresenter(
     val calendarRepository: CalendarRepository,
@@ -28,26 +32,23 @@ class CalendarPresenter(
         populateYears()
     }
 
-    // first get the list of years
-    fun populateYears() {
+    fun populateYears(){
         viewModelScope.launch {
-            val years: List<String> = calendarRepository.getYears()
-            emitUserAction(CalendarAction.GotYears(years))
-            populateMonths(years)
+            when (val result = LoadTreeUseCase(calendarRepository).invoke()) {
+                is LBResult.Success -> {
+                    // not very nice, but will be fixed in feature/better-ui
+                    emitUserAction(CalendarAction.GotYears(result.successData.keys.toList()))
+                    emitUserAction(CalendarAction.GotMonthsOfYears(result.successData))
+                }
+
+                is LBResult.Failure -> {
+                    // fall on error
+                }
+            }
         }
     }
 
-    // then  the list of months for each year
-    fun populateMonths(years: List<String>) {
-        viewModelScope.launch {
-            val monthsOfYears = mutableMapOf<String, List<String>>()
-            for (year in years) {
-                val monthsOfYear = calendarRepository.getMonthsInYear(year)
-                monthsOfYears[year] = monthsOfYear
-            }
-            emitUserAction(CalendarAction.GotMonthsOfYears(monthsOfYears))
-        }
-    }
+
 
     fun fireAction(calendarAction: CalendarAction) {
         when (calendarAction) {
