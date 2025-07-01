@@ -1,6 +1,10 @@
+
+
 plugins {
     `kmp-library-jvm-convention`
+    alias(libs.plugins.kotlinxSerialization)
 }
+
 
 kotlin {
     sourceSets {
@@ -14,7 +18,9 @@ kotlin {
             implementation(libs.lbKtorKermit)
 
             implementation(projects.data)
+            implementation(projects.domain)
             implementation(projects.error)
+            implementation(projects.repository)
         }
     }
 }

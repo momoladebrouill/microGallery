@@ -8,6 +8,10 @@
     <application
         android:name="studio.lunabee.amicrogallery.MicroGalleryApplication"
         android:allowBackup="false"
+
+
+        android:usesCleartextTraffic="true"
+
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"

@@ -4,13 +4,12 @@ import android.util.Log
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import dev.chrisbanes.haze.HazeState
 import studio.lunabee.amicrogallery.calendar.CalendarDestination
 import studio.lunabee.amicrogallery.calendar.CalendarNavScope
 import studio.lunabee.amicrogallery.lastmonth.LastMonthDestination
@@ -26,24 +25,20 @@ private const val TAG = "MainNavGraph"
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun MainNavGraph(
-    contentPadding: PaddingValues,
+    hazeState: HazeState,
     navHostController: NavHostController,
     startDestination: KClass<*>,
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         SharedTransitionLayout {
             NavHost(
-                modifier = Modifier.padding(contentPadding),
                 navController = navHostController,
                 startDestination = startDestination,
             ) {
                 CalendarDestination.composable(
                     navGraphBuilder = this,
+                    hazeState = hazeState,
                     navScope = object : CalendarNavScope {
-                        override val navigateToMicroYear = { year: Int ->
-                            Log.d(TAG, "must navigate to year $year")
-                            Unit
-                        }
                         override val navigateToSettings: () -> Unit
                             get() = { navHostController.navigate(SettingsDestination) }
                     },
@@ -58,7 +53,11 @@ fun MainNavGraph(
                 )
                 SettingsDestination.composable(
                     navGraphBuilder = this,
-                    navScope = object : SettingsNavScope {},
+                    navScope = object : SettingsNavScope {
+                        override fun jumpBack() {
+                            navHostController.popBackStack()
+                        }
+                    },
                 )
             }
         }

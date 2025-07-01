@@ -17,6 +17,6 @@ dependencies {
     implementation(platform(libs.androidxComposeBom))
 
     implementation(libs.androidxComposeFoundation)
-    implementation(libs.core.ktx)
+    implementation(libs.coreKtx)
     api(libs.lbcCore)
 }

@@ -1,9 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string-array name="months">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+    <string name="loading">Loading picture %s in webp</string>
+    <string name="waitingForData">Downloading data</string>
+    <string name="notLong">Should not take too long</string>
+    <string name="calendar_title">%s %s</string>
     <string name="settings">Settings</string>
-    <string name="adress_of_server">IP adress of storage server</string>
-    <string name="ipv4">ip adress v4</string>
-    <string name="ipv6">ip adress v6</string>
+    <string name="adress_of_server">IP address of storage server</string>
+    <string name="ipv4">ip address v4</string>
+    <string name="ipv6">ip address v6</string>
     <string name="previsualisation_options">Preview option</string>
     <string name="preview_in_hd">Preview pictures in the highest definition</string>
     <string name="consumes_more">consumes more data</string>
@@ -17,4 +35,5 @@
     <string name="quantity_of_pictures">"Number of photos: "</string>
     <string name="nphotos">%,d photos</string>
     <string name="refresh">Refresh</string>
+    <string name="navigate_back">Navigate to previous screen</string>
 </resources>

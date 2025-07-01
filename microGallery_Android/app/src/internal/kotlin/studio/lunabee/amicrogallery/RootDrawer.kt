@@ -4,15 +4,17 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalNavigationDrawer
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import dev.chrisbanes.haze.HazeState
+import dev.chrisbanes.haze.materials.ExperimentalHazeMaterialsApi
 import studio.lunabee.amicrogallery.bottomBar.MicroGalleryBottomBar
 import kotlin.reflect.KClass
 
@@ -26,19 +28,16 @@ fun RootDrawer(
     ModalNavigationDrawer(
         drawerState = drawerState,
         content = {
-            MicroGalleryRootScreen {
-                Scaffold(
-                    modifier = Modifier,
-                    bottomBar = {
-                        MicroGalleryBottomBar(
-                            navController = navHostController,
-                        )
-                    },
-                ) {
+            MicroGalleryRootScreen { hazeState, modifier ->
+                Box {
                     MainNavGraph(
-                        contentPadding = it,
+                        hazeState = hazeState,
                         navHostController = navHostController,
                         startDestination = startDestination,
+                    )
+                    MicroGalleryBottomBar(
+                        navController = navHostController,
+                        modifier = Modifier.align(alignment = Alignment.BottomCenter).navigationBarsPadding(),
                     )
                 }
             }
@@ -47,26 +46,18 @@ fun RootDrawer(
     )
 }
 
+@OptIn(ExperimentalHazeMaterialsApi::class)
 @Composable
 fun MicroGalleryRootScreen(
     modifier: Modifier = Modifier,
-    applySystemBarPadding: Boolean = true,
-    content: @Composable () -> Unit,
+    content: @Composable (HazeState, Modifier) -> Unit,
 ) {
+    val hazeState = remember { HazeState() }
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .then(
-                if (applySystemBarPadding) {
-                    Modifier
-                        .statusBarsPadding()
-                        .navigationBarsPadding()
-                } else {
-                    Modifier
-                },
-            ),
+            .background(MaterialTheme.colorScheme.background),
     ) {
-        content()
+        content(hazeState, Modifier.fillMaxSize())
     }
 }

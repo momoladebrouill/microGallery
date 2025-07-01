@@ -1,12 +1,11 @@
 package studio.lunabee.amicrogallery.bottomBar
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.FloatingToolbarColors
 import androidx.compose.material3.HorizontalFloatingToolbar
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -31,32 +30,35 @@ fun MicroGalleryBottomBar(
     modifier: Modifier = Modifier,
 ) {
     val currentBackStackEntry: NavBackStackEntry? by navController.currentBackStackEntryAsState()
-    Row(
-        modifier = Modifier.fillMaxWidth().padding(PaddingValues(CoreSpacing.SpacingMedium)),
-        horizontalArrangement = Arrangement.Center,
+
+    HorizontalFloatingToolbar(
+        expanded = true,
+        colors = FloatingToolbarColors(
+            fabContainerColor = MaterialTheme.colorScheme.primaryContainer,
+            toolbarContainerColor = ButtonDefaults.buttonColors().containerColor,
+            toolbarContentColor = contentColorFor(MaterialTheme.colorScheme.primaryContainer),
+            fabContentColor = contentColorFor(MaterialTheme.colorScheme.onSecondaryContainer),
+        ),
+        modifier = modifier,
+        expandedShadowElevation = CoreSpacing.SpacingSmall,
     ) {
-        HorizontalFloatingToolbar(
-            expanded = true,
-            modifier = modifier,
-        ) {
-            NavBarButton(
-                onClick = { navController.navigate(CalendarDestination) },
-                icon = painterResource(R.drawable.calendar),
-                description = stringResource(R.string.calendar_icon_button),
-                activated = currentBackStackEntry?.destination?.hierarchy?.any { it.hasRoute(CalendarDestination::class) } == true,
-            )
-            NavBarButton(
-                onClick = { navController.navigate(UntimedDestination) },
-                icon = painterResource(R.drawable.not_time),
-                description = stringResource(R.string.untimed_icon_button),
-                activated = currentBackStackEntry?.destination?.hierarchy?.any { it.hasRoute(UntimedDestination::class) } == true,
-            )
-            NavBarButton(
-                onClick = { navController.navigate(LastMonthDestination) },
-                icon = painterResource(R.drawable.month_24px),
-                description = stringResource(R.string.lastmonth_icon_button),
-                activated = currentBackStackEntry?.destination?.hierarchy?.any { it.hasRoute(LastMonthDestination::class) } == true,
-            )
-        }
+        NavBarButton(
+            onClick = { navController.navigate(CalendarDestination) },
+            icon = painterResource(R.drawable.calendar),
+            description = stringResource(R.string.calendar_icon_button),
+            activated = currentBackStackEntry?.destination?.hierarchy?.any { it.hasRoute(CalendarDestination::class) } == true,
+        )
+        NavBarButton(
+            onClick = { navController.navigate(UntimedDestination) },
+            icon = painterResource(R.drawable.not_time),
+            description = stringResource(R.string.untimed_icon_button),
+            activated = currentBackStackEntry?.destination?.hierarchy?.any { it.hasRoute(UntimedDestination::class) } == true,
+        )
+        NavBarButton(
+            onClick = { navController.navigate(LastMonthDestination) },
+            icon = painterResource(R.drawable.month_24px),
+            description = stringResource(R.string.lastmonth_icon_button),
+            activated = currentBackStackEntry?.destination?.hierarchy?.any { it.hasRoute(LastMonthDestination::class) } == true,
+        )
     }
 }

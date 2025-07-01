@@ -12,9 +12,11 @@ androidxLifecycle = "2.9.1"
 androidxNavigationCompose = "2.9.0"
 androidxRoom = "2.7.1"
 androidxSqlite = "2.5.1"
-coilCompose = "2.7.0"
+coilCompose = "3.2.0"
+coreKtx = "1.16.0"
 desugarJdkLibs = "2.1.5"
 detekt = "1.23.8"
+haze = "1.5.4"
 koin = "4.1.0"
 kotlin = "2.1.20"
 kotlinxCoroutines = "1.10.2"
@@ -38,7 +40,6 @@ navigationRuntimeJvmstubs = "2.9.0"
 skie = "0.10.2-preview.2.1.20"
 uiTextGoogleFont="1.8.2"
 uiToolingPreviewDesktop = "1.7.0"
-coreKtx = "1.16.0"
 
 [libraries]
 
@@ -54,10 +55,14 @@ androidxNavigationCompose = { group = "androidx.navigation", name = "navigation-
 androidxRoomCompiler = { group = "androidx.room", name = "room-compiler", version.ref = "androidxRoom" }
 androidxRoomRuntime = { group = "androidx.room", name = "room-runtime", version.ref = "androidxRoom" }
 androidxSqliteBundled = { group = "androidx.sqlite", name = "sqlite-bundled", version.ref = "androidxSqlite" }
+coilCompose ={group = "io.coil-kt.coil3", name="coil-compose", version.ref = "coilCompose"}
 composeMaterial3 = {group = "androidx.compose.material3", name = "material3", version.ref="material3alpha"}
+coreKtx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugarJdkLibs" }
 detekt = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt" }
 gradleAndroid = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
+haze = { group = "dev.chrisbanes.haze", name = "haze", version.ref = "haze" }
+hazeMaterials = { group = "dev.chrisbanes.haze", name = "haze-materials", version.ref = "haze" }
 jetbrains-compose-ui-util = { module = "org.jetbrains.compose.ui:ui-util", version = "1.7.1" }
 koinAndroid = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 koinCore = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
@@ -79,12 +84,11 @@ lbMultiplatformLibrary = { group = "studio.lunabee.plugins.multiplatform.library
 lbcCore = { group = "studio.lunabee.compose", name = "lbccore", version.ref = "lbcCore" }
 lbcPresenter = { group = "studio.lunabee.compose", name = "lbcpresenter", version.ref = "lbcPresenter" }
 material3Jvmstubs = { group = "androidx.compose.material3", name = "material3-jvmstubs", version.ref = "material3Jvmstubs" }
-navigation-runtime-android = { group = "androidx.navigation", name = "navigation-runtime-android", version.ref = "navigationRuntimeAndroid" }
 navigationComposeJvmstubs = { group = "androidx.navigation", name = "navigation-compose-jvmstubs", version.ref = "navigationComposeJvmstubs" }
+navigationRuntimeAndroid = { group = "androidx.navigation", name = "navigation-runtime-android", version.ref = "navigationRuntimeAndroid" }
 navigationRuntimeJvmstubs = { group = "androidx.navigation", name = "navigation-runtime-jvmstubs", version.ref = "navigationRuntimeJvmstubs" }
 uiTextGoogleFonts = {group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref="uiTextGoogleFont"}
 uiToolingPreviewDesktop = { group = "androidx.compose.ui", name = "ui-tooling-preview-desktop", version.ref = "uiToolingPreviewDesktop" }
-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 
 [plugins]
 
