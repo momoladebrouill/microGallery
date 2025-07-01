@@ -21,9 +21,14 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.hazeEffect
 import dev.chrisbanes.haze.materials.ExperimentalHazeMaterialsApi
@@ -44,28 +49,35 @@ fun UntimedScreen(
     fireAction: (UntimedAction) -> Unit,
 ) {
     val hazeState = remember { HazeState() }
+    var topBarPadding by remember { mutableStateOf(0.dp) }
     Box() {
-
         LazyVerticalStaggeredGrid(
             columns = StaggeredGridCells.Fixed(2),
             modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(top=topBarPadding)
         ) {
-            item(){
-                Spacer(modifier = Modifier.padding(CoreSpacing.SpacingMedium))
-            }
             items(uiState.images) { picture ->
-                MicroGalleryButtonImage(picture, hazeState, { fireAction(UntimedAction.ShowPhoto(it)) })
-                Spacer(modifier = Modifier.padding(PaddingValues(CoreSpacing.SpacingMedium)))
+                MicroGalleryButtonImage(
+                    picture = picture,
+                    modifier = Modifier.padding(MicroGalleryTheme.spacing.SpacingSmall),
+                    hazeState = hazeState,
+                    showMe = { fireAction(UntimedAction.ShowPhoto(it)) })
             }
         }
-        UntimedHeader(hazeState = hazeState)
+        UntimedHeader(
+            hazeState = hazeState,
+            modifier = Modifier.onGloballyPositioned { coordinates ->
+                topBarPadding = (coordinates.size.height/2).dp
+            }
+        )
     }
 }
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalHazeMaterialsApi::class)
 @Composable
 fun UntimedHeader(
-    hazeState: HazeState
+    hazeState: HazeState,
+    modifier: Modifier = Modifier
 ){
     Box(
         modifier = Modifier
@@ -84,7 +96,7 @@ fun UntimedHeader(
                 text =
                     stringResource(R.string.untimed_title),
                 color = MicroGalleryTheme.colors.onMain,
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxWidth()
                     .statusBarsPadding()
                     .padding(

@@ -20,6 +20,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import studio.lunabee.amicrogallery.android.core.ui.component.topappbar.NavBarButton
 import studio.lunabee.amicrogallery.android.core.ui.theme.CoreSpacing
+import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme
 import studio.lunabee.amicrogallery.calendar.CalendarDestination
 import studio.lunabee.amicrogallery.core.ui.R
 import studio.lunabee.amicrogallery.lastmonth.LastMonthDestination
@@ -46,10 +47,10 @@ fun MicroGalleryBottomBar(
         HorizontalFloatingToolbar(
             expanded = true,
             colors = FloatingToolbarColors(
-                fabContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                toolbarContainerColor = ButtonDefaults.buttonColors().containerColor,
-                toolbarContentColor = contentColorFor(MaterialTheme.colorScheme.primaryContainer),
-                fabContentColor = contentColorFor(MaterialTheme.colorScheme.onSecondaryContainer),
+                fabContainerColor = MicroGalleryTheme.colors.main,
+                toolbarContainerColor = MicroGalleryTheme.colors.main,
+                toolbarContentColor = MicroGalleryTheme.colors.onMain,
+                fabContentColor = MicroGalleryTheme.colors.onMain,
             ),
             modifier = Modifier.Companion.navigationBarsPadding(),
             expandedShadowElevation = CoreSpacing.SpacingSmall,

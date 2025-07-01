@@ -19,7 +19,7 @@ class PictureLocalDatasource(
         return years.map { year -> YearPreview(
             year = year,
             qty = pictureDao.getQtyInYear(year),
-            linkPreview = pictureDao.getRandomPictureInYear(year).lowResPath!!
+            picturePreview = pictureDao.getRandomPictureInYear(year).toPicture()
         ) }
     }
 

@@ -12,12 +12,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.hazeSource
 import studio.lunabee.amicrogallery.android.core.ui.component.image.MicroGalleryImage
 import studio.lunabee.amicrogallery.android.core.ui.theme.CoreRadius
 import studio.lunabee.amicrogallery.android.core.ui.theme.CoreSpacing
+import studio.lunabee.amicrogallery.core.ui.R
 import studio.lunabee.microgallery.android.data.Picture
 
 @Composable
@@ -32,12 +34,13 @@ fun MicroGalleryButtonImage(picture: Picture, hazeState: HazeState, showMe: (Lon
         Box {
             Text(text = picture.name, modifier = Modifier.align(Alignment.Center))
             MicroGalleryImage(
-                // TODO  : get the URL from settings
-                url = "http://92.150.239.130" + picture.lowResPath,
-                // TODO : better MicroGalleryImage to call with only a Picture (fallback to highRes etc)
+
+                picture = picture,
                 modifier = Modifier
                     .hazeSource(state = hazeState)
                     .wrapContentHeight(),
+                errorPainter = painterResource(R.drawable.nopicture)
+
             )
         }
     }

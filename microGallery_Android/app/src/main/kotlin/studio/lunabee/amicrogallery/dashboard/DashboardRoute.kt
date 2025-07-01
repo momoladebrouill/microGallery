@@ -5,8 +5,15 @@ import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import studio.lunabee.amicrogallery.calendar.CalendarDestination
@@ -29,6 +36,7 @@ fun DashboardRoute(navController: NavHostController) {
     )
 }
 
+val LocalBottomBarHeight = compositionLocalOf<Int> { error("No value found !") }
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun DashboardScreen(
@@ -36,56 +44,64 @@ fun DashboardScreen(
     startDestination: KClass<*>,
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
-        SharedTransitionLayout {
-            NavHost(
-                navController = navHostController,
-                startDestination = startDestination,
-            ) {
-                PhotoViewerDestination().composable(
-                    navGraphBuilder = this,
-                    navScope = object : PhotoViewerNavScope {},
-                )
+        var barHeight by remember { mutableIntStateOf(0) }
 
-                CalendarDestination.composable(
-                    navGraphBuilder = this,
-                    navScope = object : CalendarNavScope {
+        CompositionLocalProvider( LocalBottomBarHeight provides barHeight ) {
+            SharedTransitionLayout {
+                NavHost(
+                    navController = navHostController,
+                    startDestination = startDestination,
+                ) {
+                    PhotoViewerDestination().composable(
+                        navGraphBuilder = this,
+                        navScope = object : PhotoViewerNavScope {},
+                    )
 
-                        override val navigateToSettings: () -> Unit = { navHostController.navigate(SettingsDestination) }
+                    CalendarDestination.composable(
+                        navGraphBuilder = this,
+                        navScope = object : CalendarNavScope {
 
-                        override val navigateToPhotoViewer: (Long) -> Unit = { photoId: Long ->
-                            navHostController.navigate(PhotoViewerDestination(photoId))
-                        }
-                    },
-                )
-                UntimedDestination.composable(
-                    navGraphBuilder = this,
-                    navScope = object : UntimedNavScope {
-                        override val navigateToPhotoViewer: (Long) -> Unit = { photoId: Long ->
-                            navHostController.navigate(PhotoViewerDestination(photoId))
-                        }
-                    },
-                )
-                LastMonthDestination.composable(
-                    navGraphBuilder = this,
-                    navScope = object : LastMonthNavScope {
-                        override val navigateToPhotoViewer: (Long) -> Unit = { photoId: Long ->
-                            navHostController.navigate(PhotoViewerDestination(photoId))
-                        }
-                    },
-                )
-                SettingsDestination.composable(
-                    navGraphBuilder = this,
-                    navScope = object : SettingsNavScope {
-                        override fun jumpBack() {
-                            navHostController.navigateUp()
-                        }
-                    },
-                )
+                            override val navigateToSettings: () -> Unit = { navHostController.navigate(SettingsDestination) }
+
+                            override val navigateToPhotoViewer: (Long) -> Unit = { photoId: Long ->
+                                navHostController.navigate(PhotoViewerDestination(photoId))
+                            }
+                        },
+                    )
+                    UntimedDestination.composable(
+                        navGraphBuilder = this,
+                        navScope = object : UntimedNavScope {
+                            override val navigateToPhotoViewer: (Long) -> Unit = { photoId: Long ->
+                                navHostController.navigate(PhotoViewerDestination(photoId))
+                            }
+                        },
+                    )
+                    LastMonthDestination.composable(
+                        navGraphBuilder = this,
+                        navScope = object : LastMonthNavScope {
+                            override val navigateToPhotoViewer: (Long) -> Unit = { photoId: Long ->
+                                navHostController.navigate(PhotoViewerDestination(photoId))
+                            }
+                        },
+                    )
+                    SettingsDestination.composable(
+                        navGraphBuilder = this,
+                        navScope = object : SettingsNavScope {
+                            override fun jumpBack() {
+                                navHostController.navigateUp()
+                            }
+                        },
+                    )
+                }
             }
+            MicroGalleryBottomBar(
+                navController = navHostController,
+                modifier = Modifier
+                    .align(alignment = Alignment.BottomCenter)
+                    .onGloballyPositioned { coordinates ->
+                    barHeight = coordinates.size.height/2
+                }
+            )
         }
-        MicroGalleryBottomBar(
-            navController = navHostController,
-            modifier = Modifier.align(alignment = Alignment.BottomCenter),
-        )
     }
 }

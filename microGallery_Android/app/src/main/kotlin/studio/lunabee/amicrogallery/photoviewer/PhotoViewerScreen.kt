@@ -112,9 +112,11 @@ fun PhotoViewerScreen(
                 .transformable(state = state),
 
         ) {
-            // todo : better than direct typing url
+            // TODO : why is it nullable ??
+            if(uiState.picture != null )
             MicroGalleryImage(
-                url = "http://92.150.239.130" + uiState.picture?.fullResPath,
+                picture = uiState.picture,
+                defaultToHighRes = true,
                 modifier = Modifier
                     .align(Alignment.Center)
                     .graphicsLayer(rotationZ = rotation),

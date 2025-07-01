@@ -1,29 +1,20 @@
 package studio.lunabee.amicrogallery.calendar
 
-import androidx.compose.animation.Crossfade
+import android.content.Context
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListItemInfo
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridItemInfo
-import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
-import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
-import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
-import androidx.compose.foundation.lazy.staggeredgrid.items
-import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
@@ -33,36 +24,35 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.CompositionLocal
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.lerp
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.core.view.WindowInsetsCompat
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.hazeEffect
 import dev.chrisbanes.haze.hazeSource
 import dev.chrisbanes.haze.materials.ExperimentalHazeMaterialsApi
 import dev.chrisbanes.haze.materials.HazeMaterials
 import studio.lunabee.amicrogallery.android.core.ui.component.image.MicroGalleryImage
-import studio.lunabee.amicrogallery.android.core.ui.component.photo.MicroGalleryButtonImage
-import studio.lunabee.amicrogallery.android.core.ui.theme.CoreColorPalette
-import studio.lunabee.amicrogallery.android.core.ui.theme.CoreColorTheme
 import studio.lunabee.amicrogallery.android.core.ui.theme.CoreRadius
 import studio.lunabee.amicrogallery.android.core.ui.theme.CoreSpacing
 import studio.lunabee.amicrogallery.android.core.ui.theme.CoreTypography
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme
 import studio.lunabee.amicrogallery.app.R
-import studio.lunabee.microgallery.android.data.Picture
+import studio.lunabee.amicrogallery.dashboard.LocalBottomBarHeight
 import studio.lunabee.microgallery.android.data.YearPreview
 import studio.lunabee.amicrogallery.core.ui.R as CoreUi
 
@@ -96,7 +86,10 @@ fun ShowYears(years: List<YearPreview>, onAction: (CalendarAction) -> Unit) {
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
-        modifier = Modifier.statusBarsPadding()
+        contentPadding = PaddingValues(
+            top = (WindowInsets.statusBars.getTop(LocalDensity.current)/2).dp,
+            bottom = LocalBottomBarHeight.current.dp
+        )
     ) {
         stickyHeader {
             Column(modifier = Modifier.padding(start = CoreSpacing.SpacingMedium)) {
@@ -111,7 +104,10 @@ fun ShowYears(years: List<YearPreview>, onAction: (CalendarAction) -> Unit) {
             }
         }
         items(years) {
-            ShowYearButton(it, navigateToYear = { onAction(CalendarAction.JumpToYear(it.year)) })
+            YearButton(it,
+                navigateToYear = { onAction(CalendarAction.JumpToYear(it.year)) },
+                showPictureInButton = {onAction(CalendarAction.ShowPhoto(it.picturePreview.id))}
+            )
         }
     }
 
@@ -134,23 +130,23 @@ fun Modifier.square(): Modifier = this.then(
 
 @OptIn(ExperimentalHazeMaterialsApi::class)
 @Composable
-fun ShowYearButton(yearPreview: YearPreview, navigateToYear: () -> Unit) {
-    Button(
-        onClick = navigateToYear,
-        modifier = Modifier.fillMaxHeight(0.3f),
-        colors = ButtonColors(containerColor = MaterialTheme.colorScheme.background,
-            contentColor = MaterialTheme.colorScheme.onBackground,
-            disabledContainerColor = Color.Transparent,
-            disabledContentColor = MaterialTheme.colorScheme.onBackground),
-        shape = RoundedCornerShape(CoreRadius.RadiusLarge),
-        contentPadding = PaddingValues(horizontal = CoreSpacing.SpacingSmall, vertical = CoreSpacing.SpacingMedium)
+fun YearButton(yearPreview: YearPreview, navigateToYear: () -> Unit, showPictureInButton : () -> Unit) {
+    Box(
+        modifier = Modifier
+            .fillMaxHeight(0.3f)
+            .pointerInput(Unit) {
+            detectTapGestures(
+                onLongPress = { _ -> println("yaa") ; showPictureInButton()},
+                onTap = { _ -> navigateToYear()}
+            )
+        }.clip(RoundedCornerShape(CoreRadius.RadiusLarge)),
 
     ) {
         val hazeState = HazeState()
-        Column {
+        Column(modifier = Modifier.padding(PaddingValues(horizontal = CoreSpacing.SpacingSmall, vertical = CoreSpacing.SpacingMedium))) {
             Box() {
                 MicroGalleryImage(
-                    url = "http://92.150.239.130${yearPreview.linkPreview}",
+                    picture = yearPreview.picturePreview,
                     modifier = Modifier
                         .square()
                         .clip(RoundedCornerShape(CoreRadius.RadiusLarge))
