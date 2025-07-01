@@ -122,7 +122,7 @@ fun PhotoViewerScreen(
 
         Text(
             text = stringResource(R.string.month_year,
-                getMonthName(uiState.picture?.month ?: "", stringArrayResource(R.array.french_months)), uiState.picture?.year.toString()),
+                getMonthName(uiState.picture?.month ?: "", stringArrayResource(R.array.months)), uiState.picture?.year.toString()),
             style = MaterialTheme.typography.titleMedium,
             color = Color.White,
             modifier = Modifier

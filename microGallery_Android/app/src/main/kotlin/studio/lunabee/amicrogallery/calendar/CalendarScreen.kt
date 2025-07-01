@@ -223,7 +223,7 @@ fun Year(lazyListState: LazyListState, year: String, key: String, hazeState: Haz
                     text =
                     stringResource(
                         R.string.calendar_title,
-                        getMonthName(month.toString(), stringArrayResource(R.array.french_months)), // month can be null
+                        getMonthName(month.toString(), stringArrayResource(R.array.months)), // month can be null
                         year,
                     ),
                     color = MaterialTheme.colorScheme.onPrimary,
@@ -257,7 +257,7 @@ fun Year(lazyListState: LazyListState, year: String, key: String, hazeState: Haz
 @Composable
 fun Month(month: String) { // we set here only the text, not the background
     Text(
-        text = getMonthName(month, stringArrayResource(R.array.french_months)),
+        text = getMonthName(month, stringArrayResource(R.array.months)),
         color = MaterialTheme.colorScheme.onTertiary,
         modifier = Modifier
             .fillMaxWidth()
