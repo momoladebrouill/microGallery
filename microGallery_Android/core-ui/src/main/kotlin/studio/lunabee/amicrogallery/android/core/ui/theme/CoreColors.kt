@@ -10,7 +10,8 @@ object CoreColorPalette {
     val mustardYellow = Color(0xFFFFCB69)
     val milkChocolateBrown = Color(0XFFD08C60)
     val greyBrown = Color(0xFF997B66)
-
+    val cinemaRed = Color(0XFF960B05)
+    val darkCinemaRed = Color(0XFF370402)
     val coolWhite = Color.LightGray
 }
 
@@ -23,9 +24,9 @@ interface CoreColorTheme {
 }
 
 object CoreColorLightTheme : CoreColorTheme {
-    override val main: Color = CoreColorPalette.greyBrown
+    override val main: Color = CoreColorPalette.darkCinemaRed
     override val background: Color = Color.White
-    override val onMain: Color = Color.Black
+    override val onMain: Color = Color.White
     override val onBackground: Color = Color.Black
     override val disabled: Color = CoreColorPalette.softPink
 }

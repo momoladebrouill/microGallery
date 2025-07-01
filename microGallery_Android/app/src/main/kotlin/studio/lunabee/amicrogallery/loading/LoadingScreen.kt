@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import studio.lunabee.amicrogallery.android.core.ui.theme.CoreSpacing
+import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme
 import studio.lunabee.amicrogallery.app.R
 
 @Composable
@@ -31,12 +32,12 @@ fun WaitingForResponse() {
             Text(
                 text = stringResource(R.string.waitingForData),
 
-                style = MaterialTheme.typography.titleLarge,
+                style = MicroGalleryTheme.typography.header,
 
             )
             Text(
                 text = stringResource(R.string.notLong),
-                style = MaterialTheme.typography.bodyLarge,
+                style = MicroGalleryTheme.typography.body,
             )
         }
     }
@@ -48,13 +49,13 @@ fun ShowError(error: String?, onAction: (LoadingAction) -> Unit) {
         Column(modifier = Modifier.align(Alignment.Center), horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
                 text = stringResource(R.string.errorOccured),
-                style = MaterialTheme.typography.titleLarge,
+                style = MicroGalleryTheme.typography.header,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth(),
             )
             Text(
                 text = error ?: "",
-                style = MaterialTheme.typography.bodyLarge,
+                style = MicroGalleryTheme.typography.title,
                 modifier = Modifier.padding(CoreSpacing.SpacingSmall),
             )
             Button(

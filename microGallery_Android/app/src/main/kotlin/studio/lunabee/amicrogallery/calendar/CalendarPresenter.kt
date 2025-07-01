@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import studio.lunabee.compose.presenter.LBSinglePresenter
 import studio.lunabee.compose.presenter.LBSingleReducer
+import studio.lunabee.microgallery.android.data.YearPreview
 import studio.lunabee.microgallery.android.domain.calendar.CalendarRepository
 
 class CalendarPresenter(
@@ -31,9 +32,9 @@ class CalendarPresenter(
     // first get the list of years
     fun populateYears() {
         viewModelScope.launch {
-            val yearsAndMonths: List<Pair<String,String>> = calendarRepository.getYearsAndExample()
-            emitUserAction(CalendarAction.GotYears(yearsAndMonths))
-            populateMonths(yearsAndMonths.map {(year,_)-> year})
+            val yearPreviews: List<YearPreview> = calendarRepository.getYearPreviews()
+            emitUserAction(CalendarAction.GotYears(yearPreviews))
+            populateMonths(yearPreviews.map {yp -> yp.year})
         }
     }
 

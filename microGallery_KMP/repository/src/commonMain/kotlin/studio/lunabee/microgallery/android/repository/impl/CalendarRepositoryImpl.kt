@@ -2,6 +2,7 @@ package studio.lunabee.microgallery.android.repository.impl
 
 import studio.lunabee.amicrogallery.picture.PictureLocal
 import studio.lunabee.microgallery.android.data.Picture
+import studio.lunabee.microgallery.android.data.YearPreview
 import studio.lunabee.microgallery.android.domain.calendar.CalendarRepository
 
 class CalendarRepositoryImpl(
@@ -19,7 +20,7 @@ class CalendarRepositoryImpl(
         return pictureLocal.getPicturesInMonth(year, month)
     }
 
-    override suspend fun getYearsAndExample(): List<Pair<String,String>> {
-        return pictureLocal.getYearsAndExample()
+    override suspend fun getYearPreviews(): List<YearPreview> {
+        return pictureLocal.getYearPreviews()
     }
 }

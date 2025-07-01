@@ -30,6 +30,9 @@ interface PictureDao {
     @Query("SELECT DISTINCT year FROM $PhotosTable WHERE year <> 'untimed'")
     suspend fun getYears() : List<String>
 
+    @Query("SELECT Count(id) FROM $PhotosTable WHERE year=:year")
+    suspend fun getQtyInYear(year : String) : Int
+
     @Query("SELECT * FROM $PhotosTable WHERE year = :year ORDER BY RANDOM()")
     suspend fun getRandomPictureInYear(year : String) : PictureEntity
 

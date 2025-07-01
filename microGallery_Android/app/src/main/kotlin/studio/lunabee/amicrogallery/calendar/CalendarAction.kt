@@ -1,6 +1,7 @@
 package studio.lunabee.amicrogallery.calendar
 
 import studio.lunabee.microgallery.android.data.Picture
+import studio.lunabee.microgallery.android.data.YearPreview
 
 sealed interface CalendarAction {
 
@@ -11,7 +12,7 @@ sealed interface CalendarAction {
     ) : CalendarAction
 
     data class GotYears( // Got a db response for the list of different years
-        val years: List<Pair<String,String>>,
+        val years: List<YearPreview>,
     ) : CalendarAction
 
     data class GotMonthsOfYears( // Got a db response for the months in the year X

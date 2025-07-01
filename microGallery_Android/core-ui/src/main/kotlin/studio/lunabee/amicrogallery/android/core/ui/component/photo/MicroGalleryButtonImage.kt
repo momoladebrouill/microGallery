@@ -22,13 +22,12 @@ import studio.lunabee.microgallery.android.data.Picture
 
 @Composable
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
-fun MicroGalleryButtonImage(picture: Picture, hazeState: HazeState, showMe: (Long) -> Unit) {
+fun MicroGalleryButtonImage(picture: Picture, hazeState: HazeState, showMe: (Long) -> Unit, modifier : Modifier = Modifier) {
     Button(
         onClick = { if (picture.id != null) showMe(picture.id!!) },
         contentPadding = PaddingValues(0.dp),
-        modifier = Modifier.padding(PaddingValues(CoreSpacing.SpacingMedium)),
+        modifier = modifier,
         shapes = ButtonShapes(RoundedCornerShape(CoreRadius.RadiusMedium), RoundedCornerShape(CoreRadius.RadiusMedium)),
-
     ) {
         Box {
             Text(text = picture.name, modifier = Modifier.align(Alignment.Center))
