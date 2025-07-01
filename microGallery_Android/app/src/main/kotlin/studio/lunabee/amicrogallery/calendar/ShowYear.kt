@@ -91,7 +91,7 @@ fun getMonthName(value: String): String {
     val task = runCatching {
         val number = value.toInt()
         if (number < 13) {
-            stringArrayResource(R.array.french_months)[number - 1]
+            stringArrayResource(R.array.months)[number - 1]
         } else {
             value
         }
