@@ -37,4 +37,11 @@
     <string name="refresh">Refresh</string>
     <string name="navigate_back">Navigate to previous screen</string>
     <string name="select_year">Select a year</string>
+    <string name="nothing_this_month">No picture for this month</string>
+    <string name="lastmonth_title">Pictures from last month</string>
+    <string name="errorOccured">An error occured</string>
+    <string name="reload">Reload</string>
+    <string name="share">Share</string>
+    <string name="month_year">%s %s</string>
+    <string name="untimed_title">Date less pictures</string>
 </resources>
