@@ -191,4 +191,3 @@ fun ShowYearButton(yearPreview: YearPreview, navigateToYear: () -> Unit) {
         }
     }
 }
-

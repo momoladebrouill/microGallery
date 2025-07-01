@@ -5,11 +5,6 @@ plugins {
     alias(libs.plugins.kotlinxSerialization)
 }
 
-/*
-android {
-    namespace = "studio.lunabee.amicrogallery.kmp.remote"
-}
-*/
 
 kotlin {
     sourceSets {
