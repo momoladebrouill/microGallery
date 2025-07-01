@@ -10,12 +10,15 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.shapes
@@ -26,10 +29,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import studio.lunabee.amicrogallery.android.core.ui.theme.CoreSpacing
 import studio.lunabee.amicrogallery.app.R
+import studio.lunabee.amicrogallery.core.ui.R as CoreUi
 
 fun Context.getAppVersion(): String {
     return try {
@@ -41,12 +46,20 @@ fun Context.getAppVersion(): String {
 }
 
 @Composable
-fun TitleSettingsEntry(modifier: Modifier = Modifier) {
-    Text(
-        text = stringResource(R.string.settings),
-        style = MaterialTheme.typography.titleLarge,
-        modifier = modifier,
-    )
+fun TitleSettingsEntry(modifier: Modifier = Modifier, fireAction : (SettingsAction) -> Unit) {
+    Row(modifier = modifier) {
+        IconButton(onClick = {fireAction(SettingsAction.JumpBack)}) {
+            Icon(
+                painter = painterResource(CoreUi.drawable.arrow_back),
+                contentDescription = stringResource(R.string.navigate_back),
+            )
+        }
+        Text(
+            text = stringResource(R.string.settings),
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.align(alignment = Alignment.CenterVertically),
+        )
+    }
 }
 
 @Composable
@@ -204,17 +217,16 @@ fun ServerStatisticsSettingsEntry(modifier: Modifier = Modifier) {
 fun SettingsScreen() {
     val settingsEntries: List<@Composable (modifier: Modifier) -> Unit> = listOf(
         // mod as a short term for modifier
-        { mod -> TitleSettingsEntry(mod) },
+        { mod -> TitleSettingsEntry(mod, fireAction) },
         { mod -> IPAddressesSettingsEntry(mod) },
         { mod -> PreviewSettingsEntry(mod) },
         { mod -> CacheSettingsEntry(mod) },
         { mod -> ServerStatisticsSettingsEntry(mod) },
     )
-    Column {
+    Column(modifier = Modifier.statusBarsPadding()) {
         val entryModifier = Modifier
         LazyColumn(
-            modifier =
-            Modifier.background(colorScheme.background),
+            modifier = Modifier.background(colorScheme.background),
             contentPadding = PaddingValues(CoreSpacing.SpacingMedium),
             verticalArrangement = Arrangement.spacedBy(CoreSpacing.SpacingLarge),
 

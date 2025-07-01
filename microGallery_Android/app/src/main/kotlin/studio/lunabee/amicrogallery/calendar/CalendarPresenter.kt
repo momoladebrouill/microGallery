@@ -10,7 +10,6 @@ import studio.lunabee.compose.presenter.LBSinglePresenter
 import studio.lunabee.compose.presenter.LBSingleReducer
 import studio.lunabee.microgallery.android.domain.calendar.CalendarRepository
 import studio.lunabee.microgallery.android.domain.calendar.usecase.LoadTreeUseCase
-import studio.lunabee.microgallery.android.domain.loading.usecase.UpdateTreeUseCase
 
 class CalendarPresenter(
     val calendarRepository: CalendarRepository,

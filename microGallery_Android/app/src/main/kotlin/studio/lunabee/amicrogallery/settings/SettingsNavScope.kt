@@ -1,3 +1,5 @@
 package studio.lunabee.amicrogallery.settings
 
-interface SettingsNavScope
+interface SettingsNavScope{
+    fun jumpBack () : Unit
+}
