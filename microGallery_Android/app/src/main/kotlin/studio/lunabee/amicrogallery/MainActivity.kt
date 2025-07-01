@@ -8,8 +8,6 @@ import androidx.navigation.compose.rememberNavController
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme
 import studio.lunabee.amicrogallery.android.core.ui.theme.coreEnableEdgeToEdge
 
-import studio.lunabee.amicrogallery.calendar.CalendarDestination
-
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,7 +18,6 @@ class MainActivity : ComponentActivity() {
             MicroGalleryTheme {
                 RootDrawer(
                     navHostController = navHostController,
-                    startDestination = CalendarDestination::class,
                 )
             }
         }

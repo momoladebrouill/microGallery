@@ -1,12 +1,7 @@
 package studio.lunabee.amicrogallery.untimed
-
 import studio.lunabee.compose.presenter.PresenterUiState
+import studio.lunabee.microgallery.android.data.Picture
 
-sealed interface UntimedUiState : PresenterUiState {
-    val textUiShown: String
-    data class Default(
-        val count: Int,
-    ) : UntimedUiState {
-        override val textUiShown: String = "hello from untimed drawer"
-    }
-}
+data class UntimedUiState(
+    val images: List<Picture>,
+) : PresenterUiState

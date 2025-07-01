@@ -15,5 +15,5 @@ class SettingsPresenter : LBSinglePresenter<SettingsUiState, SettingsNavScope, S
         return SettingsReducer(viewModelScope, ::emitUserAction)
     }
 
-    override val content: @Composable ((SettingsUiState) -> Unit) = { SettingsScreen(it, fireAction = ::emitUserAction) }
+    override val content: @Composable ((SettingsUiState) -> Unit) = { SettingsScreen(::emitUserAction) }
 }

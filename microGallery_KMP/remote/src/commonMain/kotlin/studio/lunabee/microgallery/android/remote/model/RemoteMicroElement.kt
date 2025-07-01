@@ -2,9 +2,9 @@ package studio.lunabee.microgallery.android.remote.model
 
 import kotlinx.serialization.Serializable
 import studio.lunabee.amicrogallery.android.error.CoreError
-import studio.lunabee.microgallery.android.domain.Directory
-import studio.lunabee.microgallery.android.domain.Node
-import studio.lunabee.microgallery.android.domain.Picture
+import studio.lunabee.microgallery.android.data.Directory
+import studio.lunabee.microgallery.android.data.Node
+import studio.lunabee.microgallery.android.data.Picture
 
 @Serializable
 data class RemoteMicroElement(
@@ -19,9 +19,12 @@ data class RemoteMicroElement(
                 content = (contents?.map { it.toData() })!!,
             )
             "file" -> Picture(
+                id = 4L,
                 name = name,
                 fullResPath = null,
                 lowResPath = null,
+                year = null,
+                month = null,
             )
             else ->
                 throw CoreError("found a new type in request")

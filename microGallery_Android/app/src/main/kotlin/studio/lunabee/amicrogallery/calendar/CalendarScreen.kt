@@ -3,7 +3,6 @@ package studio.lunabee.amicrogallery.calendar
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -14,13 +13,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListItemInfo
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonShapes
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
@@ -42,44 +42,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.hazeEffect
-import dev.chrisbanes.haze.hazeSource
 import dev.chrisbanes.haze.materials.ExperimentalHazeMaterialsApi
 import dev.chrisbanes.haze.materials.HazeMaterials
-import studio.lunabee.amicrogallery.android.core.ui.component.image.MicroGalleryImage
+import studio.lunabee.amicrogallery.android.core.ui.component.photo.MicroGalleryButtonImage
 import studio.lunabee.amicrogallery.android.core.ui.theme.CoreRadius
 import studio.lunabee.amicrogallery.android.core.ui.theme.CoreSpacing
 import studio.lunabee.amicrogallery.app.R
-import studio.lunabee.amicrogallery.utils.getLabelName
+import studio.lunabee.amicrogallery.calendar.displayed.MonthDisplay
+import studio.lunabee.amicrogallery.calendar.displayed.PhotoDisplay
+import studio.lunabee.amicrogallery.utils.calculateInterpolationValue
 import studio.lunabee.amicrogallery.utils.getMonthFromKey
+import studio.lunabee.amicrogallery.utils.getMonthName
+import studio.lunabee.microgallery.android.data.Picture
 import studio.lunabee.amicrogallery.core.ui.R as CoreUi
-import studio.lunabee.microgallery.android.domain.Directory
-import studio.lunabee.microgallery.android.domain.Node
-import studio.lunabee.microgallery.android.domain.Picture
-
-@OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalHazeMaterialsApi::class)
-@Composable
-fun CalendarScreen(calendarUiState: CalendarUiState, onAction: (CalendarAction) -> Unit) {
-    val hazeState = remember { HazeState() }
-    if (calendarUiState.rootNode == null) {
-        LoadingScreen()
-    } else {
-        ShowPhotos(calendarUiState.rootNode, hazeState, onAction)
-    }
-}
-
-@Composable
-fun LoadingScreen() {
-    Column {
-        Text(
-            text = stringResource(R.string.waitingForData),
-            style = MaterialTheme.typography.titleLarge,
-        )
-        Text(
-            text = stringResource(R.string.notLong),
-            style = MaterialTheme.typography.bodyLarge,
-        )
-    }
-}
 
 @Composable
 fun rememberNextYear(state: LazyListState, key: String) = remember(state) {
@@ -94,9 +69,16 @@ fun rememberNextYear(state: LazyListState, key: String) = remember(state) {
 @Composable
 fun rememberActiveMonth(state: LazyListState) = remember(state) {
     derivedStateOf {
-        val items = state.layoutInfo.visibleItemsInfo.filter { it.key.toString().startsWith("month:") }
+        val topBar = state.layoutInfo.visibleItemsInfo.filter { it.key.toString().startsWith("year:") }.getOrNull(0)
+            ?: return@derivedStateOf false
+        val items = state.layoutInfo.visibleItemsInfo.filter {
+            (
+                it.key.toString().startsWith("month:")
+                    || it.key.toString().startsWith("picture:")
+                ) && it.offset >= topBar.size / 2
+        }
         val header = items.getOrNull(0) ?: return@derivedStateOf null
-        header.key
+        getMonthFromKey(header.key.toString())
     }
 }
 
@@ -109,148 +91,184 @@ fun rememberActiveYear(state: LazyListState) = remember(state) {
     }
 }
 
-@OptIn(ExperimentalHazeMaterialsApi::class)
-@Composable
-fun ShowPhotos(rootNode: Node, hazeState: HazeState, onAction: (CalendarAction) -> Unit) {
-    val lazyListState = rememberLazyListState()
-    Box(modifier = Modifier.fillMaxSize()) {
 
+@OptIn(ExperimentalHazeMaterialsApi::class, ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+fun CalendarScreen(
+    calendarUiState: CalendarUiState,
+    fireAction: (CalendarAction) -> Unit,
+) {
+    val hazeState = remember { HazeState() }
+    val lazyListState = rememberLazyListState()
+    Box(modifier = Modifier.fillMaxWidth()) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxHeight()
                 .background(MaterialTheme.colorScheme.background),
             state = lazyListState,
         ) {
-            val rootDir: Directory = rootNode as Directory
-            for (yearNode in rootDir.content) {
-                val key = "year:${yearNode.name}"
+            for (year in calendarUiState.years) {
+                val key = "year:$year"
                 stickyHeader(key = key) {
-                    val isNext by rememberNextYear(lazyListState, key = key) // es ce que c'est la bar qui touche la top bar
-                    val currentShownYear by rememberActiveYear(lazyListState)
-                    val currentShownMonthKey by rememberActiveMonth(lazyListState)
-                    val isStuck = currentShownYear?.key == key // is this the bar stuck at the top
-
-                    val statusBarPadding = WindowInsets.statusBars.asPaddingValues().calculateTopPadding() + CoreSpacing.SpacingMedium
-
-                    val density = LocalDensity.current.density
-                    val currentFirstHeightInDp = (currentShownYear?.size ?: 1) / density
-                    val currentFirstOffsetInDp = -(currentShownYear?.offset ?: 0) / density
-                    val interpolationValue = currentFirstOffsetInDp / currentFirstHeightInDp
-                    val animatedPadding =
-                        if (isNext) {
-                            CoreSpacing.SpacingMedium + (statusBarPadding - CoreSpacing.SpacingMedium) * interpolationValue
-                        } else if (isStuck) {
-                            statusBarPadding
-                        } else {
-                            CoreSpacing.SpacingMedium
-                        }
-
-                    val animatedColor =
-                        if (isNext) {
-                            lerp(MaterialTheme.colorScheme.tertiary, MaterialTheme.colorScheme.primary, interpolationValue)
-                        } else if (isStuck) {
-                            MaterialTheme.colorScheme.primary
-                        } else {
-                            MaterialTheme.colorScheme.tertiary
-                        }
-
-                    Box(
-                        modifier = Modifier
-                            .background(Color.Transparent)
-                            .hazeEffect(
-                                state = hazeState,
-                                style = HazeMaterials.ultraThin(
-                                    animatedColor,
-                                ),
-                            ),
-                    ) {
-                        Crossfade(targetState = currentShownMonthKey) { monthKey ->
-                            Text(
-                                text = if (isStuck) {
-                                    stringResource(
-                                        R.string.calendar_title,
-                                        getLabelName(getMonthFromKey(monthKey.toString()), stringArrayResource(R.array.months)),
-                                        yearNode.name,
-                                    )
-                                } else {
-                                    yearNode.name
-                                },
-                                color = MaterialTheme.colorScheme.onPrimary,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(
-                                        top = animatedPadding,
-                                        start = CoreSpacing.SpacingMedium,
-                                        bottom = CoreSpacing.SpacingSmall,
-                                    ),
-                                style = MaterialTheme.typography.titleLarge,
-                            )
-                        }
-                    }
+                    Year(
+                        lazyListState = lazyListState,
+                        year = year,
+                        key = key,
+                        hazeState = hazeState,
+                    )
                 }
-                val yearDir: Directory = yearNode as Directory
+                // the current month that we're scrolling through
+                var currentMonth: String? = null
                 items(
-                    items = yearDir.content,
-                    key = { monthNode -> "month:${yearNode.name}/${monthNode.name}" },
-                ) { monthNode ->
-                    ShowNode(monthNode)
-                    val monthDir: Directory = monthNode as Directory
-                    for (picture in monthDir.content) {
-                        ShowNode(picture, modifier = Modifier.hazeSource(state = hazeState))
+                    items = calendarUiState.getItemsToShow(year),
+                    key = { display ->
+                        when (display) {
+                            is MonthDisplay -> {
+                                currentMonth = display.name
+                                "month:$year/${display.name}"
+                            }
+                            // place the month after the / to be obtained later
+                            is PhotoDisplay -> "picture:${display.picture.name}/$currentMonth"
+                        }
+                    },
+                ) { display -> // the display item
+                    when (display) {
+                        is MonthDisplay -> {
+                            Button(
+                                onClick = {
+                                    if (Pair(year, display.name) in calendarUiState.expandedMonths) {
+                                        // if this month is already expanded
+                                        fireAction(CalendarAction.AskForCollapse(display.name, year))
+                                    } else {
+                                        fireAction(CalendarAction.AskForExpand(display.name, year))
+                                    }
+                                },
+                                contentPadding = PaddingValues(0.dp),
+                                modifier = Modifier.background(MaterialTheme.colorScheme.tertiary),
+                                colors = ButtonColors(Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent),
+                                shapes = ButtonShapes(
+                                    RoundedCornerShape(CoreRadius.RadiusMedium),
+                                    RoundedCornerShape(CoreRadius.RadiusMedium),
+                                ),
+                            ) {
+                                Month(display.name)
+                            }
+                        }
+
+                        is PhotoDisplay ->
+                            Pic(display.picture, hazeState = hazeState, fireAction = fireAction)
+
                     }
                 }
             }
-
         }
 
         IconButton(
-            onClick = { onAction(CalendarAction.JumpToSettings()) },
-            modifier = Modifier.align(Alignment.TopEnd).statusBarsPadding()
+            onClick = { fireAction(CalendarAction.JumpToSettings()) },
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .statusBarsPadding(),
         ) {
             Icon(
-                painterResource(CoreUi.drawable.settings_24px),
-                contentDescription = "Settings menu",
-                tint = MaterialTheme.colorScheme.onPrimary,
+                painter = painterResource(CoreUi.drawable.settings_24px),
+                contentDescription = stringResource(R.string.settings),
             )
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@OptIn(ExperimentalHazeMaterialsApi::class)
 @Composable
-fun ShowNode(node: Node, modifier: Modifier = Modifier) {
-    when (node) {
-        is Directory -> {
+fun Year(lazyListState: LazyListState, year: String, key: String, hazeState: HazeState) {
+    val isNext by rememberNextYear(lazyListState, key = key) // is this header touching the top header ?
+    val currentShownYear by rememberActiveYear(lazyListState)
+    val currentShownMonth by rememberActiveMonth(lazyListState)
+    val isStuck = currentShownYear?.key == key // is this the bar stuck at the top ?
+
+    val statusBarPadding = WindowInsets.statusBars.asPaddingValues().calculateTopPadding() + CoreSpacing.SpacingMedium
+
+    val interpolationValue = calculateInterpolationValue(LocalDensity.current.density,currentShownYear)
+
+    val animatedPadding =
+        if (isNext) {
+            CoreSpacing.SpacingMedium + (statusBarPadding - CoreSpacing.SpacingMedium) * interpolationValue
+        } else if (isStuck) {
+            statusBarPadding
+        } else {
+            CoreSpacing.SpacingMedium
+        }
+
+    val animatedColor =
+        if (isNext) {
+            lerp(MaterialTheme.colorScheme.secondary, MaterialTheme.colorScheme.primary, interpolationValue)
+        } else if (isStuck) {
+            MaterialTheme.colorScheme.primary
+        } else {
+            MaterialTheme.colorScheme.secondary
+        }
+
+    Box(
+        modifier = Modifier
+            .background(animatedColor)
+            .hazeEffect(
+                state = hazeState,
+                style = HazeMaterials.ultraThin(
+                    animatedColor,
+                ),
+            ),
+    ) {
+        if (isStuck) {
+            Crossfade(targetState = currentShownMonth) { month ->
+                Text(
+                    text =
+                    stringResource(
+                        R.string.calendar_title,
+                        getMonthName(month.toString(), stringArrayResource(R.array.months)), // month can be null
+                        year,
+                    ),
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            top = animatedPadding,
+                            start = CoreSpacing.SpacingMedium,
+                            bottom = CoreSpacing.SpacingSmall,
+                        ),
+                    style = MaterialTheme.typography.titleLarge,
+                )
+            }
+        } else {
             Text(
-                text = getLabelName(node.name, months=stringArrayResource(R.array.months)),
-                color = MaterialTheme.colorScheme.onBackground,
+                text = year,
+                color = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = CoreSpacing.SpacingMedium, top = CoreSpacing.SpacingMedium, bottom = CoreSpacing.SpacingSmall),
-                style = MaterialTheme.typography.headlineMedium,
+                    .padding(
+                        top = animatedPadding,
+                        start = CoreSpacing.SpacingMedium,
+                        bottom = CoreSpacing.SpacingSmall,
+                    ),
+                style = MaterialTheme.typography.titleLarge,
             )
         }
-
-        is Picture -> {
-            Button(
-                onClick = { /* TODO : jump in order to preview image in full screen clicked */ },
-                contentPadding = PaddingValues(0.dp),
-                modifier = Modifier.padding(PaddingValues(CoreSpacing.SpacingMedium)),
-                shapes = ButtonShapes(RoundedCornerShape(CoreRadius.RadiusMedium), RoundedCornerShape(CoreRadius.RadiusMedium)),
-
-                ) {
-                Box {
-                    Text(text = stringResource(R.string.loading, node.name), modifier = Modifier.align(Alignment.Center))
-                    MicroGalleryImage(
-                        url = "http://92.150.239.130" + node.lowResPath,
-                        // TODO : better MicroGalleryImage to call with only a Picture (fallback to highRes etc)
-                        modifier = modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight(),
-                    )
-                }
-            }
-            Spacer(modifier = Modifier.padding(PaddingValues(CoreSpacing.SpacingMedium)))
-        }
     }
+}
+
+@Composable
+fun Month(month: String) { // we set here only the text, not the background
+    Text(
+        text = getMonthName(month, stringArrayResource(R.array.months)),
+        color = MaterialTheme.colorScheme.onTertiary,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = CoreSpacing.SpacingMedium, top = CoreSpacing.SpacingMedium, bottom = CoreSpacing.SpacingSmall),
+        style = MaterialTheme.typography.headlineMedium,
+    )
+}
+
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+fun Pic(picture: Picture, hazeState: HazeState, fireAction: (CalendarAction) -> Unit) {
+    MicroGalleryButtonImage(picture, hazeState = hazeState, showMe = { pictureId -> fireAction(CalendarAction.ShowPhoto(pictureId)) })
+    Spacer(modifier = Modifier.padding(PaddingValues(CoreSpacing.SpacingMedium)))
 }

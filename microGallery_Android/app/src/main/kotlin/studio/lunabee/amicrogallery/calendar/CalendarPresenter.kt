@@ -1,28 +1,26 @@
 package studio.lunabee.amicrogallery.calendar
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import com.lunabee.lbcore.model.LBResult
-import dev.chrisbanes.haze.HazeState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import studio.lunabee.amicrogallery.loading.LoadingAction
 import studio.lunabee.compose.presenter.LBSinglePresenter
 import studio.lunabee.compose.presenter.LBSingleReducer
-import studio.lunabee.microgallery.android.domain.Node
-import studio.lunabee.microgallery.android.domain.calendar.usecase.UpdateTreeUseCase
+import studio.lunabee.microgallery.android.domain.calendar.CalendarRepository
+import studio.lunabee.microgallery.android.domain.calendar.usecase.LoadTreeUseCase
 
 class CalendarPresenter(
-    private val updateTreeUseCase: UpdateTreeUseCase,
+    val calendarRepository: CalendarRepository,
 ) : LBSinglePresenter<CalendarUiState, CalendarNavScope, CalendarAction>() {
     override val flows: List<Flow<CalendarAction>> = emptyList()
-    var hazeState: HazeState? = null
-    var rootNode by mutableStateOf<Node?>(null)
 
     override fun getInitialState(): CalendarUiState = CalendarUiState(
-        rootNode = rootNode,
+        years = listOf(),
+        monthsOfYears = mapOf(),
+        photosOfMonth = mapOf(),
+        expandedMonths = setOf<Pair<String, String>>(),
     )
 
     override fun initReducer(): LBSingleReducer<CalendarUiState, CalendarNavScope, CalendarAction> {
@@ -30,20 +28,40 @@ class CalendarPresenter(
     }
 
     init {
-        refreshEvent()
+        populateYears()
     }
 
-    private fun refreshEvent() {
+    fun populateYears(){
         viewModelScope.launch {
-            when (val result: LBResult<Node> = updateTreeUseCase()) {
+            when (val result = LoadTreeUseCase(calendarRepository).invoke()) {
                 is LBResult.Success -> {
-                    rootNode = result.data
-                    emitUserAction(CalendarAction.StopRefreshing(result.data!!))
+                    // not very nice, but will be fixed in feature/better-ui
+                    emitUserAction(CalendarAction.GotYears(result.successData.keys.toList()))
+                    emitUserAction(CalendarAction.GotMonthsOfYears(result.successData))
                 }
-                is LBResult.Failure -> { /*TODO : Act upon failure, largely fixed in other PR*/ }
+
+                is LBResult.Failure -> {
+                    // fall on error
+                }
             }
         }
     }
 
-    override val content: @Composable ((CalendarUiState) -> Unit) = { CalendarScreen(it, ::emitUserAction) }
+
+
+    fun fireAction(calendarAction: CalendarAction) {
+        when (calendarAction) {
+            is CalendarAction.AskForExpand -> {
+                emitUserAction(calendarAction)
+                viewModelScope.launch {
+                    val picturesInMonth = calendarRepository.getPicturesInMonth(calendarAction.year, calendarAction.month)
+                    emitUserAction(CalendarAction.GotMY(calendarAction.month, calendarAction.year, picturesInMonth))
+                }
+            }
+
+            else -> emitUserAction(calendarAction)
+        }
+    }
+
+    override val content: @Composable ((CalendarUiState) -> Unit) = { CalendarScreen(it, fireAction = ::fireAction) }
 }
