@@ -49,6 +49,8 @@ import studio.lunabee.amicrogallery.android.core.ui.component.image.MicroGallery
 import studio.lunabee.amicrogallery.android.core.ui.theme.CoreRadius
 import studio.lunabee.amicrogallery.android.core.ui.theme.CoreSpacing
 import studio.lunabee.amicrogallery.app.R
+import studio.lunabee.amicrogallery.utils.getLabelName
+import studio.lunabee.amicrogallery.utils.getMonthFromKey
 import studio.lunabee.amicrogallery.core.ui.R as CoreUi
 import studio.lunabee.microgallery.android.domain.Directory
 import studio.lunabee.microgallery.android.domain.Node
@@ -105,10 +107,6 @@ fun rememberActiveYear(state: LazyListState) = remember(state) {
         val header = items.getOrNull(0) ?: return@derivedStateOf null
         header
     }
-}
-
-fun getMonthFromKey(key: String): String {
-    return key.substringAfter("/")
 }
 
 @OptIn(ExperimentalHazeMaterialsApi::class)
@@ -171,7 +169,7 @@ fun ShowPhotos(rootNode: Node, hazeState: HazeState, onAction: (CalendarAction) 
                                 text = if (isStuck) {
                                     stringResource(
                                         R.string.calendar_title,
-                                        getLabelName(getMonthFromKey(monthKey.toString())),
+                                        getLabelName(getMonthFromKey(monthKey.toString()), stringArrayResource(R.array.months)),
                                         yearNode.name,
                                     )
                                 } else {
@@ -224,7 +222,7 @@ fun ShowNode(node: Node, modifier: Modifier = Modifier) {
     when (node) {
         is Directory -> {
             Text(
-                text = getLabelName(node.name),
+                text = getLabelName(node.name, months=stringArrayResource(R.array.months)),
                 color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -255,17 +253,4 @@ fun ShowNode(node: Node, modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.padding(PaddingValues(CoreSpacing.SpacingMedium)))
         }
     }
-}
-
-@Composable
-fun getLabelName(value: String): String {
-    val task = runCatching {
-        val number = value.toInt()
-        if (number < 13) {
-            stringArrayResource(R.array.french_months)[number - 1]
-        } else {
-            value
-        }
-    }
-    return task.getOrElse { value }
 }
