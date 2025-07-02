@@ -3,6 +3,7 @@ package studio.lunabee.amicrogallery.settings
 import kotlinx.coroutines.CoroutineScope
 import studio.lunabee.compose.presenter.LBSingleReducer
 import studio.lunabee.compose.presenter.ReduceResult
+import studio.lunabee.compose.presenter.asResult
 import studio.lunabee.compose.presenter.withSideEffect
 
 class SettingsReducer(
@@ -16,11 +17,14 @@ class SettingsReducer(
         performNavigation: (SettingsNavScope.() -> Unit) -> Unit,
     ): ReduceResult<SettingsUiState> {
         return when (action) {
+            is SettingsAction.GotData -> actualState.copy(data = action.data).asResult()
             is SettingsAction.JumpBack -> actualState withSideEffect {
                 performNavigation {
                     jumpBack()
                 }
             }
+
+
         }
     }
 }

@@ -36,6 +36,7 @@ import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.colo
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.spacing
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.typography
 import studio.lunabee.amicrogallery.app.R
+import studio.lunabee.microgallery.android.data.SettingsData
 import studio.lunabee.amicrogallery.core.ui.R as CoreUi
 
 fun Context.getAppVersion(): String {
@@ -70,7 +71,7 @@ fun TitleSettingsEntry(modifier: Modifier = Modifier, fireAction: (SettingsActio
 }
 
 @Composable
-fun IPAddressesSettingsEntry(modifier: Modifier = Modifier) {
+fun IPAddressesSettingsEntry(modifier: Modifier = Modifier, data : SettingsData) {
     Column(modifier = modifier) {
         Text(
             text = stringResource(R.string.adress_of_server),
@@ -78,7 +79,7 @@ fun IPAddressesSettingsEntry(modifier: Modifier = Modifier) {
         )
 
         OutlinedTextField(
-            value = "",
+            value = data.ipv4,
             singleLine = true,
             shape = shapes.large,
             modifier = Modifier,
@@ -101,7 +102,7 @@ fun IPAddressesSettingsEntry(modifier: Modifier = Modifier) {
         )
 
         OutlinedTextField(
-            value = "",
+            value = data.ipv6,
             singleLine = true,
             shape = shapes.large,
             modifier = Modifier,
@@ -231,35 +232,39 @@ fun ServerStatisticsSettingsEntry(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun SettingsScreen(fireAction: (SettingsAction) -> Unit) {
-    val settingsEntries: List<@Composable (modifier: Modifier) -> Unit> = listOf(
-        // mod as a short term for modifier
-        { mod -> TitleSettingsEntry(mod, fireAction) },
-        { mod -> IPAddressesSettingsEntry(mod) },
-        { mod -> PreviewSettingsEntry(mod) },
-        { mod -> CacheSettingsEntry(mod) },
-        { mod -> ServerStatisticsSettingsEntry(mod) },
-    )
-    Column(modifier = Modifier.statusBarsPadding()) {
-        val entryModifier = Modifier
-        LazyColumn(
-            modifier = Modifier.background(colors.background),
-            contentPadding = PaddingValues(spacing.SpacingMedium),
-            verticalArrangement = Arrangement.spacedBy(spacing.SpacingLarge),
+fun SettingsScreen(uiState: SettingsUiState, fireAction: (SettingsAction) -> Unit) {
+    if(uiState.data == null)
+        Text(stringResource( R.string.loading), style = typography.body)
+    else {
+        val settingsEntries: List<@Composable (modifier: Modifier) -> Unit> = listOf(
+            // mod as a short term for modifier
+            { mod -> TitleSettingsEntry(mod, fireAction) },
+            { mod -> IPAddressesSettingsEntry(mod, uiState.data) },
+            { mod -> PreviewSettingsEntry(mod) },
+            { mod -> CacheSettingsEntry(mod) },
+            { mod -> ServerStatisticsSettingsEntry(mod) },
+        )
+        Column(modifier = Modifier.statusBarsPadding()) {
+            val entryModifier = Modifier
+            LazyColumn(
+                modifier = Modifier.background(colors.background),
+                contentPadding = PaddingValues(spacing.SpacingMedium),
+                verticalArrangement = Arrangement.spacedBy(spacing.SpacingLarge),
 
-        ) {
-            items(settingsEntries) { entry ->
-                Column {
-                    entry(entryModifier)
-                    Spacer(Modifier.height(spacing.SpacingMedium))
+                ) {
+                items(settingsEntries) { entry ->
+                    Column {
+                        entry(entryModifier)
+                        Spacer(Modifier.height(spacing.SpacingMedium))
+                    }
                 }
             }
-        }
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-            Text(
-                stringResource(R.string.application_name) + LocalContext.current.getAppVersion(),
-                style = typography.labelBold,
-            )
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                Text(
+                    stringResource(R.string.application_name) + LocalContext.current.getAppVersion(),
+                    style = typography.labelBold,
+                )
+            }
         }
     }
 }

@@ -9,8 +9,11 @@ import org.koin.dsl.module
 import studio.lunabee.amicrogallery.android.local.RoomAppDatabase
 import studio.lunabee.amicrogallery.android.local.buildRoomDatabase
 import studio.lunabee.amicrogallery.android.local.dao.PictureDao
+import studio.lunabee.amicrogallery.android.local.dao.SettingsDao
 import studio.lunabee.amicrogallery.android.local.datasource.PictureLocalDatasource
+import studio.lunabee.amicrogallery.android.local.datasource.SettingsLocalDatasource
 import studio.lunabee.amicrogallery.picture.PictureLocal
+import studio.lunabee.amicrogallery.settings.SettingsLocal
 
 internal val LocalModule: Module = module {
 
@@ -24,7 +27,10 @@ internal val LocalModule: Module = module {
 
     // Bind repository expectations
     singleOf(::PictureLocalDatasource) bind PictureLocal::class
+    singleOf(::SettingsLocalDatasource) bind SettingsLocal::class
 
     // Dao
     single<PictureDao> { get<RoomAppDatabase>().pictureDao() }
+    single<SettingsDao> { get<RoomAppDatabase>().settingsDao() }
+
 }
