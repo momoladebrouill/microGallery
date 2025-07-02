@@ -6,6 +6,7 @@ import studio.lunabee.microgallery.android.data.YearPreview
 sealed interface CalendarAction {
 
     class JumpToSettings : CalendarAction // Jump to settings screen
+    class ResetToHome : CalendarAction // Jump to the year view
 
     data class ShowPhoto( // Jump to photoViewer screen
         val pictureId: Long,
@@ -41,10 +42,7 @@ sealed interface CalendarAction {
         val year: String,
     ) : CalendarAction
 
-
     data class JumpToYear(
-        val year : String
+        val year: String,
     ) : CalendarAction
-
-
 }

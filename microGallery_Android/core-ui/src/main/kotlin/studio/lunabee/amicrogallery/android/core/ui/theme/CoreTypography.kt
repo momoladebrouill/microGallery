@@ -35,7 +35,7 @@ object CoreTypography {
         fontWeight = FontWeight.W900,
     )
     val title = TextStyle(
-        fontFamily = sharpFontFamily,
+        fontFamily = curlyFontFamily,
         fontSize = 22.sp,
         fontWeight = FontWeight.W700,
     )

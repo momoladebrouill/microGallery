@@ -43,6 +43,7 @@ class CalendarReducer(
             ).asResult()
 
             is CalendarAction.JumpToYear -> actualState.copy(yearSelected = action.year).asResult()
+            is CalendarAction.ResetToHome -> actualState.copy(yearSelected = null).asResult()
         }
     }
 }

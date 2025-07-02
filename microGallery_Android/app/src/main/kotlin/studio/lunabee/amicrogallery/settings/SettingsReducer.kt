@@ -15,13 +15,12 @@ class SettingsReducer(
         action: SettingsAction,
         performNavigation: (SettingsNavScope.() -> Unit) -> Unit,
     ): ReduceResult<SettingsUiState> {
-        return when(action) {
+        return when (action) {
             is SettingsAction.JumpBack -> actualState withSideEffect {
                 performNavigation {
                     jumpBack()
                 }
             }
-
         }
     }
 }

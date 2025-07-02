@@ -30,16 +30,16 @@ interface CoreColorTheme {
 
 object CoreColorLightTheme : CoreColorTheme {
     override val main: Color = CoreColorPalette.yellowSun
-    override val second : Color = CoreColorPalette.salmonRed
+    override val second: Color = CoreColorPalette.salmonRed
     override val background: Color = Color.White
-    override val onMain: Color = CoreColorPalette.darkCinemaRed
+    override val onMain: Color = Color.Black
     override val onBackground: Color = CoreColorPalette.darkCinemaRed
     override val disabled: Color = CoreColorPalette.darkCinemaRed.copy(alpha = 0.3f)
 }
 
 object CoreColorDarkTheme : CoreColorTheme {
     override val main: Color = CoreColorPalette.darkGreen
-    override val second : Color = CoreColorPalette.darkCinemaRed
+    override val second: Color = CoreColorPalette.darkCinemaRed
     override val background: Color = CoreColorPalette.greyBrown
     override val onMain: Color
         get() = CoreColorPalette.lightGreen

@@ -15,12 +15,14 @@ class PictureLocalDatasource(
     }
 
     override suspend fun getYearPreviews(): List<YearPreview> {
-        val years : List<String> = pictureDao.getYears()
-        return years.map { year -> YearPreview(
-            year = year,
-            qty = pictureDao.getQtyInYear(year),
-            picturePreview = pictureDao.getRandomPictureInYear(year).toPicture()
-        ) }
+        val years: List<String> = pictureDao.getYears()
+        return years.map { year ->
+            YearPreview(
+                year = year,
+                qty = pictureDao.getQtyInYear(year),
+                picturePreview = pictureDao.getRandomPictureInYear(year).toPicture(),
+            )
+        }
     }
 
     override suspend fun freshStart() {

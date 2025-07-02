@@ -2,7 +2,7 @@ package studio.lunabee.amicrogallery.utils
 
 import androidx.compose.foundation.lazy.LazyListItemInfo
 
-fun getMonthName(value: String, monthArray : Array<String>): String {
+fun getMonthName(value: String, monthArray: Array<String>): String {
     val task = runCatching {
         val number = value.toInt()
         if (number < 13) {
