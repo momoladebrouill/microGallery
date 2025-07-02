@@ -46,9 +46,9 @@ fun Context.getAppVersion(): String {
 }
 
 @Composable
-fun TitleSettingsEntry(modifier: Modifier = Modifier, fireAction : (SettingsAction) -> Unit) {
+fun TitleSettingsEntry(modifier: Modifier = Modifier, fireAction: (SettingsAction) -> Unit) {
     Row(modifier = modifier) {
-        IconButton(onClick = {fireAction(SettingsAction.JumpBack)}) {
+        IconButton(onClick = { fireAction(SettingsAction.JumpBack) }) {
             Icon(
                 painter = painterResource(CoreUi.drawable.arrow_back),
                 contentDescription = stringResource(R.string.navigate_back),
@@ -214,7 +214,7 @@ fun ServerStatisticsSettingsEntry(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun SettingsScreen(fireAction :  (SettingsAction) -> Unit) {
+fun SettingsScreen(fireAction: (SettingsAction) -> Unit) {
     val settingsEntries: List<@Composable (modifier: Modifier) -> Unit> = listOf(
         // mod as a short term for modifier
         { mod -> TitleSettingsEntry(mod, fireAction) },

@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.lunabee.lbcore.model.LBResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import studio.lunabee.amicrogallery.loading.LoadingAction
 import studio.lunabee.compose.presenter.LBSinglePresenter
 import studio.lunabee.compose.presenter.LBSingleReducer
 import studio.lunabee.microgallery.android.domain.calendar.CalendarRepository
@@ -31,7 +30,7 @@ class CalendarPresenter(
         populateYears()
     }
 
-    fun populateYears(){
+    fun populateYears() {
         viewModelScope.launch {
             when (val result = LoadTreeUseCase(calendarRepository).invoke()) {
                 is LBResult.Success -> {
@@ -46,8 +45,6 @@ class CalendarPresenter(
             }
         }
     }
-
-
 
     fun fireAction(calendarAction: CalendarAction) {
         when (calendarAction) {

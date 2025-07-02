@@ -1,6 +1,5 @@
 package studio.lunabee.amicrogallery.photoviewer
 
-import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.rememberTransformableState
@@ -30,17 +29,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
-import androidx.core.net.toUri
 import studio.lunabee.amicrogallery.android.core.ui.component.image.MicroGalleryImage
 import studio.lunabee.amicrogallery.app.R
 import studio.lunabee.amicrogallery.utils.getMonthName
-
 import studio.lunabee.amicrogallery.core.ui.R as CoreUi
 
 @Composable
 fun PhotoViewerScreen(
     uiState: PhotoViewerUiState,
-    fireAction: (PhotoViewerAction) -> Unit
+    fireAction: (PhotoViewerAction) -> Unit,
 ) {
     var scale by remember { mutableFloatStateOf(1f) }
     var rotation by remember { mutableFloatStateOf(0f) }
@@ -114,8 +111,11 @@ fun PhotoViewerScreen(
         }
 
         Text(
-            text = stringResource(R.string.month_year,
-                getMonthName(uiState.picture?.month ?: "", stringArrayResource(R.array.months)), uiState.picture?.year.toString()),
+            text = stringResource(
+                R.string.month_year,
+                getMonthName(uiState.picture?.month ?: "", stringArrayResource(R.array.months)),
+                uiState.picture?.year.toString(),
+            ),
             style = MaterialTheme.typography.titleMedium,
             color = Color.White,
             modifier = Modifier

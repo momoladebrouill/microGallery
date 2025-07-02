@@ -3,7 +3,6 @@ package studio.lunabee.amicrogallery.photoviewer
 import android.content.Context
 import android.content.Intent
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
 import androidx.core.content.FileProvider
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
@@ -15,13 +14,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import studio.lunabee.amicrogallery.app.R
 import studio.lunabee.compose.presenter.LBSinglePresenter
 import studio.lunabee.compose.presenter.LBSingleReducer
 import studio.lunabee.microgallery.android.data.Picture
 import studio.lunabee.microgallery.android.domain.photoviewer.PhotoViewerRepository
 import java.io.File
-
-import studio.lunabee.amicrogallery.app.R
 
 class PhotoViewerPresenter(
     savedStateHandle: SavedStateHandle,
@@ -74,7 +72,7 @@ class PhotoViewerPresenter(
         val uri = FileProvider.getUriForFile(
             context,
             "${context.packageName}.provider",
-            file
+            file,
         )
 
         val shareIntent: Intent = Intent().apply {
@@ -83,19 +81,20 @@ class PhotoViewerPresenter(
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             type = "image/" + picture.name.substringAfter(".")
         }
-        context.startActivity(Intent.createChooser(
-            shareIntent,
-            context.getString(R.string.share_picture, picture.name)
-            )
+        context.startActivity(
+            Intent.createChooser(
+                shareIntent,
+                context.getString(R.string.share_picture, picture.name),
+            ),
         )
-
     }
 
     fun fireAction(action: PhotoViewerAction) {
         if (action is PhotoViewerAction.SharePicture) {
             viewModelScope.launch {
                 downloadAndShareImage(
-                    context = action.context, action.picture
+                    context = action.context,
+                    action.picture,
                 )
             }
         }

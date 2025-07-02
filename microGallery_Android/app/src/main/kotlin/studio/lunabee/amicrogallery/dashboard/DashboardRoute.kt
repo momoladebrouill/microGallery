@@ -79,7 +79,6 @@ fun DashboardScreen(
                         override fun jumpBack() {
                             navHostController.navigateUp()
                         }
-
                     },
                 )
             }

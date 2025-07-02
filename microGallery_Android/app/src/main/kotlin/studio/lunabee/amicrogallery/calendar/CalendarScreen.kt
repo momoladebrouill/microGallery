@@ -8,13 +8,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListItemInfo
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -91,7 +89,6 @@ fun rememberActiveYear(state: LazyListState) = remember(state) {
     }
 }
 
-
 @OptIn(ExperimentalHazeMaterialsApi::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun CalendarScreen(
@@ -157,7 +154,6 @@ fun CalendarScreen(
 
                         is PhotoDisplay ->
                             Pic(display.picture, hazeState = hazeState, fireAction = fireAction)
-
                     }
                 }
             }
@@ -187,7 +183,7 @@ fun Year(lazyListState: LazyListState, year: String, key: String, hazeState: Haz
 
     val statusBarPadding = WindowInsets.statusBars.asPaddingValues().calculateTopPadding() + CoreSpacing.SpacingMedium
 
-    val interpolationValue = calculateInterpolationValue(LocalDensity.current.density,currentShownYear)
+    val interpolationValue = calculateInterpolationValue(LocalDensity.current.density, currentShownYear)
 
     val animatedPadding =
         if (isNext) {

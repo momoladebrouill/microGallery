@@ -9,7 +9,7 @@ sealed interface PhotoViewerAction {
     ) : PhotoViewerAction
 
     data class SharePicture(
-        val picture : Picture,
-        val context: Context
+        val picture: Picture,
+        val context: Context,
     ) : PhotoViewerAction
 }

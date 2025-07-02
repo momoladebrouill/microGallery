@@ -1,10 +1,8 @@
 package studio.lunabee.microgallery.android.domain.calendar.usecase
 
 import com.lunabee.lbcore.model.LBResult
-import kotlinx.coroutines.launch
 import studio.lunabee.amicrogallery.android.error.CoreError
 import studio.lunabee.microgallery.android.domain.calendar.CalendarRepository
-import studio.lunabee.microgallery.android.domain.loading.LoadingRepository
 
 class LoadTreeUseCase(
     val calendarRepository: CalendarRepository,
@@ -18,5 +16,4 @@ class LoadTreeUseCase(
         }
         return LBResult.Success(monthsOfYears)
     }
-
 }
