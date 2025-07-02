@@ -16,6 +16,7 @@ class PhotoViewerReducer(
     ): ReduceResult<PhotoViewerUiState> {
         return when (action) {
             is PhotoViewerAction.FoundPicture -> actualState.copy(picture = action.picture).asResult()
+            is PhotoViewerAction.SharePicture -> actualState.asResult()
         }
     }
 }

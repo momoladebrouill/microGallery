@@ -16,6 +16,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -39,9 +40,10 @@ import studio.lunabee.amicrogallery.core.ui.R as CoreUi
 @Composable
 fun PhotoViewerScreen(
     uiState: PhotoViewerUiState,
+    fireAction: (PhotoViewerAction) -> Unit
 ) {
-    var scale by remember { mutableStateOf(1f) }
-    var rotation by remember { mutableStateOf(0f) }
+    var scale by remember { mutableFloatStateOf(1f) }
+    var rotation by remember { mutableFloatStateOf(0f) }
     var offset by remember { mutableStateOf(Offset.Zero) }
     val state = rememberTransformableState { zoomChange, offsetChange, rotationChange ->
         scale *= zoomChange
@@ -49,15 +51,6 @@ fun PhotoViewerScreen(
         offset += offsetChange * 5.0f
     }
     val context = LocalContext.current
-    val sendIntent: Intent = Intent().apply {
-        action = Intent.ACTION_SEND
-        // TODO : download photo and send it to be shared
-        putExtra(Intent.EXTRA_STREAM, "http://92.150.239.130" + uiState.picture?.lowResPath)
-        // type = "image/jpeg"
-        setDataAndType(("http://92.150.239.130" + uiState.picture?.lowResPath).toUri(), "image/jpeg")
-    }
-
-    val shareIntent = Intent.createChooser(sendIntent, null)
 
     Box(
         modifier = Modifier
@@ -85,7 +78,7 @@ fun PhotoViewerScreen(
                     .align(Alignment.Center),
             )
             IconButton(
-                onClick = { context.startActivity(shareIntent) },
+                onClick = { fireAction(PhotoViewerAction.SharePicture(uiState.picture!!, context)) },
                 modifier = Modifier
                     .align(Alignment.CenterEnd),
             ) {

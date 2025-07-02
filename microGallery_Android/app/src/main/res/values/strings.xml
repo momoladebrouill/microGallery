@@ -43,4 +43,5 @@
     <string name="nphotos">%,d photos</string>
     <string name="refresh">Refresh</string>
     <string name="navigate_back">Navigate to previous screen</string>
+    <string name="share_picture">Share picture %s</string>
 </resources>
