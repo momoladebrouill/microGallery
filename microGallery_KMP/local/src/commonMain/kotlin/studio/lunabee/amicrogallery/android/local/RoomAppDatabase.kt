@@ -17,14 +17,14 @@ import kotlin.coroutines.CoroutineContext
 @Database(
     entities = [
         PictureEntity::class,
-        SettingsEntity::class
+        SettingsEntity::class,
     ],
-    version = 3,
+    version = 1,
 )
 @ConstructedBy(AppDatabaseConstructor::class)
 abstract class RoomAppDatabase : RoomDatabase() {
-    abstract fun pictureDao() : PictureDao
-    abstract fun settingsDao() : SettingsDao
+    abstract fun pictureDao(): PictureDao
+    abstract fun settingsDao(): SettingsDao
 }
 
 expect class RoomPlatformBuilder {
@@ -56,14 +56,12 @@ fun buildRoomDatabase(
                 override fun onCreate(connection: SQLiteConnection) {
                     super.onCreate(connection)
                     val settingsEntity = SettingsEntity()
-
-                    connection.execSQL("DELETE FROM PhotosTable")
+                    // this is executed only when the app is first launched after install
                     connection.execSQL(
-                        "INSERT INTO $SettingsTable (ipvfour, ipvsix)" +
-                        "VALUES ('${settingsEntity.ipv4}', '${settingsEntity.ipv6}')"
+                        "INSERT INTO $SettingsTable (ipvfour, ipvsix, useIpvSix, viewInHD)" +
+                            "VALUES ('${settingsEntity.ipv4}', '${settingsEntity.ipv6}',"
+                            + "'${settingsEntity.useIpv6}', ${settingsEntity.viewInHD})",
                     )
-                    println("inserted well") // TODO : this is never print
-
                 }
             },
         )
@@ -72,4 +70,3 @@ fun buildRoomDatabase(
         .setQueryCoroutineContext(context = context)
         .build()
 }
-

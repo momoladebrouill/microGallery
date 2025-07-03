@@ -9,13 +9,17 @@ import studio.lunabee.compose.presenter.LBSingleReducer
 import studio.lunabee.microgallery.android.domain.settings.SettingsRepository
 
 class SettingsPresenter(
-    val settingsRepository: SettingsRepository
+    val settingsRepository: SettingsRepository,
 ) : LBSinglePresenter<SettingsUiState, SettingsNavScope, SettingsAction>() {
     override val flows: List<Flow<SettingsAction>> = emptyList()
 
-    override fun getInitialState(): SettingsUiState = SettingsUiState(data = null)
+    override fun getInitialState(): SettingsUiState = SettingsUiState(
+        data = null,
+        remoteStatus = null,
+    )
 
-    init{
+    init {
+        emitUserAction(SettingsAction.GetRemoteStatus)
         viewModelScope.launch {
             val data = settingsRepository.getSettingsData()
             emitUserAction(SettingsAction.GotData(data = data))
@@ -23,8 +27,8 @@ class SettingsPresenter(
     }
 
     override fun initReducer(): LBSingleReducer<SettingsUiState, SettingsNavScope, SettingsAction> {
-        return SettingsReducer(viewModelScope, ::emitUserAction)
+        return SettingsReducer(viewModelScope, ::emitUserAction, settingsRepository)
     }
 
-    override val content: @Composable ((SettingsUiState) -> Unit) = { SettingsScreen(it,::emitUserAction) }
+    override val content: @Composable ((SettingsUiState) -> Unit) = { SettingsScreen(it, ::emitUserAction) }
 }

@@ -32,5 +32,4 @@ internal val LocalModule: Module = module {
     // Dao
     single<PictureDao> { get<RoomAppDatabase>().pictureDao() }
     single<SettingsDao> { get<RoomAppDatabase>().settingsDao() }
-
 }

@@ -3,6 +3,7 @@ package studio.lunabee.microgallery.android.remote.service
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import studio.lunabee.microgallery.android.remote.CoreHttpClient
+import studio.lunabee.microgallery.android.remote.model.BashRemoteStatus
 import studio.lunabee.microgallery.android.remote.model.RemoteMicroElement
 
 class RootService(
@@ -10,5 +11,9 @@ class RootService(
 ) {
     suspend fun fetchRootList(): List<RemoteMicroElement> {
         return coreHttpClient.httpClient.get("/commande/treeJSON").body()
+    }
+
+    suspend fun fetchStatus(): BashRemoteStatus {
+        return coreHttpClient.httpClient.get("/commande/status").body()
     }
 }
