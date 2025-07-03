@@ -34,12 +34,12 @@ lbResources = "1.0.0"
 lbcCore = "1.8.0"
 lbcPresenter = "1.4.0"
 material3Jvmstubs = "1.4.0-alpha15"
-material3alpha="1.4.0-alpha15"
+material3alpha = "1.4.0-alpha15"
 navigationComposeJvmstubs = "2.9.0"
 navigationRuntimeAndroid = "2.9.0"
 navigationRuntimeJvmstubs = "2.9.0"
 skie = "0.10.2-preview.2.1.20"
-uiTextGoogleFont="1.8.2"
+uiTextGoogleFont = "1.8.2"
 uiToolingPreviewDesktop = "1.7.0"
 
 [libraries]
@@ -58,9 +58,9 @@ androidxRoomCompiler = { group = "androidx.room", name = "room-compiler", versio
 androidxRoomPaging = { group = "androidx.room", name = "room-paging", version.ref = "androidxRoom" }
 androidxRoomRuntime = { group = "androidx.room", name = "room-runtime", version.ref = "androidxRoom" }
 androidxSqliteBundled = { group = "androidx.sqlite", name = "sqlite-bundled", version.ref = "androidxSqlite" }
-coilCompose ={group = "io.coil-kt.coil3", name="coil-compose", version.ref = "coilCompose"}
-coilNetwork = {group = "io.coil-kt.coil3",  name="coil-network-ktor3", version.ref = "coilCompose"}
-composeMaterial3 = {group = "androidx.compose.material3", name = "material3", version.ref="material3alpha"}
+coilCompose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coilCompose" }
+coilNetwork = { group = "io.coil-kt.coil3", name = "coil-network-ktor3", version.ref = "coilCompose" }
+composeMaterial3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3alpha" }
 coreKtx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugarJdkLibs" }
 detekt = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt" }
@@ -91,7 +91,7 @@ material3Jvmstubs = { group = "androidx.compose.material3", name = "material3-jv
 navigationComposeJvmstubs = { group = "androidx.navigation", name = "navigation-compose-jvmstubs", version.ref = "navigationComposeJvmstubs" }
 navigationRuntimeAndroid = { group = "androidx.navigation", name = "navigation-runtime-android", version.ref = "navigationRuntimeAndroid" }
 navigationRuntimeJvmstubs = { group = "androidx.navigation", name = "navigation-runtime-jvmstubs", version.ref = "navigationRuntimeJvmstubs" }
-uiTextGoogleFonts = {group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref="uiTextGoogleFont"}
+uiTextGoogleFonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "uiTextGoogleFont" }
 uiToolingPreviewDesktop = { group = "androidx.compose.ui", name = "ui-tooling-preview-desktop", version.ref = "uiToolingPreviewDesktop" }
 
 [plugins]

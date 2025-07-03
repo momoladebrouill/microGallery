@@ -5,10 +5,14 @@ import studio.lunabee.compose.presenter.LBSingleReducer
 import studio.lunabee.compose.presenter.ReduceResult
 import studio.lunabee.compose.presenter.asResult
 import studio.lunabee.compose.presenter.withSideEffect
+import studio.lunabee.microgallery.android.data.Picture
+import studio.lunabee.microgallery.android.domain.lastMonth.LastMonthRepository
+import java.time.LocalDate
 
 class LastMonthReducer(
     override val coroutineScope: CoroutineScope,
     override val emitUserAction: (LastMonthAction) -> Unit,
+    val lastMonthRepository: LastMonthRepository,
 ) : LBSingleReducer<LastMonthUiState, LastMonthNavScope, LastMonthAction>() {
     override suspend fun reduce(
         actualState: LastMonthUiState,
@@ -19,6 +23,15 @@ class LastMonthReducer(
             is LastMonthAction.GotTheList -> actualState.copy(pictures = action.pictures).asResult()
             is LastMonthAction.ShowPhoto -> actualState withSideEffect {
                 performNavigation { navigateToPhotoViewer(action.photoId) }
+            }
+
+            LastMonthAction.GetTheList -> actualState.withSideEffect {
+                val now = LocalDate.now()
+                val photos: List<Picture> = lastMonthRepository.getLastMonthPictures(
+                    year = now.year.toString(),
+                    month = "%02d".format(now.monthValue),
+                )
+                emitUserAction(LastMonthAction.GotTheList(photos))
             }
         }
     }

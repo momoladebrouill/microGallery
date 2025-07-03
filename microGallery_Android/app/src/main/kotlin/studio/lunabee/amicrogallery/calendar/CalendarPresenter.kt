@@ -2,13 +2,12 @@ package studio.lunabee.amicrogallery.calendar
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewModelScope
-import com.lunabee.lbcore.model.LBResult
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 import studio.lunabee.compose.presenter.LBSinglePresenter
 import studio.lunabee.compose.presenter.LBSingleReducer
+import studio.lunabee.microgallery.android.data.MMonth
+import studio.lunabee.microgallery.android.data.MYear
 import studio.lunabee.microgallery.android.domain.calendar.CalendarRepository
-import studio.lunabee.microgallery.android.domain.calendar.usecase.LoadTreeUseCase
 
 class CalendarPresenter(
     val calendarRepository: CalendarRepository,
@@ -19,42 +18,22 @@ class CalendarPresenter(
         years = listOf(),
         monthsOfYears = mapOf(),
         photosOfMonth = mapOf(),
-        expandedMonths = setOf<Pair<String, String>>(),
+        expandedMonths = setOf(),
+        yearSelected = null,
+        jumpToSettings = { emitUserAction(CalendarAction.JumpToSettings) },
+        jumpToYear = { emitUserAction(CalendarAction.JumpToYear(it)) },
+        resetToHome = { emitUserAction(CalendarAction.ResetToHome) },
+        showPhoto = { emitUserAction(CalendarAction.ShowPhoto(it)) },
+        askForExpand = { year: MYear, month: MMonth -> emitUserAction(CalendarAction.AskForExpand(year, month)) },
     )
 
     override fun initReducer(): LBSingleReducer<CalendarUiState, CalendarNavScope, CalendarAction> {
-        return CalendarReducer(viewModelScope, ::emitUserAction)
+        return CalendarReducer(viewModelScope, ::emitUserAction, calendarRepository)
     }
 
     init {
-        populateYears()
+        emitUserAction(CalendarAction.PopulateYears)
     }
 
-    fun populateYears() {
-        viewModelScope.launch {
-            when (val result = LoadTreeUseCase(calendarRepository).invoke()) {
-                is LBResult.Success -> {
-                    emitUserAction(CalendarAction.GotYears(result.successData.first))
-                    emitUserAction(CalendarAction.GotMonthsOfYears(result.successData.second))
-                }
-
-                is LBResult.Failure<*> -> TODO()
-            }
-        }
-    }
-
-    fun fireAction(calendarAction: CalendarAction) {
-        when (calendarAction) {
-            is CalendarAction.AskForExpand -> {
-                emitUserAction(calendarAction)
-                viewModelScope.launch {
-                    val picturesInMonth = calendarRepository.getPicturesInMonth(calendarAction.year, calendarAction.month)
-                    emitUserAction(CalendarAction.GotMY(calendarAction.month, calendarAction.year, picturesInMonth))
-                }
-            }
-            else -> emitUserAction(calendarAction)
-        }
-    }
-
-    override val content: @Composable ((CalendarUiState) -> Unit) = { CalendarScreen(it, fireAction = ::fireAction) }
+    override val content: @Composable ((CalendarUiState) -> Unit) = { CalendarScreen(it) }
 }

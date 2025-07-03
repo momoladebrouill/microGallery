@@ -25,7 +25,8 @@ fun MicroGalleryTheme(
             CoreColorLightTheme
         }
 
-    MaterialTheme( // map the ButtonDefaultColor etc
+    MaterialTheme(
+        // map the ButtonDefaultColor etc
         colorScheme = mapMaterialColorScheme(isSystemInDarkTheme(), colors),
     ) {
         CompositionLocalProvider(

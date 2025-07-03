@@ -32,8 +32,7 @@ fun MicroGalleryBottomBar(
     val currentBackStackEntry: NavBackStackEntry? by navController.currentBackStackEntryAsState()
 
     // Show the bottom bar if any of the screens is displayed
-    val isOn = listOf(CalendarDestination, UntimedDestination, LastMonthDestination).any {
-            dest ->
+    val isOn = listOf(CalendarDestination, UntimedDestination, LastMonthDestination).any { dest ->
         currentBackStackEntry?.destination?.hierarchy?.any { it.hasRoute(dest::class) } == true
     }
 

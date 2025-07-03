@@ -17,10 +17,10 @@ import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.typo
 import studio.lunabee.amicrogallery.app.R
 
 @Composable
-fun LoadingScreen(loadingUiState: LoadingUiState, onAction: (LoadingAction) -> Unit) {
+fun LoadingScreen(loadingUiState: LoadingUiState) {
     when (loadingUiState) {
         is LoadingUiState.Default -> WaitingForResponse()
-        is LoadingUiState.Error -> ShowError(loadingUiState.errorMessage, onAction)
+        is LoadingUiState.Error -> ShowError(loadingUiState)
     }
 }
 
@@ -32,7 +32,6 @@ fun WaitingForResponse() {
                 text = stringResource(R.string.waitingForData),
 
                 style = typography.header,
-
             )
             Text(
                 text = stringResource(R.string.notLong),
@@ -44,7 +43,7 @@ fun WaitingForResponse() {
 }
 
 @Composable
-fun ShowError(error: String?, onAction: (LoadingAction) -> Unit) {
+fun ShowError(uiState: LoadingUiState.Error) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.align(Alignment.Center), horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
@@ -54,12 +53,12 @@ fun ShowError(error: String?, onAction: (LoadingAction) -> Unit) {
                 modifier = Modifier.fillMaxWidth(),
             )
             Text(
-                text = error ?: "",
+                text = uiState.errorMessage ?: "",
                 style = typography.title,
                 modifier = Modifier.padding(spacing.SpacingSmall),
             )
             Button(
-                onClick = { onAction(LoadingAction.Reload()) },
+                onClick = uiState.reload,
             ) {
                 Text(text = stringResource(R.string.reload))
             }

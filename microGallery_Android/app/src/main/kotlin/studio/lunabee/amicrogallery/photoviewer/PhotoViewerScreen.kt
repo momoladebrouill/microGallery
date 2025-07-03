@@ -78,7 +78,12 @@ fun PhotoViewerScreen(
             .fillMaxSize()
             .background(Color.Black),
     ) {
-        Box(modifier = Modifier.fillMaxWidth().align(Alignment.TopCenter).statusBarsPadding()) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.TopCenter)
+                .statusBarsPadding(),
+        ) {
             Text(
                 text = uiState.picture?.name.toString().substringBefore("."),
                 style = typography.body,
