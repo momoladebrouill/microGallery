@@ -28,10 +28,12 @@ import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.spac
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.typography
 import studio.lunabee.amicrogallery.app.R
 import studio.lunabee.amicrogallery.settings.SettingsAction
+import studio.lunabee.amicrogallery.settings.SettingsUiState
 import studio.lunabee.microgallery.android.data.SettingsData
 
 @Composable
-fun IPAddressesSettingsEntry(modifier: Modifier = Modifier, data: SettingsData, fireAction: (SettingsAction) -> Unit) {
+fun IPAddressesSettingsEntry(modifier: Modifier = Modifier, uiState: SettingsUiState.HasData) {
+    val data = uiState.data
     var ipv4: String by remember { mutableStateOf(data.ipv4) }
     var ipv6: String by remember { mutableStateOf(data.ipv6) }
     val keyboardController = LocalSoftwareKeyboardController.current

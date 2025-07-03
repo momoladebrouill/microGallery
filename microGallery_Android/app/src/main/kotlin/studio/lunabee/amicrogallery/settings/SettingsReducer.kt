@@ -13,47 +13,60 @@ class SettingsReducer(
     override val coroutineScope: CoroutineScope,
     override val emitUserAction: (SettingsAction) -> Unit,
     val settingsRepository: SettingsRepository,
-) : LBSingleReducer<SettingsUiState, SettingsNavScope, SettingsAction> () {
+) : LBSingleReducer<SettingsUiState, SettingsNavScope, SettingsAction>() {
+
+    suspend fun reduceLoadingData(
+        actualState: SettingsUiState.HasData,
+        action: SettingsAction,
+        performNavigation: (SettingsNavScope.() -> Unit) -> Unit,
+    ): ReduceResult<SettingsUiState> {
+        return when(action) {
+            SettingsAction.GotData -> SettingsUiState.HasData(
+                data = action.data,
+                remoteStatus = actualState.remote
+            ).asResult()
+        }
+    }
 
     override suspend fun reduce(
-        actualState: SettingsUiState,
+        actualState: SettingsUiState.HasData,
         action: SettingsAction,
         performNavigation: (SettingsNavScope.() -> Unit) -> Unit,
     ): ReduceResult<SettingsUiState> {
         return when (action) {
-            is SettingsAction.GotData -> actualState.copy(data = action.data).asResult()
+            is
             is SettingsAction.JumpBack -> actualState withSideEffect {
-                coroutineScope.launch {
-                    if (actualState.data == null) {
-                        error("Trying to save a null data")
-                    } else {
-                        settingsRepository.setSettingsData(actualState.data)
-                    }
+                if (actualState.data == null) {
+                    error("Trying to save a null data")
+                } else {
+                    settingsRepository.setSettingsData(actualState.data)
                 }
                 performNavigation {
                     jumpBack()
                 }
             }
-            is SettingsAction.SetIpV6 -> actualState.copy(
+
+            is SettingsAction.ToggleIpv6 -> actualState.copy(
                 data = actualState.data?.copy(
-                    useIpv6 = !(actualState.data?.useIpv6 ?: true)
+                    useIpv6 = !(actualState.data.useIpv6)
                 )
             ).asResult()
-            is SettingsAction.SetParameter -> actualState.copy(data =action.data).asResult()
+
             is SettingsAction.Clear -> actualState withSideEffect {
-                coroutineScope.launch {
-                    val imageLoader = action.context.imageLoader
-                    imageLoader.memoryCache?.clear()
-                    settingsRepository.clearDB()
-                }
+                val imageLoader = action.context.imageLoader
+                imageLoader.memoryCache?.clear()
+                settingsRepository.clearDB()
             }
 
             is SettingsAction.GotRemoteStatus -> actualState.copy(remoteStatus = action.status).asResult()
-            SettingsAction.GetRemoteStatus -> actualState.withSideEffect {
-                coroutineScope.launch {
-                    val remoteStatus = settingsRepository.getStatus()
-                    emitUserAction(SettingsAction.GotRemoteStatus(remoteStatus))
-                }
+            SettingsAction.GetRemoteStatus -> actualState withSideEffect {
+                val remoteStatus = settingsRepository.getStatus()
+                emitUserAction(SettingsAction.GotRemoteStatus(remoteStatus))
+            }
+
+            SettingsAction.GetSettingsData -> actualState withSideEffect {
+                val data = settingsRepository.getSettingsDataFromDB()
+                emitUserAction(SettingsAction.GotData(data = data))
             }
         }
     }

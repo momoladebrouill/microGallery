@@ -19,7 +19,7 @@ import kotlin.coroutines.CoroutineContext
         PictureEntity::class,
         SettingsEntity::class,
     ],
-    version = 1,
+    version = 5,
 )
 @ConstructedBy(AppDatabaseConstructor::class)
 abstract class RoomAppDatabase : RoomDatabase() {

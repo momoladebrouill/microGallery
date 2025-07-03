@@ -15,8 +15,7 @@ import studio.lunabee.amicrogallery.app.R
 import studio.lunabee.amicrogallery.settings.SettingsAction
 
 @Composable
-fun CacheSettingsEntry(modifier: Modifier = Modifier, fireAction: (SettingsAction) -> Unit) {
-    val context = LocalContext.current
+fun CacheSettingsEntry(modifier: Modifier = Modifier, clearCache: () -> Unit) {
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -28,9 +27,7 @@ fun CacheSettingsEntry(modifier: Modifier = Modifier, fireAction: (SettingsActio
         )
 
         Button(
-            onClick = {
-                fireAction(SettingsAction.Clear(context))
-            },
+            onClick = clearCache,
         ) {
             Text(
                 text = stringResource(R.string.empty_cache),

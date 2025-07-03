@@ -11,7 +11,7 @@ const val SettingsTable = "SettingsTable"
     tableName = SettingsTable,
 )
 data class SettingsEntity(
-    @PrimaryKey @ColumnInfo(name = "id") val id: Long = 4871L,
+    @PrimaryKey @ColumnInfo(name = "id") val id: Long = 4871L, // magic number
     @ColumnInfo(name = "ipvsix") val ipv6: String = "2a01:cb1c:82c7:5e00:9f05:da30:3fcf:58ac",
     @ColumnInfo(name = "ipvfour") val ipv4: String = "92.150.239.130",
     @ColumnInfo(name = "viewInHD") val viewInHD: Boolean = true,

@@ -13,23 +13,16 @@ class SettingsPresenter(
 ) : LBSinglePresenter<SettingsUiState, SettingsNavScope, SettingsAction>() {
     override val flows: List<Flow<SettingsAction>> = emptyList()
 
-    override fun getInitialState(): SettingsUiState = SettingsUiState(
-        data = null,
-        remoteStatus = null,
-        toggleIpV6 = {emitUserAction(SettingsAction.SetIpV6)},
-    )
+    override fun getInitialState(): SettingsUiState = SettingsUiState.LoadingData
 
     init {
+        emitUserAction(SettingsAction.GetSettingsData)
         emitUserAction(SettingsAction.GetRemoteStatus)
-        viewModelScope.launch {
-            val data = settingsRepository.getSettingsDataFromDB()
-            emitUserAction(SettingsAction.GotData(data = data))
-        }
     }
 
     override fun initReducer(): LBSingleReducer<SettingsUiState, SettingsNavScope, SettingsAction> {
         return SettingsReducer(viewModelScope, ::emitUserAction, settingsRepository)
     }
 
-    override val content: @Composable ((SettingsUiState) -> Unit) = { SettingsScreen(it, ::emitUserAction) }
+    override val content: @Composable ((SettingsUiState) -> Unit) = { SettingsScreen(it) }
 }

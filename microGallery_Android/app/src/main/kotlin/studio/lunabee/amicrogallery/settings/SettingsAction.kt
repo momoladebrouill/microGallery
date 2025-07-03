@@ -12,12 +12,11 @@ sealed interface SettingsAction {
     data class Clear(
         val context: Context,
     ) : SettingsAction
-    data object SetIpV6: SettingsAction
+    data object ToggleIpv6: SettingsAction
 
-    data class SetParameter(
-        val data: SettingsData
-    ) : SettingsAction
+
     object GetRemoteStatus : SettingsAction
+    object GetSettingsData : SettingsAction
     data class GotRemoteStatus(
         val status: RemoteStatus,
     ) : SettingsAction

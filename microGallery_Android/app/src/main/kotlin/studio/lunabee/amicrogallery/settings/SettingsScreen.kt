@@ -28,13 +28,13 @@ import studio.lunabee.amicrogallery.settings.entries.VisualiseSettingsEntry
 import studio.lunabee.amicrogallery.utils.getAppVersion
 
 @Composable
-fun SettingsScreen(uiState: SettingsUiState, fireAction: (SettingsAction) -> Unit) {
+fun SettingsScreen(uiState: SettingsUiState) {
     if (uiState.data == null) {
         Text(stringResource(R.string.waitingForData), style = typography.body)
     } else {
         val settingsEntries: List<@Composable (modifier: Modifier) -> Unit> = listOf(
             // mod as a short term for modifier
-            { mod -> TitleSettingsEntry(mod, fireAction) },
+            { mod -> TitleSettingsEntry(mod, uiState.jumpBack) },
             { mod -> IPAddressesSettingsEntry(mod, uiState.data, fireAction) },
             { mod -> VisualiseSettingsEntry(mod, uiState.data, fireAction) },
             { mod -> CacheSettingsEntry(mod, fireAction) },
