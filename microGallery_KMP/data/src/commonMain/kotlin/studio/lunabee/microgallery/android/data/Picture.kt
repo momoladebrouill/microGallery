@@ -5,6 +5,6 @@ data class Picture(
     val id: Long = 0,
     val fullResPath: String?,
     val lowResPath: String?,
-    val year: String?,
-    val month: String?,
+    val year: MYear?,
+    val month: MMonth?,
 ) : Node()

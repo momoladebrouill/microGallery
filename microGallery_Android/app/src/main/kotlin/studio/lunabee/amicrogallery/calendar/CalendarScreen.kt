@@ -53,20 +53,19 @@ import studio.lunabee.amicrogallery.core.ui.R as CoreUi
 @Composable
 fun CalendarScreen(
     calendarUiState: CalendarUiState,
-    fireAction: (CalendarAction) -> Unit,
 ) {
     Box(modifier = Modifier.fillMaxWidth()) {
         BackHandler(enabled = calendarUiState.yearSelected != null) {
-            fireAction(CalendarAction.ResetToHome)
+            calendarUiState.resetToHome()
         }
         if (calendarUiState.yearSelected != null) {
-            ScrollTroughYear(calendarUiState, fireAction)
+            ScrollTroughYear(calendarUiState)
         } else {
-            Years(calendarUiState.years, fireAction)
+            Years(calendarUiState)
         }
 
         IconButton(
-            onClick = { fireAction(CalendarAction.JumpToSettings) },
+            onClick = calendarUiState.jumpToSettings,
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .statusBarsPadding(),
@@ -80,7 +79,7 @@ fun CalendarScreen(
 }
 
 @Composable
-fun Years(years: List<YearPreview>, onAction: (CalendarAction) -> Unit) {
+fun Years(uiState: CalendarUiState) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
         contentPadding = PaddingValues(
@@ -100,11 +99,11 @@ fun Years(years: List<YearPreview>, onAction: (CalendarAction) -> Unit) {
                 )
             }
         }
-        items(years) {
+        items(uiState.years) {
             YearButton(
                 it,
-                navigateToYear = { onAction(CalendarAction.JumpToYear(it.year)) },
-                showPictureInButton = { onAction(CalendarAction.ShowPhoto(it.picturePreview.id)) },
+                navigateToYear = { uiState.jumpToYear(it.year) },
+                showPictureInButton = { uiState.showPhoto(it.picturePreview.id) },
             )
         }
     }
@@ -136,7 +135,8 @@ fun YearButton(yearPreview: YearPreview, navigateToYear: () -> Unit, showPicture
                     onLongPress = { _ -> showPictureInButton() },
                     onTap = { _ -> navigateToYear() },
                 )
-            }.clip(RoundedCornerShape(radius.RadiusLarge)),
+            }
+            .clip(RoundedCornerShape(radius.RadiusLarge)),
 
     ) {
         val hazeState = HazeState()

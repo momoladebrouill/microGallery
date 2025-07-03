@@ -18,6 +18,7 @@ data class RemoteMicroElement(
                 name = name,
                 content = (contents?.map { it.toData() })!!,
             )
+
             "file" -> Picture(
                 id = 4L,
                 name = name,
@@ -26,6 +27,7 @@ data class RemoteMicroElement(
                 year = null,
                 month = null,
             )
+
             else ->
                 throw CoreError("found a new type in request")
         }

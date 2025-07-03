@@ -33,11 +33,12 @@ import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.spac
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.typography
 import studio.lunabee.amicrogallery.app.R
 import studio.lunabee.amicrogallery.utils.getMonthName
-import studio.lunabee.microgallery.android.data.Picture
+import studio.lunabee.microgallery.android.data.MMonth
+import studio.lunabee.microgallery.android.data.MYear
 
 @OptIn(ExperimentalHazeMaterialsApi::class)
 @Composable
-fun MonthLabel(year: String, month: String) {
+fun MonthLabel(year: MYear, month: MMonth) {
     val statusBarPadding = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
 
     Box {
@@ -61,52 +62,46 @@ fun MonthLabel(year: String, month: String) {
     }
 }
 
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
-@Composable
-fun Pic(picture: Picture, hazeState: HazeState, fireAction: (CalendarAction) -> Unit) {
-    MicroGalleryButtonImage(
-        picture,
-        modifier = Modifier.padding(spacing.SpacingSmall),
-        hazeState = hazeState,
-        showMe = { pictureId -> fireAction(CalendarAction.ShowPhoto(pictureId)) },
-    )
-}
-
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalHazeMaterialsApi::class)
 @Composable
-fun ScrollTroughYear(calendarUiState: CalendarUiState, fireAction: (CalendarAction) -> Unit) {
+fun ScrollTroughYear(calendarUiState: CalendarUiState) {
     val hazeState = remember { HazeState() }
-    val year = calendarUiState.yearSelected!!
-    LazyVerticalStaggeredGrid(
-        columns = StaggeredGridCells.Fixed(2),
-        modifier = Modifier
-            .fillMaxHeight()
-            .background(Color.Transparent)
-            .hazeEffect(hazeState, HazeMaterials.thin(colors.background)),
-    ) {
-        for (month in calendarUiState.monthsOfYears[year] ?: listOf()) {
-            item(key = "month:$month") {
-                MonthLabel(
-                    year = year,
-                    month = month,
-                )
-            }
-            item {
-                HorizontalDivider(
-                    color = colors.second.copy(alpha = 0.5f),
-                    modifier = Modifier
-                        .padding(spacing.SpacingMedium)
-                        .clip(RoundedCornerShape(radius.RadiusMedium)),
-                    thickness = spacing.SpacingSmall,
-                )
-            }
-            fireAction(CalendarAction.AskForExpand(month, year))
-            items(calendarUiState.photosOfMonth[Pair(year, month)] ?: listOf()) {
-                Pic(
-                    picture = it,
-                    hazeState = hazeState,
-                    fireAction = fireAction,
-                )
+    val year = calendarUiState.yearSelected
+    if (year == null) {
+        calendarUiState.resetToHome()
+    } else {
+        LazyVerticalStaggeredGrid(
+            columns = StaggeredGridCells.Fixed(2),
+            modifier = Modifier
+                .fillMaxHeight()
+                .background(Color.Transparent)
+                .hazeEffect(hazeState, HazeMaterials.thin(colors.background)),
+        ) {
+            for (month in calendarUiState.monthsOfYears[year] ?: listOf()) {
+                item(key = "month:$month") {
+                    MonthLabel(
+                        year = year,
+                        month = month,
+                    )
+                }
+                item {
+                    HorizontalDivider(
+                        color = colors.second.copy(alpha = 0.5f),
+                        modifier = Modifier
+                            .padding(spacing.SpacingMedium)
+                            .clip(RoundedCornerShape(radius.RadiusMedium)),
+                        thickness = spacing.SpacingSmall,
+                    )
+                }
+                calendarUiState.askForExpand(year, month)
+                items(calendarUiState.photosOfMonth[Pair(year, month)] ?: listOf()) {
+                    MicroGalleryButtonImage(
+                        picture = it,
+                        modifier = Modifier.padding(spacing.SpacingSmall),
+                        hazeState = hazeState,
+                        showMe = calendarUiState.showPhoto,
+                    )
+                }
             }
         }
     }

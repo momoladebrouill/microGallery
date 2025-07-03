@@ -39,13 +39,11 @@ import studio.lunabee.amicrogallery.core.ui.R as CoreUi
 @Composable
 fun LastMonthScreen(
     uiState: LastMonthUiState,
-    fireAction: (LastMonthAction) -> Unit,
 ) {
-    val hazeState = remember { HazeState() }
     if (uiState.pictures.isEmpty()) {
         EmptyList()
     } else {
-        HasElements(uiState, hazeState, fireAction = fireAction)
+        HasElements(uiState)
     }
 }
 
@@ -68,8 +66,9 @@ fun EmptyList() {
 
 @OptIn(ExperimentalHazeMaterialsApi::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun HasElements(uiState: LastMonthUiState, hazeState: HazeState, fireAction: (LastMonthAction) -> Unit) {
+fun HasElements(uiState: LastMonthUiState) {
     val listState = rememberLazyListState()
+    val hazeState = remember { HazeState() }
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         state = listState,
@@ -105,7 +104,7 @@ fun HasElements(uiState: LastMonthUiState, hazeState: HazeState, fireAction: (La
             }
         }
         items(uiState.pictures) { picture ->
-            MicroGalleryButtonImage(picture, hazeState, showMe = { fireAction(LastMonthAction.ShowPhoto(it)) })
+            MicroGalleryButtonImage(picture, hazeState, showMe = { uiState.showPhoto(it) })
             Spacer(modifier = Modifier.padding(PaddingValues(spacing.SpacingMedium)))
         }
     }

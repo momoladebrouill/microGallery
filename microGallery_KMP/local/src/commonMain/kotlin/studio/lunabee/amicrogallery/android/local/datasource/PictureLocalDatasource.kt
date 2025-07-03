@@ -3,6 +3,8 @@ package studio.lunabee.amicrogallery.android.local.datasource
 import studio.lunabee.amicrogallery.android.local.dao.PictureDao
 import studio.lunabee.amicrogallery.android.local.entity.PictureEntity
 import studio.lunabee.amicrogallery.picture.PictureLocal
+import studio.lunabee.microgallery.android.data.MMonth
+import studio.lunabee.microgallery.android.data.MYear
 import studio.lunabee.microgallery.android.data.Picture
 import studio.lunabee.microgallery.android.data.YearPreview
 
@@ -15,7 +17,7 @@ class PictureLocalDatasource(
     }
 
     override suspend fun getYearPreviews(): List<YearPreview> {
-        val years: List<String> = pictureDao.getYears()
+        val years: List<MYear> = pictureDao.getYears()
         return years.map { year ->
             YearPreview(
                 year = year,
@@ -29,13 +31,13 @@ class PictureLocalDatasource(
         pictureDao.freshStart()
     }
 
-    override suspend fun getMonthsInYear(year: String): List<String> {
+    override suspend fun getMonthsInYear(year: MYear): List<MMonth> {
         return pictureDao.getMonthsInYear(year)
     }
 
     override suspend fun getPicturesInMonth(
-        year: String,
-        month: String,
+        year: MYear,
+        month: MMonth,
     ): List<Picture> {
         return pictureDao.getPicturesInMonth(year, month).map(PictureEntity::toPicture)
     }

@@ -33,7 +33,10 @@ class UntimedPresenter(
         }
     }
 
-    override fun getInitialState(): UntimedUiState = UntimedUiState(listOf())
+    override fun getInitialState(): UntimedUiState = UntimedUiState(
+        images = listOf(),
+        showPhoto = { emitUserAction(UntimedAction.ShowPhoto(it)) },
+    )
 
-    override val content: @Composable (UntimedUiState) -> Unit = { UntimedScreen(it, ::emitUserAction) }
+    override val content: @Composable (UntimedUiState) -> Unit = { UntimedScreen(it) }
 }

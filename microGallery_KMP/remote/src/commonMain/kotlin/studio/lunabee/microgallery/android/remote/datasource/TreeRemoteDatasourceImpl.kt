@@ -2,6 +2,8 @@ package studio.lunabee.microgallery.android.remote.datasource
 
 import studio.lunabee.amicrogallery.android.error.CoreError
 import studio.lunabee.microgallery.android.data.Directory
+import studio.lunabee.microgallery.android.data.MMonth
+import studio.lunabee.microgallery.android.data.MYear
 import studio.lunabee.microgallery.android.data.Node
 import studio.lunabee.microgallery.android.data.Picture
 import studio.lunabee.microgallery.android.remote.service.RootService
@@ -29,7 +31,7 @@ class TreeRemoteDatasourceImpl(
 }
 
 // TODO : get the string of initial path another way
-fun giveFullNameToFiles(node: Node, path: String = "/disque/photos/ranged", year: String? = null, month: String? = null): Node {
+fun giveFullNameToFiles(node: Node, path: String = "/disque/photos/ranged", year: MYear? = null, month: MMonth? = null): Node {
     return when (node) {
         is Directory -> Directory(
             name = node.name,
