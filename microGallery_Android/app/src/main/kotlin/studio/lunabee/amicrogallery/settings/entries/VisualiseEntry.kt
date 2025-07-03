@@ -51,7 +51,7 @@ fun VisualiseSettingsEntry(modifier: Modifier = Modifier, data: SettingsData, fi
                 checked = viewInHD,
                 onCheckedChange = {
                     viewInHD = !viewInHD
-                    fireAction(SettingsAction.SetParameters(data = data.copy(viewInHD = viewInHD)))
+                    fireAction(SettingsAction.SetParameter(data = data.copy(viewInHD = viewInHD)))
                 },
             )
         }

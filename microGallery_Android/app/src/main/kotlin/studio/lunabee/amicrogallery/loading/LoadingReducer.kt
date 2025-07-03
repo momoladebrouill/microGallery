@@ -1,11 +1,12 @@
 package studio.lunabee.amicrogallery.loading
 
 import kotlinx.coroutines.CoroutineScope
+import studio.lunabee.amicrogallery.loading.LoadingUiState.*
 import studio.lunabee.compose.presenter.LBSingleReducer
 import studio.lunabee.compose.presenter.ReduceResult
 import studio.lunabee.compose.presenter.asResult
 import studio.lunabee.compose.presenter.withSideEffect
-
+import studio.lunabee.amicrogallery.app.R
 class LoadingReducer(
 
     override val coroutineScope: CoroutineScope,
@@ -24,9 +25,10 @@ class LoadingReducer(
                 }
             }
             is LoadingAction.Error -> {
-                LoadingUiState.Error(action.errorMessage).asResult()
+                Error(action.errorMessage).asResult()
             }
-            is LoadingAction.Reload -> LoadingUiState.Default().asResult()
+            is LoadingAction.Reload -> Default().asResult()
+            LoadingAction.FoundSettings -> Default(log = R.string.found_settings).asResult()
         }
     }
 }

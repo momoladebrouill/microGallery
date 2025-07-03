@@ -21,13 +21,13 @@ import studio.lunabee.amicrogallery.app.R
 @Composable
 fun LoadingScreen(loadingUiState: LoadingUiState, onAction: (LoadingAction) -> Unit) {
     when (loadingUiState) {
-        is LoadingUiState.Default -> WaitingForResponse()
+        is LoadingUiState.Default -> WaitingForResponse(loadingUiState.log)
         is LoadingUiState.Error -> ShowError(loadingUiState.errorMessage, onAction)
     }
 }
 
 @Composable
-fun WaitingForResponse() {
+fun WaitingForResponse(textRes : Int? = null) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.align(Alignment.Center)) {
             Text(
@@ -38,13 +38,19 @@ fun WaitingForResponse() {
             )
             Text(
                 text = stringResource(R.string.notLong),
-                style = typography.body,
+                style = typography.title,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
             )
             LinearProgressIndicator(
                 color = colors.main,
                 trackColor = colors.second.copy(alpha = 0.5f),
             )
+            if(textRes != null){
+                Text(
+                    text = stringResource(textRes),
+                    style = typography.body
+                )
+            }
         }
     }
 }

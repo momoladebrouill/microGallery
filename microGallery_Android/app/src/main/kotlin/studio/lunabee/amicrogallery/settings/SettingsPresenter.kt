@@ -16,12 +16,13 @@ class SettingsPresenter(
     override fun getInitialState(): SettingsUiState = SettingsUiState(
         data = null,
         remoteStatus = null,
+        toggleIpV6 = {emitUserAction(SettingsAction.SetIpV6)},
     )
 
     init {
         emitUserAction(SettingsAction.GetRemoteStatus)
         viewModelScope.launch {
-            val data = settingsRepository.getSettingsData()
+            val data = settingsRepository.getSettingsDataFromDB()
             emitUserAction(SettingsAction.GotData(data = data))
         }
     }

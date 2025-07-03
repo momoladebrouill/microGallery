@@ -28,14 +28,12 @@ import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.spac
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.typography
 import studio.lunabee.amicrogallery.app.R
 import studio.lunabee.amicrogallery.settings.SettingsAction
-import studio.lunabee.amicrogallery.utils.changeCheck
 import studio.lunabee.microgallery.android.data.SettingsData
 
 @Composable
 fun IPAddressesSettingsEntry(modifier: Modifier = Modifier, data: SettingsData, fireAction: (SettingsAction) -> Unit) {
     var ipv4: String by remember { mutableStateOf(data.ipv4) }
     var ipv6: String by remember { mutableStateOf(data.ipv6) }
-    var ipv6force: Boolean by remember { mutableStateOf(data.useIpv6) }
     val keyboardController = LocalSoftwareKeyboardController.current
     Column(modifier = modifier) {
         Text(
@@ -61,7 +59,7 @@ fun IPAddressesSettingsEntry(modifier: Modifier = Modifier, data: SettingsData, 
             ),
             keyboardActions = KeyboardActions(
                 onDone = {
-                    fireAction(SettingsAction.SetParameters(data.copy(ipv4 = ipv4)))
+                    fireAction(SettingsAction.SetParameter(data.copy(ipv4 = ipv4)))
                     keyboardController?.hide()
                 },
             ),
@@ -85,7 +83,7 @@ fun IPAddressesSettingsEntry(modifier: Modifier = Modifier, data: SettingsData, 
             ),
             keyboardActions = KeyboardActions(
                 onDone = {
-                    fireAction(SettingsAction.SetParameters(data.copy(ipv6 = ipv6)))
+                    fireAction(SettingsAction.SetParameter(data.copy(ipv6 = ipv6)))
                     keyboardController?.hide()
                 },
             ),
@@ -93,14 +91,20 @@ fun IPAddressesSettingsEntry(modifier: Modifier = Modifier, data: SettingsData, 
 
         Row(verticalAlignment = Alignment.CenterVertically) {
             Switch(
-                checked = ipv6force,
-                onCheckedChange = { ipv6force = changeCheck(ipv6force, fireAction, data) },
+                checked = data.useIpv6,
+                onCheckedChange = {
+                    println("top top ${data.useIpv6}")
+                    fireAction(SettingsAction.SetParameter(data.copy(useIpv6 = !data.useIpv6)))
+                                  },
             )
             Spacer(modifier = Modifier.padding(horizontal = spacing.SpacingMedium))
             Column(
                 modifier = Modifier.pointerInput(null) {
                     detectTapGestures(
-                        onTap = { ipv6force = changeCheck(ipv6force, fireAction, data) },
+                        onTap = {
+                            println("tap tap ${data.useIpv6}")
+                            fireAction(SettingsAction.SetParameter(data.copy(useIpv6 = !data.useIpv6)))
+                                },
                     )
                 },
             ) {

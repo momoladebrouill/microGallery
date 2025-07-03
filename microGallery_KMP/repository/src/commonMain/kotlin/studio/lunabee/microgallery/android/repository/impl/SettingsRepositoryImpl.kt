@@ -10,10 +10,22 @@ class SettingsRepositoryImpl(
     private val settingsLocal: SettingsLocal,
     private val remoteStatusDatasource: RemoteStatusDatasource,
 ) : SettingsRepository {
-    private var settingsData: SettingsData? = null
+    private var _settingsData: SettingsData? = null
 
-    override suspend fun getSettingsData(): SettingsData {
-        return settingsData ?: settingsLocal.getSettings().also { settingsData = it }
+     override val settingsData: SettingsData
+         get() {
+            return if( _settingsData == null)
+                    error("trying to get settings data but not fetched from DB")
+                else
+                    _settingsData !!
+        }
+
+    override suspend fun fetchSettingsData() {
+        _settingsData = settingsLocal.getSettings()
+    }
+
+    override suspend fun getSettingsDataFromDB(): SettingsData {
+        return _settingsData ?: settingsLocal.getSettings().also { _settingsData = it }
     }
 
     override suspend fun clearDB() {
@@ -25,7 +37,7 @@ class SettingsRepositoryImpl(
     }
 
     override suspend fun setSettingsData(settingsUiData: SettingsData) {
-        settingsData = settingsUiData
+        _settingsData = settingsUiData
         settingsLocal.storeSettings(settingsUiData)
     }
 }

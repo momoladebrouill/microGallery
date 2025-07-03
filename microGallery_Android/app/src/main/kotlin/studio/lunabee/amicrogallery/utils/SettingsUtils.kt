@@ -13,9 +13,3 @@ fun Context.getAppVersion(): String {
         "Unknown"
     }
 }
-
-fun changeCheck(ipv6force: Boolean, fireAction: (SettingsAction) -> Unit, data: SettingsData): Boolean {
-    val ipv6forceN = !ipv6force
-    fireAction(SettingsAction.SetParameters(data.copy(useIpv6 = ipv6force)))
-    return ipv6forceN
-}

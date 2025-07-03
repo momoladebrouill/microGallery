@@ -18,6 +18,7 @@ dependencies {
     implementation(libs.activity.ktx)
     implementation(libs.androidxComposeFoundation)
     implementation(libs.androidxComposeMaterial3)
+    implementation(libs.koinCore)
     implementation(libs.androidxComposeUi)
     api(libs.coilCompose)
     implementation(libs.coilNetwork)
@@ -30,4 +31,5 @@ dependencies {
 
     api(projects.coreRes)
     implementation(projects.data)
+    implementation(projects.domain)
 }

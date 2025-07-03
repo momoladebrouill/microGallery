@@ -4,7 +4,10 @@ import studio.lunabee.microgallery.android.data.RemoteStatus
 import studio.lunabee.microgallery.android.data.SettingsData
 
 interface SettingsRepository {
-    suspend fun getSettingsData(): SettingsData
+
+    val settingsData : SettingsData
+    suspend fun fetchSettingsData()
+    suspend fun getSettingsDataFromDB(): SettingsData
     suspend fun clearDB()
 
     suspend fun getStatus(): RemoteStatus

@@ -7,4 +7,5 @@ import studio.lunabee.microgallery.android.data.SettingsData
 data class SettingsUiState(
     val data: SettingsData?,
     val remoteStatus: RemoteStatus?,
+    val toggleIpV6 : () -> Unit
 ) : PresenterUiState

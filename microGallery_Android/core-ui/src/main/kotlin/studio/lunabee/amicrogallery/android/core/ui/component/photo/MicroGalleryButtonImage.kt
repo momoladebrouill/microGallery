@@ -23,7 +23,12 @@ import studio.lunabee.microgallery.android.data.Picture
 
 @Composable
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
-fun MicroGalleryButtonImage(picture: Picture, hazeState: HazeState, showMe: (Long) -> Unit, modifier: Modifier = Modifier) {
+fun MicroGalleryButtonImage(
+    picture: Picture,
+    hazeState: HazeState,
+    showMe: (Long) -> Unit,
+    modifier: Modifier = Modifier
+) {
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(radius.RadiusMedium))

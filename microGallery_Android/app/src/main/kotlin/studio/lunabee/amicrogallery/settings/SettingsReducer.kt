@@ -34,7 +34,12 @@ class SettingsReducer(
                     jumpBack()
                 }
             }
-            is SettingsAction.SetParameters -> actualState.copy(data = action.data).asResult()
+            is SettingsAction.SetIpV6 -> actualState.copy(
+                data = actualState.data?.copy(
+                    useIpv6 = !(actualState.data?.useIpv6 ?: true)
+                )
+            ).asResult()
+            is SettingsAction.SetParameter -> actualState.copy(data =action.data).asResult()
             is SettingsAction.Clear -> actualState withSideEffect {
                 coroutineScope.launch {
                     val imageLoader = action.context.imageLoader
