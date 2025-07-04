@@ -15,9 +15,6 @@ interface PictureDao {
     @Query("DELETE FROM $PhotosTable")
     suspend fun freshStart()
 
-    @Query("SELECT DISTINCT year FROM $PhotosTable WHERE year <> 'untimed' ")
-    suspend fun getYears(): List<String>
-
     @Query("SELECT DISTINCT month FROM $PhotosTable WHERE year = :year")
     suspend fun getMonthsInYear(year: String): List<String>
 
@@ -29,4 +26,13 @@ interface PictureDao {
 
     @Query("SELECT * FROM $PhotosTable WHERE id = :id")
     suspend fun getPictureEntityFromId(id: Long): PictureEntity
+
+    @Query("SELECT DISTINCT year FROM $PhotosTable WHERE year <> 'untimed'")
+    suspend fun getYears(): List<String>
+
+    @Query("SELECT Count(id) FROM $PhotosTable WHERE year=:year")
+    suspend fun getQtyInYear(year: String): Int
+
+    @Query("SELECT * FROM $PhotosTable WHERE year = :year ORDER BY RANDOM()")
+    suspend fun getRandomPictureInYear(year: String): PictureEntity
 }

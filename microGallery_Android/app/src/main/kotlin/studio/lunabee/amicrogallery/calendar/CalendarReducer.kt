@@ -41,6 +41,9 @@ class CalendarReducer(
             is CalendarAction.AskForCollapse -> actualState.copy(
                 expandedMonths = actualState.expandedMonths - Pair(action.year, action.month),
             ).asResult()
+
+            is CalendarAction.JumpToYear -> actualState.copy(yearSelected = action.year).asResult()
+            is CalendarAction.ResetToHome -> actualState.copy(yearSelected = null).asResult()
         }
     }
 }

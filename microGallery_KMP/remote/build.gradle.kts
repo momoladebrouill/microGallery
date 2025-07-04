@@ -5,7 +5,6 @@ plugins {
     alias(libs.plugins.kotlinxSerialization)
 }
 
-
 kotlin {
     sourceSets {
         commonMain.dependencies {

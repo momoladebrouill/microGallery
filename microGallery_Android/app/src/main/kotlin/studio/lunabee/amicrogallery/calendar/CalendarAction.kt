@@ -1,17 +1,19 @@
 package studio.lunabee.amicrogallery.calendar
 
 import studio.lunabee.microgallery.android.data.Picture
+import studio.lunabee.microgallery.android.data.YearPreview
 
 sealed interface CalendarAction {
 
     class JumpToSettings : CalendarAction // Jump to settings screen
+    class ResetToHome : CalendarAction // Jump to the year view
 
     data class ShowPhoto( // Jump to photoViewer screen
         val pictureId: Long,
     ) : CalendarAction
 
     data class GotYears( // Got a db response for the list of different years
-        val years: List<String>,
+        val years: List<YearPreview>,
     ) : CalendarAction
 
     data class GotMonthsOfYears( // Got a db response for the months in the year X
@@ -37,6 +39,10 @@ sealed interface CalendarAction {
 
     data class AskForCollapse( // Ask to stop showing photos of month X year Y
         val month: String,
+        val year: String,
+    ) : CalendarAction
+
+    data class JumpToYear(
         val year: String,
     ) : CalendarAction
 }

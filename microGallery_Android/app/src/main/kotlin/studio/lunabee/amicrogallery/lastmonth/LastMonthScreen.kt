@@ -16,12 +16,12 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import dev.chrisbanes.haze.HazeState
@@ -29,7 +29,9 @@ import dev.chrisbanes.haze.hazeEffect
 import dev.chrisbanes.haze.materials.ExperimentalHazeMaterialsApi
 import dev.chrisbanes.haze.materials.HazeMaterials
 import studio.lunabee.amicrogallery.android.core.ui.component.photo.MicroGalleryButtonImage
-import studio.lunabee.amicrogallery.android.core.ui.theme.CoreSpacing
+import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.colors
+import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.spacing
+import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.typography
 import studio.lunabee.amicrogallery.app.R
 import studio.lunabee.amicrogallery.core.ui.R as CoreUi
 
@@ -59,7 +61,7 @@ fun EmptyList() {
                     .fillMaxWidth(0.3f)
                     .align(Alignment.CenterHorizontally),
             )
-            Text(text = stringResource(R.string.nothing_this_month), style = MaterialTheme.typography.titleMedium)
+            Text(text = stringResource(R.string.nothing_this_month), style = typography.title)
         }
     }
 }
@@ -76,35 +78,35 @@ fun HasElements(uiState: LastMonthUiState, hazeState: HazeState, fireAction: (La
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.primary)
+                    .background(Color.Transparent)
                     .hazeEffect(
                         state = hazeState,
                         style = HazeMaterials.ultraThin(
-                            MaterialTheme.colorScheme.primary,
+                            colors.main,
                         ),
                     ),
             ) {
                 Column {
-                    Spacer(modifier = Modifier.height(CoreSpacing.SpacingMedium))
+                    Spacer(modifier = Modifier.height(spacing.SpacingMedium))
                     Text(
                         text =
                         stringResource(R.string.lastmonth_title),
-                        color = MaterialTheme.colorScheme.onPrimary,
+                        color = colors.onMain,
                         modifier = Modifier
                             .fillMaxWidth()
                             .statusBarsPadding()
                             .padding(
-                                start = CoreSpacing.SpacingMedium,
-                                bottom = CoreSpacing.SpacingSmall,
+                                start = spacing.SpacingMedium,
+                                bottom = spacing.SpacingSmall,
                             ),
-                        style = MaterialTheme.typography.titleLarge,
+                        style = typography.title,
                     )
                 }
             }
         }
         items(uiState.pictures) { picture ->
             MicroGalleryButtonImage(picture, hazeState, showMe = { fireAction(LastMonthAction.ShowPhoto(it)) })
-            Spacer(modifier = Modifier.padding(PaddingValues(CoreSpacing.SpacingMedium)))
+            Spacer(modifier = Modifier.padding(PaddingValues(spacing.SpacingMedium)))
         }
     }
 }

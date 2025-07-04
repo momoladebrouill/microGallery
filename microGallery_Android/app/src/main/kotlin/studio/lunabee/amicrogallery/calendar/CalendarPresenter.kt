@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.lunabee.lbcore.model.LBResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import studio.lunabee.amicrogallery.loading.LoadingAction
 import studio.lunabee.compose.presenter.LBSinglePresenter
 import studio.lunabee.compose.presenter.LBSingleReducer
 import studio.lunabee.microgallery.android.domain.calendar.CalendarRepository
@@ -31,23 +30,18 @@ class CalendarPresenter(
         populateYears()
     }
 
-    fun populateYears(){
+    fun populateYears() {
         viewModelScope.launch {
             when (val result = LoadTreeUseCase(calendarRepository).invoke()) {
                 is LBResult.Success -> {
-                    // not very nice, but will be fixed in feature/better-ui
-                    emitUserAction(CalendarAction.GotYears(result.successData.keys.toList()))
-                    emitUserAction(CalendarAction.GotMonthsOfYears(result.successData))
+                    emitUserAction(CalendarAction.GotYears(result.successData.first))
+                    emitUserAction(CalendarAction.GotMonthsOfYears(result.successData.second))
                 }
 
-                is LBResult.Failure -> {
-                    // fall on error
-                }
+                is LBResult.Failure<*> -> TODO()
             }
         }
     }
-
-
 
     fun fireAction(calendarAction: CalendarAction) {
         when (calendarAction) {
@@ -58,7 +52,6 @@ class CalendarPresenter(
                     emitUserAction(CalendarAction.GotMY(calendarAction.month, calendarAction.year, picturesInMonth))
                 }
             }
-
             else -> emitUserAction(calendarAction)
         }
     }
