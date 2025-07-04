@@ -1,5 +1,6 @@
 package studio.lunabee.amicrogallery.settings.entries
 
+import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,10 +13,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.typography
 import studio.lunabee.amicrogallery.app.R
-import studio.lunabee.amicrogallery.settings.SettingsAction
 
 @Composable
-fun CacheSettingsEntry(modifier: Modifier = Modifier, clearCache: () -> Unit) {
+fun CacheSettingsEntry(modifier: Modifier = Modifier, clearCache: (Context) -> Unit) {
+    val context = LocalContext.current
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -27,7 +28,7 @@ fun CacheSettingsEntry(modifier: Modifier = Modifier, clearCache: () -> Unit) {
         )
 
         Button(
-            onClick = clearCache,
+            onClick = {clearCache(context)},
         ) {
             Text(
                 text = stringResource(R.string.empty_cache),

@@ -1,5 +1,6 @@
 package studio.lunabee.amicrogallery.picture
 
+import kotlinx.coroutines.flow.Flow
 import studio.lunabee.microgallery.android.data.MMonth
 import studio.lunabee.microgallery.android.data.MYear
 import studio.lunabee.microgallery.android.data.Picture
@@ -7,13 +8,10 @@ import studio.lunabee.microgallery.android.data.YearPreview
 
 interface PictureLocal {
     suspend fun freshStart()
-
     suspend fun insertPictures(pictures: List<Picture>)
-
-    suspend fun getYearPreviews(): List<YearPreview>
-
-    suspend fun getMonthsInYear(year: MYear): List<MMonth>
-    suspend fun getPicturesInMonth(year: MYear, month: MMonth): List<Picture>
-    suspend fun getPicturesUntimed(): List<Picture>
-    suspend fun getPictureById(id: Long): Picture
+    fun getYearPreviews(): Flow<List<YearPreview>>
+    fun getMonthsInYear(year: MYear): Flow<List<MMonth>>
+    fun getPicturesInMonth(year: MYear, month: MMonth): Flow<List<Picture>>
+    fun getPicturesUntimed(): Flow<List<Picture>>
+    fun getPictureById(id: Long): Flow<Picture>
 }

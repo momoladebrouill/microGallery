@@ -1,7 +1,8 @@
 package studio.lunabee.microgallery.android.domain.photoviewer
 
+import kotlinx.coroutines.flow.Flow
 import studio.lunabee.microgallery.android.data.Picture
 
 interface PhotoViewerRepository {
-    suspend fun getPictureById(id: Long): Picture
+     fun getPictureById(id: Long): Flow<Picture>
 }

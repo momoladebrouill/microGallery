@@ -17,12 +17,11 @@ import androidx.compose.ui.res.stringResource
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.colors
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.typography
 import studio.lunabee.amicrogallery.app.R
-import studio.lunabee.amicrogallery.settings.SettingsAction
-import studio.lunabee.microgallery.android.data.SettingsData
+import studio.lunabee.amicrogallery.settings.SettingsUiState
 
 @Composable
-fun VisualiseSettingsEntry(modifier: Modifier = Modifier, data: SettingsData, fireAction: (SettingsAction) -> Unit) {
-    var viewInHD: Boolean by remember { mutableStateOf(data.viewInHD) }
+fun VisualiseSettingsEntry(modifier: Modifier = Modifier, uiState: SettingsUiState.HasData) {
+    var viewInHD: Boolean by remember { mutableStateOf(uiState.data.viewInHD) }
     Column(modifier = modifier) {
         Text(
             text = stringResource(R.string.visualisation_option),
@@ -51,7 +50,7 @@ fun VisualiseSettingsEntry(modifier: Modifier = Modifier, data: SettingsData, fi
                 checked = viewInHD,
                 onCheckedChange = {
                     viewInHD = !viewInHD
-                    fireAction(SettingsAction.SetParameter(data = data.copy(viewInHD = viewInHD)))
+                    uiState.toggleViewInHD()
                 },
             )
         }

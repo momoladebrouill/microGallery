@@ -1,5 +1,6 @@
 package studio.lunabee.amicrogallery.android.shared
 
+import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -8,6 +9,7 @@ import studio.lunabee.microgallery.android.domain.lastMonth.LastMonthRepository
 import studio.lunabee.microgallery.android.domain.loading.LoadingRepository
 import studio.lunabee.microgallery.android.domain.photoviewer.PhotoViewerRepository
 import studio.lunabee.microgallery.android.domain.settings.SettingsRepository
+import studio.lunabee.microgallery.android.domain.settings.usecase.ObserveSettingsUseCase
 import studio.lunabee.microgallery.android.domain.untimed.UntimedRepository
 import studio.lunabee.microgallery.android.repository.impl.CalendarRepositoryImpl
 import studio.lunabee.microgallery.android.repository.impl.LastMonthRepositoryImpl
@@ -24,3 +26,5 @@ val repositoryModule = module {
     singleOf(::PhotoViewerRepositoryImpl) bind PhotoViewerRepository::class
     singleOf(::SettingsRepositoryImpl) bind SettingsRepository::class
 }
+
+

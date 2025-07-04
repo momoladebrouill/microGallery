@@ -7,6 +7,7 @@ import org.koin.core.logger.Level
 import studio.lunabee.amicrogallery.android.shared.KoinHelper
 import studio.lunabee.amicrogallery.android.shared.remoteDatasourceModule
 import studio.lunabee.amicrogallery.android.shared.repositoryModule
+import studio.lunabee.amicrogallery.android.shared.useCaseModule
 import studio.lunabee.amicrogallery.di.presentersModule
 
 class MicroGalleryApplication : Application() {
@@ -21,6 +22,7 @@ class MicroGalleryApplication : Application() {
             modules(presentersModule)
             modules(repositoryModule)
             modules(remoteDatasourceModule)
+            modules(useCaseModule)
         }
     }
 }

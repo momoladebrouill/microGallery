@@ -21,18 +21,17 @@ import studio.lunabee.amicrogallery.app.R
 @Composable
 fun LoadingScreen(loadingUiState: LoadingUiState) {
     when (loadingUiState) {
-        is LoadingUiState.Default -> WaitingForResponse(loadingUiState.log)
         is LoadingUiState.Error -> ShowError(loadingUiState)
+        is LoadingUiState.Fetching -> WaitingForResponse(loadingUiState)
     }
 }
 
 @Composable
-fun WaitingForResponse(textRes : Int? = null) {
+fun WaitingForResponse(uiState: LoadingUiState.Fetching) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.align(Alignment.Center)) {
             Text(
                 text = stringResource(R.string.waitingForData),
-
                 style = typography.header,
             )
             Text(
@@ -44,11 +43,13 @@ fun WaitingForResponse(textRes : Int? = null) {
                 color = colors.main,
                 trackColor = colors.second.copy(alpha = 0.5f),
             )
-            if(textRes != null){
-                Text(
-                    text = stringResource(textRes),
-                    style = typography.body
-                )
+            Column {
+                for((key, item) in uiState.foundMap){
+                    if(item)
+                        Text("okay for $key")
+                    else
+                        Text("not okay for $key")
+                }
             }
         }
     }

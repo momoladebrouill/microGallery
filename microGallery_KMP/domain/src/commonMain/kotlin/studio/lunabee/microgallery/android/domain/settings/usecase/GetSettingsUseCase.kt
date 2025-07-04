@@ -1,13 +1,15 @@
 package studio.lunabee.microgallery.android.domain.settings.usecase
 
 import com.lunabee.lbcore.model.LBResult
+import kotlinx.coroutines.flow.Flow
 import studio.lunabee.amicrogallery.android.error.CoreError
+import studio.lunabee.microgallery.android.data.SettingsData
 import studio.lunabee.microgallery.android.domain.settings.SettingsRepository
 
-class LoadSettingsUseCase(
+class ObserveSettingsUseCase(
     val settingsRepository: SettingsRepository
 ) {
-    suspend operator fun invoke(): LBResult<Unit> = CoreError.Companion.runCatching {
-        return LBResult.Success(settingsRepository.fetchSettingsData())
+    operator fun invoke(): Flow<SettingsData>  {
+        return settingsRepository.getSettingsDataFromDB()
     }
 }

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -16,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.colors
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.spacing
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.typography
@@ -29,37 +31,44 @@ import studio.lunabee.amicrogallery.utils.getAppVersion
 
 @Composable
 fun SettingsScreen(uiState: SettingsUiState) {
-    if (uiState.data == null) {
-        Text(stringResource(R.string.waitingForData), style = typography.body)
-    } else {
-        val settingsEntries: List<@Composable (modifier: Modifier) -> Unit> = listOf(
-            // mod as a short term for modifier
-            { mod -> TitleSettingsEntry(mod, uiState.jumpBack) },
-            { mod -> IPAddressesSettingsEntry(mod, uiState.data, fireAction) },
-            { mod -> VisualiseSettingsEntry(mod, uiState.data, fireAction) },
-            { mod -> CacheSettingsEntry(mod, fireAction) },
-            { mod -> ServerStatisticsSettingsEntry(mod, uiState.remoteStatus, fireAction) },
-        )
-        Column(modifier = Modifier.statusBarsPadding()) {
-            val entryModifier = Modifier
-            LazyColumn(
-                modifier = Modifier.background(colors.background),
-                contentPadding = PaddingValues(spacing.SpacingMedium),
-                verticalArrangement = Arrangement.spacedBy(spacing.SpacingLarge),
 
-            ) {
-                items(settingsEntries) { entry ->
-                    Column {
-                        entry(entryModifier)
-                        Spacer(Modifier.height(spacing.SpacingMedium))
+    when (uiState) {
+        is SettingsUiState.LoadingData -> Text(
+            stringResource(R.string.waitingForData),
+            style = typography.body,
+            modifier = Modifier.fillMaxSize().statusBarsPadding(),
+            textAlign = TextAlign.Center
+        )
+        is SettingsUiState.HasData -> {
+            val settingsEntries: List<@Composable (modifier: Modifier) -> Unit> = listOf(
+                // mod as a short term for modifier
+                { mod -> TitleSettingsEntry(mod, uiState.jumpBack) },
+                { mod -> IPAddressesSettingsEntry(mod, uiState) },
+                { mod -> VisualiseSettingsEntry(mod, uiState) },
+                { mod -> CacheSettingsEntry(mod, uiState.clearCache) },
+                { mod -> ServerStatisticsSettingsEntry(mod, uiState) },
+            )
+            Column(modifier = Modifier.statusBarsPadding()) {
+                val entryModifier = Modifier
+                LazyColumn(
+                    modifier = Modifier.background(colors.background),
+                    contentPadding = PaddingValues(spacing.SpacingMedium),
+                    verticalArrangement = Arrangement.spacedBy(spacing.SpacingLarge),
+
+                    ) {
+                    items(settingsEntries) { entry ->
+                        Column {
+                            entry(entryModifier)
+                            Spacer(Modifier.height(spacing.SpacingMedium))
+                        }
                     }
                 }
-            }
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                Text(
-                    stringResource(R.string.application_name) + LocalContext.current.getAppVersion(),
-                    style = typography.labelBold,
-                )
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                    Text(
+                        stringResource(R.string.application_name) + LocalContext.current.getAppVersion(),
+                        style = typography.labelBold,
+                    )
+                }
             }
         }
     }

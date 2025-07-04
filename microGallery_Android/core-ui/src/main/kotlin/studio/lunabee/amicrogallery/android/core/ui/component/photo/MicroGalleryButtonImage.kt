@@ -20,14 +20,17 @@ import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.colo
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.radius
 import studio.lunabee.amicrogallery.core.ui.R
 import studio.lunabee.microgallery.android.data.Picture
+import studio.lunabee.microgallery.android.data.SettingsData
 
 @Composable
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 fun MicroGalleryButtonImage(
     picture: Picture,
+    settingsData: SettingsData,
     hazeState: HazeState,
     showMe: (Long) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+
 ) {
     Box(
         modifier = modifier
@@ -51,6 +54,7 @@ fun MicroGalleryButtonImage(
                 .hazeSource(state = hazeState)
                 .wrapContentHeight(),
             errorPainter = painterResource(R.drawable.nopicture),
+            settingsData = settingsData
 
         )
     }

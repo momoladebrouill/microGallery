@@ -46,6 +46,7 @@ import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.spac
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.typography
 import studio.lunabee.amicrogallery.app.R
 import studio.lunabee.amicrogallery.dashboard.LocalBottomBarHeight
+import studio.lunabee.microgallery.android.data.SettingsData
 import studio.lunabee.microgallery.android.data.YearPreview
 import studio.lunabee.amicrogallery.core.ui.R as CoreUi
 
@@ -103,7 +104,7 @@ fun Years(uiState: CalendarUiState) {
             YearButton(
                 it,
                 navigateToYear = { uiState.jumpToYear(it.year) },
-                showPictureInButton = { uiState.showPhoto(it.picturePreview.id) },
+                showPictureInButton = { uiState.showPhoto(it.picturePreview.id) }
             )
         }
     }

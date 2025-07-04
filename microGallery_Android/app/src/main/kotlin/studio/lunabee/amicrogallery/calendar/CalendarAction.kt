@@ -1,6 +1,10 @@
 package studio.lunabee.amicrogallery.calendar
 
+import kotlinx.coroutines.flow.Flow
+import studio.lunabee.microgallery.android.data.MMonth
+import studio.lunabee.microgallery.android.data.MYear
 import studio.lunabee.microgallery.android.data.Picture
+import studio.lunabee.microgallery.android.data.SettingsData
 import studio.lunabee.microgallery.android.data.YearPreview
 
 sealed interface CalendarAction {
@@ -22,13 +26,13 @@ sealed interface CalendarAction {
 
     data class GotMonthsOfYears(
         // Got a db response for the months in the year X
-        val monthsOfYears: Map<String, List<String>>,
+        val monthsOfYears: Map<MYear, Flow<List<String>>>,
     ) : CalendarAction
 
     data class GotPicturesInMonth(
         // Got a db response for the list of pictures in month X year Y
-        val year: String,
-        val month: String,
+        val year: MYear,
+        val month: MMonth,
         val pictures: List<Picture>,
     ) : CalendarAction
 
@@ -42,4 +46,5 @@ sealed interface CalendarAction {
     data class JumpToYear(
         val year: String,
     ) : CalendarAction
+
 }

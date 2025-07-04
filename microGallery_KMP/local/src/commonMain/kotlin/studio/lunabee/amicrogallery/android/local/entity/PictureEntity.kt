@@ -3,7 +3,10 @@ package studio.lunabee.amicrogallery.android.local.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import studio.lunabee.microgallery.android.data.MicroPicture
 import studio.lunabee.microgallery.android.data.Picture
+import studio.lunabee.microgallery.android.data.SettingsData
+import kotlin.plus
 
 const val PhotosTable = "PhotosTable"
 
@@ -19,14 +22,42 @@ data class PictureEntity(
     @ColumnInfo(name = "month") val month: String?,
 ) {
 
-    fun toPicture(): Picture {
-        return Picture(
+    fun toMicroPicture(settingsData: SettingsData, defaultToHighRes: Boolean = true): MicroPicture {
+        val data = settingsData
+
+        val (begin0, begin1) =
+            if(data.useIpv6)
+                Pair("[${data.ipv6}]", data.ipv4)
+            else
+                Pair(data.ipv4, "[${data.ipv6}]")
+        val urlsToTry =
+            if(data.viewInHD){
+                val (end0, end1) =
+                    if (defaultToHighRes)
+                        Pair(fullResPath, lowResPath)
+                    else
+                        Pair( lowResPath, fullResPath)
+                listOf(
+                    begin0 + end0,
+                    begin0 + end1,
+                    begin1 + end0,
+                    begin1 + end1
+                )
+            } else {
+                listOf(
+                    begin0 + lowResPath,
+                    begin1 + lowResPath
+                )
+            }
+
+        val len = urlsToTry.size
+        val  beg = "http://"
+        return MicroPicture(
             id = id,
             name = name,
-            fullResPath = fullResPath,
-            lowResPath = lowResPath,
-            year = year,
-            month = month,
+            paths = urlsToTry.map {beg + it},
+            year = year ?: "",
+            month = month ?: "",
         )
     }
 

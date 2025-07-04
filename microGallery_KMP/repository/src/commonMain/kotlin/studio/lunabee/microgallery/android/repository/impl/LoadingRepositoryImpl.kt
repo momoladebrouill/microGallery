@@ -12,18 +12,19 @@ class LoadingRepositoryImpl(
 ) : LoadingRepository {
     override suspend fun fetchRootNode() {
         treeRemoteDatasource.fetchRoot()
-        val rootNode: Directory = treeRemoteDatasource.getRoot() as Directory
-        pictureLocal.freshStart()
-        for (year in rootNode.content) {
-            val yearDir: Directory = year as Directory
-            if (year.name == "untimed") {
-                pictureLocal.insertPictures(yearDir.content.map { it as Picture })
-            } else {
-                for (month in yearDir.content) {
-                    val monthDir = month as Directory
-                    pictureLocal.insertPictures(monthDir.content.map { it as Picture })
-                }
-            }
-        }
     }
+
+    override suspend fun getRootDir() : Directory {
+        val rootNode: Directory = treeRemoteDatasource.getRoot() as Directory
+        return rootNode
+    }
+
+    override suspend fun pictureDbFreshStart() {
+        pictureLocal.freshStart()
+    }
+
+    override suspend fun savePicturesInDb(pictures: List<Picture>) {
+        pictureLocal.insertPictures(pictures)
+    }
+
 }

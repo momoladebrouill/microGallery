@@ -5,7 +5,6 @@ import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.dsl.module
 import studio.lunabee.microgallery.android.remote.CoreHttpClient
-import studio.lunabee.microgallery.android.repository.impl.SettingsRepositoryImpl
 
 object KoinHelper {
     fun init(block: KoinApplication.() -> Unit) {

@@ -12,11 +12,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.typography
 import studio.lunabee.amicrogallery.app.R
-import studio.lunabee.amicrogallery.settings.SettingsAction
-import studio.lunabee.microgallery.android.data.RemoteStatus
+import studio.lunabee.amicrogallery.settings.SettingsUiState
 
 @Composable
-fun ServerStatisticsSettingsEntry(modifier: Modifier = Modifier, remoteStatus: RemoteStatus?, fireAction: (SettingsAction) -> Unit) {
+fun ServerStatisticsSettingsEntry(modifier: Modifier = Modifier, uiState: SettingsUiState.HasData) {
+    val remoteStatus = uiState.remoteStatus
     Column(modifier = modifier) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Text(
@@ -25,7 +25,7 @@ fun ServerStatisticsSettingsEntry(modifier: Modifier = Modifier, remoteStatus: R
                 modifier = Modifier.align(alignment = Alignment.CenterVertically),
             )
             Button(
-                onClick = { fireAction(SettingsAction.GetRemoteStatus) },
+                onClick = uiState.getRemoteStatus,
             ) {
                 Text(
                     text = stringResource(R.string.refresh),
