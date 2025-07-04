@@ -37,11 +37,19 @@
     <string name="consume_less_but_more_storage">Consumes less data but use more storage</string>
     <string name="empty_cache">Clear cache</string>
     <string name="server_statistics">Remote statistics</string>
-    <string name="celcius">%d °C</string>
-    <string name="temperature">Temperature:</string>
-    <string name="quantity_of_pictures">"Number of photos: "</string>
+    <string name="celcius">%.2f °C</string>
+    <string name="temperature">Temperature :</string>
+    <string name="quantity_of_pictures">"Number of photos : "</string>
     <string name="nphotos">%,d photos</string>
     <string name="refresh">Refresh</string>
     <string name="navigate_back">Navigate to previous screen</string>
     <string name="select_year">Select a year</string>
+    <string name="use_ipv6">Use IPv6 in priority</string>
+    <string name="wifi_prevention">May not work over certain Wifi</string>
+    <string name="quantity_of_pictures_low_res">Number of photos in fast access :</string>
+    <string name="disk_is_plugged">Disk is plugged</string>
+    <string name="disk_not_plugged">Disk is not plugged</string>
+    <string name="visualisation_option">Viewing options</string>
+    <string name="view_in_hd">View pictures in the highest resolution</string>
+    <string name="only_low_res">Only low resolutions pictures will be visible</string>
 </resources>

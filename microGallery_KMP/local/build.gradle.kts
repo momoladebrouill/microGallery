@@ -15,6 +15,7 @@ kotlin {
             implementation(libs.androidxSqliteBundled)
 
             implementation(projects.data)
+            implementation(projects.domain)
             implementation(projects.repository)
         }
     }

@@ -23,14 +23,14 @@ class LoadingPresenter(
     }
 
     init {
-        refreshEvent()
+        refreshDB()
     }
 
-    private fun refreshEvent() {
+    private fun refreshDB() {
         viewModelScope.launch {
             when (val result: LBResult<Unit> = UpdateTreeUseCase(loadingRepository).invoke()) {
                 is LBResult.Success -> {
-                    emitUserAction(LoadingAction.FoundData())
+                    emitUserAction(LoadingAction.FoundData)
                 }
 
                 is LBResult.Failure<Unit> -> {
@@ -42,7 +42,7 @@ class LoadingPresenter(
 
     private fun onAction(action: LoadingAction) {
         if (action is LoadingAction.Reload) {
-            refreshEvent()
+            refreshDB()
         }
         viewModelScope.launch { emitUserAction(action) }
     }

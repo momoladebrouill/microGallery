@@ -8,18 +8,23 @@ import androidx.sqlite.SQLiteConnection
 import androidx.sqlite.SQLiteDriver
 import androidx.sqlite.execSQL
 import studio.lunabee.amicrogallery.android.local.dao.PictureDao
+import studio.lunabee.amicrogallery.android.local.dao.SettingsDao
 import studio.lunabee.amicrogallery.android.local.entity.PictureEntity
+import studio.lunabee.amicrogallery.android.local.entity.SettingsEntity
+import studio.lunabee.amicrogallery.android.local.entity.SettingsTable
 import kotlin.coroutines.CoroutineContext
 
 @Database(
     entities = [
         PictureEntity::class,
+        SettingsEntity::class,
     ],
-    version = 2,
+    version = 1,
 )
 @ConstructedBy(AppDatabaseConstructor::class)
 abstract class RoomAppDatabase : RoomDatabase() {
     abstract fun pictureDao(): PictureDao
+    abstract fun settingsDao(): SettingsDao
 }
 
 expect class RoomPlatformBuilder {
@@ -47,13 +52,19 @@ fun buildRoomDatabase(
         .builder()
         .addCallback(
             object : RoomDatabase.Callback() {
+
                 override fun onCreate(connection: SQLiteConnection) {
                     super.onCreate(connection)
-                    connection.execSQL("DELETE FROM PhotosTable")
+                    val settingsEntity = SettingsEntity()
+                    // this is executed only when the app is first launched after install
+                    connection.execSQL(
+                        "INSERT INTO $SettingsTable (ipvfour, ipvsix, useIpvSix, viewInHD)" +
+                            "VALUES ('${settingsEntity.ipv4}', '${settingsEntity.ipv6}',"
+                            + "'${settingsEntity.useIpv6}', ${settingsEntity.viewInHD})",
+                    )
                 }
             },
         )
-        // TODO here goes future migrations.
         .fallbackToDestructiveMigration(true)
         .setDriver(builder.getDriver())
         .setQueryCoroutineContext(context = context)
