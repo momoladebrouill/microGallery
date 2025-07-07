@@ -1,5 +1,7 @@
 package studio.lunabee.microgallery.android.remote.datasource
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import studio.lunabee.amicrogallery.android.error.CoreError
 import studio.lunabee.microgallery.android.data.Directory
 import studio.lunabee.microgallery.android.data.MMonth
@@ -13,20 +15,9 @@ class TreeRemoteDatasourceImpl(
     private val rootService: RootService,
 ) : TreeRemoteDatasource {
 
-    private var rootNodeCache: Node? = null
-
-    override suspend fun fetchRoot() {
-        val rootNode: Directory = rootService.fetchRootList()[0].toData() as Directory
-
-        rootNodeCache =
-            Directory(
-                name = "0",
-                content = rootNode.content.map(::giveFullNameToFiles),
-            )
-    }
-
-    override fun getRoot(): Node {
-        return rootNodeCache ?: throw CoreError("Attempted to retrieve root node, but it has not been fetched.")
+    override fun getRoot(): Flow<Directory> {
+        val root : Flow<Directory> = rootService.fetchRootList().map {it[0].toData() as Directory}
+        return root.map { it.copy(content = it.content.map { node -> giveFullNameToFiles(node) } ) }
     }
 }
 

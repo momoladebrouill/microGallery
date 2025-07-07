@@ -32,8 +32,8 @@ interface PictureDao {
     fun getYears(): Flow<List<String>>
 
     @Query("SELECT Count(id) FROM $PhotosTable WHERE year=:year")
-    suspend fun getQtyInYear(year: String): Int
+    fun getQtyInYear(year: String): Flow<Int>
 
     @Query("SELECT * FROM $PhotosTable WHERE year = :year ORDER BY RANDOM()")
-    suspend fun getRandomPictureInYear(year: String): PictureEntity
+    fun getRandomPictureInYear(year: String): Flow<PictureEntity>
 }

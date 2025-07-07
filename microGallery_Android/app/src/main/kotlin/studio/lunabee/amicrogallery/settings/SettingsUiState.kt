@@ -7,9 +7,6 @@ import studio.lunabee.microgallery.android.data.SettingsData
 
 sealed interface SettingsUiState : PresenterUiState {
 
-    data class LoadingData(
-       val remoteStatus: RemoteStatus?
-    ) : SettingsUiState
     data class HasData(
         val data: SettingsData,
         val remoteStatus: RemoteStatus?,

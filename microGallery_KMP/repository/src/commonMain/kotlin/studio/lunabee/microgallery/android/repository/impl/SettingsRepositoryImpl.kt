@@ -1,6 +1,7 @@
 package studio.lunabee.microgallery.android.repository.impl
 
 import kotlinx.coroutines.flow.Flow
+import studio.lunabee.amicrogallery.picture.PictureLocal
 import studio.lunabee.amicrogallery.settings.SettingsLocal
 import studio.lunabee.microgallery.android.data.RemoteStatus
 import studio.lunabee.microgallery.android.data.SettingsData
@@ -16,11 +17,8 @@ class SettingsRepositoryImpl(
         return settingsLocal.getSettings()
     }
 
-    override suspend fun clearDB() {
-        settingsLocal.clearDB()
-    }
 
-    override suspend fun getStatus(): RemoteStatus {
+    override fun getStatus(): Flow<RemoteStatus> {
         return remoteStatusDatasource.fetchStatus()
     }
 

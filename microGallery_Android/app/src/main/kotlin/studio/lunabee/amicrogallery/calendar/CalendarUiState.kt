@@ -4,14 +4,15 @@ import kotlinx.coroutines.flow.Flow
 import studio.lunabee.compose.presenter.PresenterUiState
 import studio.lunabee.microgallery.android.data.MMonth
 import studio.lunabee.microgallery.android.data.MYear
+import studio.lunabee.microgallery.android.data.MicroPicture
 import studio.lunabee.microgallery.android.data.Picture
 import studio.lunabee.microgallery.android.data.SettingsData
 import studio.lunabee.microgallery.android.data.YearPreview
 
 data class CalendarUiState(
     val years: List<YearPreview>,
-    val monthsOfYears: Map<MYear, Flow<List<MMonth>>>,
-    val photosOfMonth: Map<Pair<MYear, MMonth>, List<Picture>>,
+    val monthsOfYears: Map<MYear, List<MMonth>>,
+    val photosOfMonth: Map<Pair<MYear, MMonth>, List<MicroPicture>>,
     val expandedMonths: Set<Pair<MYear, MMonth>>,
     val yearSelected: MYear? = null,
     val jumpToSettings: () -> Unit,

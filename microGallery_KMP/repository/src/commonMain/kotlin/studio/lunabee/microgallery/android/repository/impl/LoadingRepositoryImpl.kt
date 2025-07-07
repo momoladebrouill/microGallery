@@ -1,5 +1,6 @@
 package studio.lunabee.microgallery.android.repository.impl
 
+import kotlinx.coroutines.flow.Flow
 import studio.lunabee.amicrogallery.picture.PictureLocal
 import studio.lunabee.microgallery.android.data.Directory
 import studio.lunabee.microgallery.android.data.Picture
@@ -10,13 +11,10 @@ class LoadingRepositoryImpl(
     val treeRemoteDatasource: TreeRemoteDatasource,
     val pictureLocal: PictureLocal,
 ) : LoadingRepository {
-    override suspend fun fetchRootNode() {
-        treeRemoteDatasource.fetchRoot()
-    }
 
-    override suspend fun getRootDir() : Directory {
-        val rootNode: Directory = treeRemoteDatasource.getRoot() as Directory
-        return rootNode
+
+    override fun getRootDir() : Flow<Directory> {
+        return treeRemoteDatasource.getRoot()
     }
 
     override suspend fun pictureDbFreshStart() {

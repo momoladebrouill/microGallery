@@ -51,15 +51,6 @@ fun PhotoViewerScreen(
         offset += offsetChange * 5.0f
     }
     val context = LocalContext.current
-    val sendIntent: Intent = Intent().apply {
-        action = Intent.ACTION_SEND
-        // TODO : download photo and send it to be shared
-        putExtra(Intent.EXTRA_STREAM, "http://92.150.239.130" + uiState.picture?.lowResPath)
-        // type = "image/jpeg"
-        setDataAndType(("http://92.150.239.130" + uiState.picture?.lowResPath).toUri(), "image/jpeg")
-    }
-
-    val shareIntent = Intent.createChooser(sendIntent, null)
 
     Box(
         modifier = Modifier
@@ -92,7 +83,7 @@ fun PhotoViewerScreen(
                     .align(Alignment.Center),
             )
             IconButton(
-                onClick = { context.startActivity(shareIntent) },
+                onClick = { },
                 modifier = Modifier
                     .align(Alignment.CenterEnd),
             ) {

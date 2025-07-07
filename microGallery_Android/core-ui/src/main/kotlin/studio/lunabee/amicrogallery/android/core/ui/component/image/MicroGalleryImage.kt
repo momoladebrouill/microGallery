@@ -19,12 +19,13 @@ import coil3.request.ImageRequest
 import coil3.request.placeholder
 import studio.lunabee.amicrogallery.core.ui.R
 import studio.lunabee.compose.core.LbcTextSpec
+import studio.lunabee.microgallery.android.data.MicroPicture
 import studio.lunabee.microgallery.android.data.Picture
 import studio.lunabee.microgallery.android.data.SettingsData
 
 @Composable
 fun MicroGalleryImage(
-    picture: Picture,
+    picture: MicroPicture,
     modifier: Modifier = Modifier,
     defaultToHighRes: Boolean = false,
     contentDescription: LbcTextSpec? = null,
@@ -36,9 +37,10 @@ fun MicroGalleryImage(
 ) {
     val context = LocalContext.current
     var currentInd by remember { mutableIntStateOf(0) }
+    val len = picture.paths.size
     AsyncImage(
         model = ImageRequest.Builder(context)
-            .data(urlsToTry[currentInd])
+            .data(picture.paths[currentInd])
             .placeholder(R.drawable.ic_launcher_foreground)
             .listener(
                 onError = { _, result ->

@@ -1,10 +1,10 @@
 package studio.lunabee.amicrogallery.untimed
 
-import studio.lunabee.microgallery.android.data.Picture
+import studio.lunabee.microgallery.android.data.MicroPicture
 
 sealed interface UntimedAction {
     data class GotTheList(
-        val images: List<Picture>,
+        val images: List<MicroPicture>,
     ) : UntimedAction
 
     data class ShowPhoto(

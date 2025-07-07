@@ -6,7 +6,6 @@ import studio.lunabee.microgallery.android.data.SettingsData
 
 interface SettingsRepository {
     fun getSettingsDataFromDB(): Flow<SettingsData>
-    suspend fun clearDB()
-    suspend fun getStatus(): RemoteStatus
+    fun getStatus(): Flow<RemoteStatus>
     suspend fun setSettingsData(settingsUiData: SettingsData)
 }

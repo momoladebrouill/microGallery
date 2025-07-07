@@ -10,7 +10,6 @@ import studio.lunabee.microgallery.android.domain.loading.LoadingRepository
 
 class SettingsLocalDatasource(
     private val settingsDao: SettingsDao,
-    private val loadingRepository: LoadingRepository,
 ) : SettingsLocal {
 
     override fun getSettings(): Flow<SettingsData> {
@@ -21,7 +20,4 @@ class SettingsLocalDatasource(
         settingsDao.storeSettings(SettingsEntity.fromSettingsData(settingsData))
     }
 
-    override suspend fun clearDB() {
-        loadingRepository.fetchRootNode()
-    }
 }

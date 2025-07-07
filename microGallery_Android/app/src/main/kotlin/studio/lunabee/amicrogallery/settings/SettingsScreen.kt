@@ -30,46 +30,36 @@ import studio.lunabee.amicrogallery.settings.entries.VisualiseSettingsEntry
 import studio.lunabee.amicrogallery.utils.getAppVersion
 
 @Composable
-fun SettingsScreen(uiState: SettingsUiState) {
+fun SettingsScreen(uiState: SettingsUiState.HasData) {
 
-    when (uiState) {
-        is SettingsUiState.LoadingData -> Text(
-            stringResource(R.string.waitingForData),
-            style = typography.body,
-            modifier = Modifier.fillMaxSize().statusBarsPadding(),
-            textAlign = TextAlign.Center
-        )
-        is SettingsUiState.HasData -> {
-            val settingsEntries: List<@Composable (modifier: Modifier) -> Unit> = listOf(
-                // mod as a short term for modifier
-                { mod -> TitleSettingsEntry(mod, uiState.jumpBack) },
-                { mod -> IPAddressesSettingsEntry(mod, uiState) },
-                { mod -> VisualiseSettingsEntry(mod, uiState) },
-                { mod -> CacheSettingsEntry(mod, uiState.clearCache) },
-                { mod -> ServerStatisticsSettingsEntry(mod, uiState) },
-            )
-            Column(modifier = Modifier.statusBarsPadding()) {
-                val entryModifier = Modifier
-                LazyColumn(
-                    modifier = Modifier.background(colors.background),
-                    contentPadding = PaddingValues(spacing.SpacingMedium),
-                    verticalArrangement = Arrangement.spacedBy(spacing.SpacingLarge),
+    val settingsEntries: List<@Composable (modifier: Modifier) -> Unit> = listOf(
+        // mod as a short term for modifier
+        { mod -> TitleSettingsEntry(mod, uiState.jumpBack) },
+        { mod -> IPAddressesSettingsEntry(mod, uiState) },
+        { mod -> VisualiseSettingsEntry(mod, uiState) },
+        { mod -> CacheSettingsEntry(mod, uiState.clearCache) },
+        { mod -> ServerStatisticsSettingsEntry(mod, uiState) },
+    )
+    Column(modifier = Modifier.statusBarsPadding()) {
+        val entryModifier = Modifier
+        LazyColumn(
+            modifier = Modifier.background(colors.background),
+            contentPadding = PaddingValues(spacing.SpacingMedium),
+            verticalArrangement = Arrangement.spacedBy(spacing.SpacingLarge),
 
-                    ) {
-                    items(settingsEntries) { entry ->
-                        Column {
-                            entry(entryModifier)
-                            Spacer(Modifier.height(spacing.SpacingMedium))
-                        }
-                    }
-                }
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                    Text(
-                        stringResource(R.string.application_name) + LocalContext.current.getAppVersion(),
-                        style = typography.labelBold,
-                    )
+            ) {
+            items(settingsEntries) { entry ->
+                Column {
+                    entry(entryModifier)
+                    Spacer(Modifier.height(spacing.SpacingMedium))
                 }
             }
+        }
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+            Text(
+                stringResource(R.string.application_name) + LocalContext.current.getAppVersion(),
+                style = typography.labelBold,
+            )
         }
     }
 }

@@ -26,8 +26,6 @@ sealed interface SettingsAction {
         val ipv4 : String
     ) : HasDataAction
 
-    object GetRemoteStatus : LoadingAction, HasDataAction
-    object GetSettingsData : LoadingAction
     data class GotRemoteStatus(
         val status: RemoteStatus,
     ) : SettingsAction, LoadingAction, HasDataAction

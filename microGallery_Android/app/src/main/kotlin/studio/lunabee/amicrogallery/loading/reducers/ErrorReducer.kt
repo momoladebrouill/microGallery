@@ -9,19 +9,11 @@ import studio.lunabee.compose.presenter.asResult
 class ErrorReducer(
     override val coroutineScope: CoroutineScope,
     override val emitUserAction: (LoadingAction) -> Unit,
-
 ) : LBReducer<LoadingUiState.Error, LoadingUiState, LoadingNavScope, LoadingAction, LoadingAction.ErrorAction>() {
     override suspend fun reduce(actualState: LoadingUiState.Error,
         action: LoadingAction.ErrorAction,
         performNavigation: (LoadingNavScope.() -> Unit) -> Unit): ReduceResult<LoadingUiState> {
-        return when(action){
-            LoadingAction.LoadData -> LoadingUiState.Fetching(
-                foundMap = mapOf(
-                    "data" to false,
-                    "settings" to false
-                )
-            ).asResult()
-        }
+        return actualState.asResult()
     }
 
     override fun filterAction(action: LoadingAction): Boolean {

@@ -38,23 +38,15 @@ class SettingsHasDataReducer(
             is SettingsAction.Clear -> actualState withSideEffect {
                 val imageLoader = action.context.imageLoader
                 imageLoader.memoryCache?.clear()
-                settingsRepository.clearDB()
+                //settingsRepository.clearDB()
             }
 
             is SettingsAction.GotRemoteStatus -> actualState.copy(remoteStatus = action.status).asResult()
-            SettingsAction.GetRemoteStatus -> actualState withSideEffect {
-                val remoteStatus = settingsRepository.getStatus()
-                emitUserAction(SettingsAction.GotRemoteStatus(remoteStatus))
-            }
-
-            SettingsAction.GetSettingsData -> actualState withSideEffect {
-                val data = settingsRepository.getSettingsDataFromDB()
-                emitUserAction(SettingsAction.GotData(data = data))
-            }
 
             is SettingsAction.SetIpv4 -> actualState.copy(data = actualState.data.copy(ipv4 = action.ipv4)).asResult()
             is SettingsAction.SetIpv6 -> actualState.copy(data = actualState.data.copy(ipv6 = action.ipv6)).asResult()
             SettingsAction.ToggleViewInHD -> actualState.copy(data = actualState.data.copy(viewInHD = !actualState.data.viewInHD)).asResult()
+
         }
     }
 

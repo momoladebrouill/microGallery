@@ -23,8 +23,6 @@ val repositoryModule = module {
     singleOf(::LoadingRepositoryImpl) bind LoadingRepository::class
     singleOf(::UntimedRepositoryImpl) bind UntimedRepository::class
     singleOf(::LastMonthRepositoryImpl) bind LastMonthRepository::class
-    singleOf(::PhotoViewerRepositoryImpl) bind PhotoViewerRepository::class
+    factoryOf(::PhotoViewerRepositoryImpl) bind PhotoViewerRepository::class
     singleOf(::SettingsRepositoryImpl) bind SettingsRepository::class
 }
-
-

@@ -21,22 +21,21 @@ data class PictureEntity(
     @ColumnInfo(name = "year") val year: String?,
     @ColumnInfo(name = "month") val month: String?,
 ) {
-
     fun toMicroPicture(settingsData: SettingsData, defaultToHighRes: Boolean = true): MicroPicture {
         val data = settingsData
 
         val (begin0, begin1) =
-            if(data.useIpv6)
+            if (data.useIpv6)
                 Pair("[${data.ipv6}]", data.ipv4)
             else
                 Pair(data.ipv4, "[${data.ipv6}]")
         val urlsToTry =
-            if(data.viewInHD){
+            if (data.viewInHD) {
                 val (end0, end1) =
                     if (defaultToHighRes)
                         Pair(fullResPath, lowResPath)
                     else
-                        Pair( lowResPath, fullResPath)
+                        Pair(lowResPath, fullResPath)
                 listOf(
                     begin0 + end0,
                     begin0 + end1,
@@ -51,11 +50,11 @@ data class PictureEntity(
             }
 
         val len = urlsToTry.size
-        val  beg = "http://"
+        val beg = "http://"
         return MicroPicture(
             id = id,
             name = name,
-            paths = urlsToTry.map {beg + it},
+            paths = urlsToTry.map { beg + it },
             year = year ?: "",
             month = month ?: "",
         )
@@ -71,5 +70,6 @@ data class PictureEntity(
                 month = picture.month,
             )
         }
+
     }
 }
