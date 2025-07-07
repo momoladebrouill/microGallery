@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
+
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -30,6 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import studio.lunabee.amicrogallery.android.core.ui.component.image.MicroGalleryImage
+import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.typography
 import studio.lunabee.amicrogallery.app.R
 import studio.lunabee.amicrogallery.utils.getMonthName
 import studio.lunabee.amicrogallery.core.ui.R as CoreUi
@@ -69,7 +70,7 @@ fun PhotoViewerScreen(
         Box(modifier = Modifier.fillMaxWidth().align(Alignment.TopCenter).statusBarsPadding()) {
             Text(
                 text = uiState.picture?.name.toString().substringBefore("."),
-                style = MaterialTheme.typography.bodyLarge,
+                style = typography.body,
                 color = Color.White,
                 modifier = Modifier
                     .align(Alignment.Center),
@@ -101,13 +102,16 @@ fun PhotoViewerScreen(
                 .transformable(state = state),
 
         ) {
-            // todo : better than direct typing url
-            MicroGalleryImage(
-                url = "http://92.150.239.130" + uiState.picture?.fullResPath,
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .graphicsLayer(rotationZ = rotation),
-            )
+            // TODO : handle when it's null ( aka loading for DB entity)
+            if (uiState.picture != null) {
+                MicroGalleryImage(
+                    picture = uiState.picture,
+                    defaultToHighRes = true,
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .graphicsLayer(rotationZ = rotation),
+                )
+            }
         }
 
         Text(
@@ -116,7 +120,7 @@ fun PhotoViewerScreen(
                 getMonthName(uiState.picture?.month ?: "", stringArrayResource(R.array.months)),
                 uiState.picture?.year.toString(),
             ),
-            style = MaterialTheme.typography.titleMedium,
+            style = typography.title,
             color = Color.White,
             modifier = Modifier
                 .align(Alignment.BottomCenter)

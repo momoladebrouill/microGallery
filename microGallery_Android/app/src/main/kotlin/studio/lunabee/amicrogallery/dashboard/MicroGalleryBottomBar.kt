@@ -2,12 +2,9 @@ package studio.lunabee.amicrogallery.dashboard
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FloatingToolbarColors
 import androidx.compose.material3.HorizontalFloatingToolbar
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -20,6 +17,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import studio.lunabee.amicrogallery.android.core.ui.component.topappbar.NavBarButton
 import studio.lunabee.amicrogallery.android.core.ui.theme.CoreSpacing
+import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.colors
 import studio.lunabee.amicrogallery.calendar.CalendarDestination
 import studio.lunabee.amicrogallery.core.ui.R
 import studio.lunabee.amicrogallery.lastmonth.LastMonthDestination
@@ -46,10 +44,10 @@ fun MicroGalleryBottomBar(
         HorizontalFloatingToolbar(
             expanded = true,
             colors = FloatingToolbarColors(
-                fabContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                toolbarContainerColor = ButtonDefaults.buttonColors().containerColor,
-                toolbarContentColor = contentColorFor(MaterialTheme.colorScheme.primaryContainer),
-                fabContentColor = contentColorFor(MaterialTheme.colorScheme.onSecondaryContainer),
+                fabContainerColor = colors.main,
+                toolbarContainerColor = colors.main,
+                toolbarContentColor = colors.onMain,
+                fabContentColor = colors.onMain,
             ),
             modifier = Modifier.Companion.navigationBarsPadding(),
             expandedShadowElevation = CoreSpacing.SpacingSmall,

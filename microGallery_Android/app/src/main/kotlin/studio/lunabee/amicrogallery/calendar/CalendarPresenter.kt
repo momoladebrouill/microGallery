@@ -34,14 +34,11 @@ class CalendarPresenter(
         viewModelScope.launch {
             when (val result = LoadTreeUseCase(calendarRepository).invoke()) {
                 is LBResult.Success -> {
-                    // not very nice, but will be fixed in feature/better-ui
-                    emitUserAction(CalendarAction.GotYears(result.successData.keys.toList()))
-                    emitUserAction(CalendarAction.GotMonthsOfYears(result.successData))
+                    emitUserAction(CalendarAction.GotYears(result.successData.first))
+                    emitUserAction(CalendarAction.GotMonthsOfYears(result.successData.second))
                 }
 
-                is LBResult.Failure -> {
-                    // fall on error
-                }
+                is LBResult.Failure<*> -> TODO()
             }
         }
     }
@@ -55,7 +52,6 @@ class CalendarPresenter(
                     emitUserAction(CalendarAction.GotMY(calendarAction.month, calendarAction.year, picturesInMonth))
                 }
             }
-
             else -> emitUserAction(calendarAction)
         }
     }
