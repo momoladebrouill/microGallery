@@ -15,7 +15,7 @@ class PhotoViewerReducer(
         performNavigation: (PhotoViewerNavScope.() -> Unit) -> Unit,
     ): ReduceResult<PhotoViewerUiState> {
         return when (action) {
-            is PhotoViewerAction.FoundPicture -> actualState.copy(picture = action.picture).asResult()
+            is PhotoViewerAction.FoundPicture -> PhotoViewerUiState.HasPicture(action.picture).asResult()
         }
     }
 }

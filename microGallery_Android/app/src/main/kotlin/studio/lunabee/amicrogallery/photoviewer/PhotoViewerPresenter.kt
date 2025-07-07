@@ -38,7 +38,7 @@ class PhotoViewerPresenter(
         }
     }
 
-    override fun getInitialState(): PhotoViewerUiState = PhotoViewerUiState(null)
+    override fun getInitialState(): PhotoViewerUiState = PhotoViewerUiState.Waiting
 
     override val content: @Composable (PhotoViewerUiState) -> Unit = { PhotoViewerScreen(it) }
 }

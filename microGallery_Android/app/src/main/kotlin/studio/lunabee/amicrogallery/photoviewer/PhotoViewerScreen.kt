@@ -1,6 +1,5 @@
 package studio.lunabee.amicrogallery.photoviewer
 
-import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.rememberTransformableState
@@ -12,7 +11,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,40 +24,47 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
-import androidx.core.net.toUri
 import studio.lunabee.amicrogallery.android.core.ui.component.image.MicroGalleryImage
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.typography
 import studio.lunabee.amicrogallery.app.R
 import studio.lunabee.amicrogallery.utils.getMonthName
-
 import studio.lunabee.amicrogallery.core.ui.R as CoreUi
 
 @Composable
 fun PhotoViewerScreen(
     uiState: PhotoViewerUiState,
 ) {
+    when (uiState) {
+        is PhotoViewerUiState.Waiting -> PhotoWaitScreen()
+        is PhotoViewerUiState.HasPicture -> PhotoView(uiState)
+    }
+}
+
+@Composable
+fun PhotoWaitScreen() {
+    Box(modifier = Modifier.fillMaxSize()) {
+        Text(
+            text = stringResource(R.string.waitingForData),
+            style = typography.title,
+            modifier = Modifier.align(Alignment.Center),
+        )
+    }
+}
+
+@Composable
+fun PhotoView(uiState: PhotoViewerUiState.HasPicture) {
     var scale by remember { mutableFloatStateOf(1f) }
     var rotation by remember { mutableFloatStateOf(0f) }
     var offset by remember { mutableStateOf(Offset.Zero) }
     val state = rememberTransformableState { zoomChange, offsetChange, rotationChange ->
         scale *= zoomChange
+        // add this if you want to allow the user to rotate the picture
         // rotation += rotationChange
         offset += offsetChange * 5.0f
     }
-    val context = LocalContext.current
-    val sendIntent: Intent = Intent().apply {
-        action = Intent.ACTION_SEND
-        // TODO : download photo and send it to be shared
-        putExtra(Intent.EXTRA_STREAM, "http://92.150.239.130" + uiState.picture?.lowResPath)
-        // type = "image/jpeg"
-        setDataAndType(("http://92.150.239.130" + uiState.picture?.lowResPath).toUri(), "image/jpeg")
-    }
-
-    val shareIntent = Intent.createChooser(sendIntent, null)
 
     Box(
         modifier = Modifier
@@ -85,14 +90,14 @@ fun PhotoViewerScreen(
                 .statusBarsPadding(),
         ) {
             Text(
-                text = uiState.picture?.name.toString().substringBefore("."),
+                text = uiState.picture.name.substringBefore("."),
                 style = typography.body,
                 color = Color.White,
                 modifier = Modifier
                     .align(Alignment.Center),
             )
             IconButton(
-                onClick = { context.startActivity(shareIntent) },
+                onClick = { },
                 modifier = Modifier
                     .align(Alignment.CenterEnd),
             ) {
@@ -118,23 +123,20 @@ fun PhotoViewerScreen(
                 .transformable(state = state),
 
         ) {
-            // TODO : handle when it's null ( aka loading for DB entity)
-            if (uiState.picture != null) {
-                MicroGalleryImage(
-                    picture = uiState.picture,
-                    defaultToHighRes = true,
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .graphicsLayer(rotationZ = rotation),
-                )
-            }
+            MicroGalleryImage(
+                picture = uiState.picture,
+                defaultToHighRes = true,
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .graphicsLayer(rotationZ = rotation),
+            )
         }
 
         Text(
             text = stringResource(
                 R.string.month_year,
-                getMonthName(uiState.picture?.month ?: "", stringArrayResource(R.array.months)),
-                uiState.picture?.year.toString(),
+                getMonthName(uiState.picture.month ?: "", stringArrayResource(R.array.months)),
+                uiState.picture.year.toString(),
             ),
             style = typography.title,
             color = Color.White,
