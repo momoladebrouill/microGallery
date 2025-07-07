@@ -28,7 +28,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
@@ -44,11 +43,32 @@ import studio.lunabee.amicrogallery.core.ui.R as CoreUi
 fun PhotoViewerScreen(
     uiState: PhotoViewerUiState,
 ) {
+    when (uiState) {
+        is PhotoViewerUiState.Waiting -> PhotoWaitScreen()
+        is PhotoViewerUiState.HasPicture -> PhotoView(uiState)
+    }
+}
+
+@Composable
+fun PhotoWaitScreen() {
+    Box(modifier = Modifier.fillMaxSize()) {
+        Text(
+            text = stringResource(R.string.waitingForData),
+            style = typography.title,
+            modifier = Modifier.align(Alignment.Center),
+        )
+    }
+}
+
+@Composable
+fun PhotoView(uiState: PhotoViewerUiState.HasPicture) {
     var scale by remember { mutableFloatStateOf(1f) }
     var rotation by remember { mutableFloatStateOf(0f) }
     var offset by remember { mutableStateOf(Offset.Zero) }
     val state = rememberTransformableState { zoomChange, offsetChange, rotationChange ->
         scale *= zoomChange
+        // add this if you want to allow the user to rotate the picture
+        // rotation += rotationChange
         offset += offsetChange * 5.0f
     }
     val context = LocalContext.current
@@ -80,7 +100,7 @@ fun PhotoViewerScreen(
                 .statusBarsPadding(),
         ) {
             Text(
-                text = uiState.picture?.name.toString().substringBefore("."),
+                text = uiState.picture.name.substringBefore("."),
                 style = typography.body,
                 color = Color.White,
                 modifier = Modifier
@@ -120,23 +140,20 @@ fun PhotoViewerScreen(
                 .transformable(state = state),
 
         ) {
-            // TODO : handle when it's null ( aka loading for DB entity)
-            if (uiState.picture != null) {
-                MicroGalleryImage(
-                    picture = uiState.picture,
-                    defaultToHighRes = true,
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .graphicsLayer(rotationZ = rotation),
-                )
-            }
+            MicroGalleryImage(
+                picture = uiState.picture,
+                defaultToHighRes = true,
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .graphicsLayer(rotationZ = rotation),
+            )
         }
 
         Text(
             text = stringResource(
                 R.string.month_year,
-                getMonthName(uiState.picture?.month ?: "", stringArrayResource(R.array.months)),
-                uiState.picture?.year.toString(),
+                getMonthName(uiState.picture.month ?: "", stringArrayResource(R.array.months)),
+                uiState.picture.year.toString(),
             ),
             style = typography.title,
             color = Color.White,
