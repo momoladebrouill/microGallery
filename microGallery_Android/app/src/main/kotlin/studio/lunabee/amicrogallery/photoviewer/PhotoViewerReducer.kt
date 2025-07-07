@@ -18,7 +18,6 @@ import studio.lunabee.compose.presenter.ReduceResult
 import studio.lunabee.compose.presenter.asResult
 import studio.lunabee.compose.presenter.withSideEffect
 import studio.lunabee.microgallery.android.data.MicroPicture
-import studio.lunabee.microgallery.android.data.Picture
 import java.io.File
 
 class PhotoViewerReducer(

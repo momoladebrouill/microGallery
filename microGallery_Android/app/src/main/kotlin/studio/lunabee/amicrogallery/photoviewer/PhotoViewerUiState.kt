@@ -6,7 +6,6 @@ import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.result.ActivityResult
 import studio.lunabee.compose.presenter.PresenterUiState
 import studio.lunabee.microgallery.android.data.MicroPicture
-import studio.lunabee.microgallery.android.data.Picture
 
 data class PhotoViewerUiState(
 
