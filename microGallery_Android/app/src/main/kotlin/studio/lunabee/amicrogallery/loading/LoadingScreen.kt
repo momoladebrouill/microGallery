@@ -22,7 +22,7 @@ import studio.lunabee.amicrogallery.app.R
 fun LoadingScreen(loadingUiState: LoadingUiState) {
     when (loadingUiState) {
         is LoadingUiState.Error -> ShowError(loadingUiState)
-        is LoadingUiState.Fetching -> WaitingForResponse(loadingUiState)
+        is LoadingUiState.Fetching -> WaitingForResponse()
     }
 }
 
