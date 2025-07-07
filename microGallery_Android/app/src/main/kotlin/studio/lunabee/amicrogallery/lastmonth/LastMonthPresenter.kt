@@ -7,13 +7,12 @@ import kotlinx.coroutines.flow.map
 import studio.lunabee.compose.presenter.LBSinglePresenter
 import studio.lunabee.compose.presenter.LBSingleReducer
 import studio.lunabee.microgallery.android.data.MicroPicture
-import studio.lunabee.microgallery.android.data.Picture
 import studio.lunabee.microgallery.android.domain.lastMonth.LastMonthRepository
 import studio.lunabee.microgallery.android.domain.lastMonth.usecase.ObserveLastMonthUseCase
 
 class LastMonthPresenter(
     val lastMonthRepository: LastMonthRepository,
-    val observeLastMonthUseCase: ObserveLastMonthUseCase
+    val observeLastMonthUseCase: ObserveLastMonthUseCase,
 ) : LBSinglePresenter<LastMonthUiState, LastMonthNavScope, LastMonthAction>() {
 
     val lastMonth = observeLastMonthUseCase().map { LastMonthAction.GotTheList(it) }

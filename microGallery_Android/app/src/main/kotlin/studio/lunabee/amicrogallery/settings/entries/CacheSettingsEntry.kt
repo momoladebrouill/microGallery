@@ -28,7 +28,7 @@ fun CacheSettingsEntry(modifier: Modifier = Modifier, clearCache: (Context) -> U
         )
 
         Button(
-            onClick = {clearCache(context)},
+            onClick = { clearCache(context) },
         ) {
             Text(
                 text = stringResource(R.string.empty_cache),

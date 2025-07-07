@@ -8,24 +8,22 @@ import studio.lunabee.compose.presenter.LBSinglePresenter
 import studio.lunabee.compose.presenter.LBSingleReducer
 import studio.lunabee.microgallery.android.data.MMonth
 import studio.lunabee.microgallery.android.data.MYear
-import studio.lunabee.microgallery.android.data.SettingsData
 import studio.lunabee.microgallery.android.domain.calendar.CalendarRepository
 import studio.lunabee.microgallery.android.domain.calendar.usecase.LoadPartialTreeUseCase
 import studio.lunabee.microgallery.android.domain.calendar.usecase.ObserveYearPreviewsUseCase
-import studio.lunabee.microgallery.android.domain.settings.usecase.ObserveSettingsUseCase
 
 class CalendarPresenter(
     val calendarRepository: CalendarRepository,
     val observeYearPreviewsUseCase: ObserveYearPreviewsUseCase,
-    val loadPartialTreeUseCase: LoadPartialTreeUseCase
+    val loadPartialTreeUseCase: LoadPartialTreeUseCase,
 ) : LBSinglePresenter<CalendarUiState, CalendarNavScope, CalendarAction>() {
 
-    private val yearPreviews = observeYearPreviewsUseCase().map {CalendarAction.GotYears(it)}
+    private val yearPreviews = observeYearPreviewsUseCase().map { CalendarAction.GotYears(it) }
     val monthsInYears = loadPartialTreeUseCase().map { CalendarAction.GotMonthsOfYears(it) }
 
     override val flows: List<Flow<CalendarAction>> = listOf(
         yearPreviews,
-        monthsInYears
+        monthsInYears,
     )
 
     override fun getInitialState(): CalendarUiState = CalendarUiState(
@@ -47,13 +45,7 @@ class CalendarPresenter(
             coroutineScope = viewModelScope,
             emitUserAction = ::emitUserAction,
             calendarRepository = calendarRepository,
-            yearPreviews = TODO(),
-            monthsInYears = TODO(),
         )
-    }
-
-    init {
-        emitUserAction(CalendarAction.PopulateYears)
     }
 
     override val content: @Composable ((CalendarUiState) -> Unit) = { CalendarScreen(it) }

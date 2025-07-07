@@ -35,7 +35,6 @@ import studio.lunabee.amicrogallery.app.R
 import studio.lunabee.amicrogallery.utils.getMonthName
 import studio.lunabee.microgallery.android.data.MMonth
 import studio.lunabee.microgallery.android.data.MYear
-import kotlin.collections.listOf
 
 @OptIn(ExperimentalHazeMaterialsApi::class)
 @Composable
@@ -78,7 +77,6 @@ fun ScrollTroughYear(calendarUiState: CalendarUiState) {
                 .background(Color.Transparent)
                 .hazeEffect(hazeState, HazeMaterials.thin(colors.background)),
         ) {
-
             for (month in (calendarUiState.monthsOfYears[year] ?: listOf())) {
                 item(key = "month:$month") {
                     MonthLabel(

@@ -5,7 +5,6 @@ import studio.lunabee.amicrogallery.picture.PictureLocal
 import studio.lunabee.microgallery.android.data.MMonth
 import studio.lunabee.microgallery.android.data.MYear
 import studio.lunabee.microgallery.android.data.MicroPicture
-import studio.lunabee.microgallery.android.data.Picture
 import studio.lunabee.microgallery.android.domain.lastMonth.LastMonthRepository
 
 class LastMonthRepositoryImpl(

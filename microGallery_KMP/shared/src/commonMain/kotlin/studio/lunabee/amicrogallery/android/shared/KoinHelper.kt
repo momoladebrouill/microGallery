@@ -12,7 +12,7 @@ object KoinHelper {
             modules(
                 LocalModule,
                 RemoteModule,
-                PlatformSpecificModule
+                PlatformSpecificModule,
 
             )
             block()

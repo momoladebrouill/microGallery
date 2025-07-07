@@ -6,5 +6,4 @@ import studio.lunabee.microgallery.android.data.SettingsData
 interface SettingsLocal {
     fun getSettings(): Flow<SettingsData>
     suspend fun storeSettings(settingsData: SettingsData)
-
 }

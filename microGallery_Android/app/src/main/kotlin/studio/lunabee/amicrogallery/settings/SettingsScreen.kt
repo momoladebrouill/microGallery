@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -17,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.colors
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.spacing
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.typography
@@ -30,8 +28,7 @@ import studio.lunabee.amicrogallery.settings.entries.VisualiseSettingsEntry
 import studio.lunabee.amicrogallery.utils.getAppVersion
 
 @Composable
-fun SettingsScreen(uiState: SettingsUiState.HasData) {
-
+fun SettingsScreen(uiState: SettingsUiState) {
     val settingsEntries: List<@Composable (modifier: Modifier) -> Unit> = listOf(
         // mod as a short term for modifier
         { mod -> TitleSettingsEntry(mod, uiState.jumpBack) },
@@ -47,7 +44,7 @@ fun SettingsScreen(uiState: SettingsUiState.HasData) {
             contentPadding = PaddingValues(spacing.SpacingMedium),
             verticalArrangement = Arrangement.spacedBy(spacing.SpacingLarge),
 
-            ) {
+        ) {
             items(settingsEntries) { entry ->
                 Column {
                     entry(entryModifier)

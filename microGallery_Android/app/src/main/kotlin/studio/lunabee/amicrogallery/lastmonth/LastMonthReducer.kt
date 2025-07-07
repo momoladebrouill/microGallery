@@ -5,10 +5,7 @@ import studio.lunabee.compose.presenter.LBSingleReducer
 import studio.lunabee.compose.presenter.ReduceResult
 import studio.lunabee.compose.presenter.asResult
 import studio.lunabee.compose.presenter.withSideEffect
-import studio.lunabee.microgallery.android.data.MicroPicture
-import studio.lunabee.microgallery.android.data.Picture
 import studio.lunabee.microgallery.android.domain.lastMonth.LastMonthRepository
-import java.time.LocalDate
 
 class LastMonthReducer(
     override val coroutineScope: CoroutineScope,

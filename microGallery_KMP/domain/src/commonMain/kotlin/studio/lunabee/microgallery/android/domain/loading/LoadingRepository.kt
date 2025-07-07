@@ -6,7 +6,7 @@ import studio.lunabee.microgallery.android.data.Picture
 
 interface LoadingRepository {
 
-    fun getRootDir() : Flow<Directory>
+    fun getRootDir(): Flow<Directory>
     suspend fun pictureDbFreshStart()
     suspend fun savePicturesInDb(pictures: List<Picture>)
 }

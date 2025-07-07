@@ -15,7 +15,7 @@ import studio.lunabee.amicrogallery.app.R
 import studio.lunabee.amicrogallery.settings.SettingsUiState
 
 @Composable
-fun ServerStatisticsSettingsEntry(modifier: Modifier = Modifier, uiState: SettingsUiState.HasData) {
+fun ServerStatisticsSettingsEntry(modifier: Modifier = Modifier, uiState: SettingsUiState) {
     val remoteStatus = uiState.remoteStatus
     Column(modifier = modifier) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {

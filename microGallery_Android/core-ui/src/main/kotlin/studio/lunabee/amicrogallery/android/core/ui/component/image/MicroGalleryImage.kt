@@ -20,8 +20,6 @@ import coil3.request.placeholder
 import studio.lunabee.amicrogallery.core.ui.R
 import studio.lunabee.compose.core.LbcTextSpec
 import studio.lunabee.microgallery.android.data.MicroPicture
-import studio.lunabee.microgallery.android.data.Picture
-import studio.lunabee.microgallery.android.data.SettingsData
 
 @Composable
 fun MicroGalleryImage(
@@ -37,14 +35,15 @@ fun MicroGalleryImage(
 ) {
     val context = LocalContext.current
     var currentInd by remember { mutableIntStateOf(0) }
-    val len = picture.paths.size
+    val urlsToTry = if (defaultToHighRes) picture.highResPaths else picture.lowResPaths
+    val len = urlsToTry.size
     AsyncImage(
         model = ImageRequest.Builder(context)
-            .data(picture.paths[currentInd])
+            .data(urlsToTry[currentInd])
             .placeholder(R.drawable.ic_launcher_foreground)
             .listener(
                 onError = { _, result ->
-                    if (currentInd + 1 < len  && isConnectionError(result)) {
+                    if (currentInd + 1 < len && isConnectionError(result)) {
                         currentInd = currentInd + 1
                     }
                 },
@@ -62,9 +61,8 @@ fun MicroGalleryImage(
     )
 }
 
-
-fun isConnectionError(result: ErrorResult) : Boolean{
-    return when(result.throwable) {
+fun isConnectionError(result: ErrorResult): Boolean {
+    return when (result.throwable) {
         is HttpException -> (result.throwable as HttpException).response.code == 404
         is java.net.ConnectException -> {
             val exception = result.throwable as java.net.ConnectException

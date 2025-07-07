@@ -12,8 +12,7 @@ class LoadingRepositoryImpl(
     val pictureLocal: PictureLocal,
 ) : LoadingRepository {
 
-
-    override fun getRootDir() : Flow<Directory> {
+    override fun getRootDir(): Flow<Directory> {
         return treeRemoteDatasource.getRoot()
     }
 
@@ -24,5 +23,4 @@ class LoadingRepositoryImpl(
     override suspend fun savePicturesInDb(pictures: List<Picture>) {
         pictureLocal.insertPictures(pictures)
     }
-
 }

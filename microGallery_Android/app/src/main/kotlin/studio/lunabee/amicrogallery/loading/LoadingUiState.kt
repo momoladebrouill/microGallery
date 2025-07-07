@@ -8,7 +8,6 @@ sealed interface LoadingUiState : PresenterUiState {
         val errorMessage: String?,
         val reload: () -> Unit,
     ) : LoadingUiState
-    data class Fetching(
-        val foundMap: Map<String, Boolean>
-    ) : LoadingUiState
+
+    object Fetching : LoadingUiState
 }

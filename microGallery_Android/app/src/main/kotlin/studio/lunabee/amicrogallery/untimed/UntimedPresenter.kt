@@ -11,13 +11,13 @@ import studio.lunabee.microgallery.android.domain.untimed.usecase.ObserveUntimed
 
 class UntimedPresenter(
     val untimedRepository: UntimedRepository,
-    val observeUntimedUseCase: ObserveUntimedUseCase
+    val observeUntimedUseCase: ObserveUntimedUseCase,
 ) : LBSinglePresenter<UntimedUiState, UntimedNavScope, UntimedAction>() {
 
     val untimedList = observeUntimedUseCase().map { UntimedAction.GotTheList(it) }
 
     override val flows: List<Flow<UntimedAction>> = listOf(
-        untimedList
+        untimedList,
     )
 
     override fun initReducer(): LBSingleReducer<UntimedUiState, UntimedNavScope, UntimedAction> {
@@ -26,8 +26,6 @@ class UntimedPresenter(
             emitUserAction = ::emitUserAction,
         )
     }
-
-
 
     override fun getInitialState(): UntimedUiState = UntimedUiState(
         images = listOf(),

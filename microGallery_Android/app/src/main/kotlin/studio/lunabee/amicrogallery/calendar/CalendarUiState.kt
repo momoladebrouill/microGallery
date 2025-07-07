@@ -1,12 +1,9 @@
 package studio.lunabee.amicrogallery.calendar
 
-import kotlinx.coroutines.flow.Flow
 import studio.lunabee.compose.presenter.PresenterUiState
 import studio.lunabee.microgallery.android.data.MMonth
 import studio.lunabee.microgallery.android.data.MYear
 import studio.lunabee.microgallery.android.data.MicroPicture
-import studio.lunabee.microgallery.android.data.Picture
-import studio.lunabee.microgallery.android.data.SettingsData
 import studio.lunabee.microgallery.android.data.YearPreview
 
 data class CalendarUiState(

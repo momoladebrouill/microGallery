@@ -1,19 +1,14 @@
 package studio.lunabee.amicrogallery.calendar
 
-import kotlinx.coroutines.flow.Flow
 import studio.lunabee.microgallery.android.data.MMonth
 import studio.lunabee.microgallery.android.data.MYear
 import studio.lunabee.microgallery.android.data.MicroPicture
-import studio.lunabee.microgallery.android.data.Picture
-import studio.lunabee.microgallery.android.data.SettingsData
 import studio.lunabee.microgallery.android.data.YearPreview
 
 sealed interface CalendarAction {
 
     object JumpToSettings : CalendarAction // Jump to settings screen
     object ResetToHome : CalendarAction // Jump to the year view
-
-    object PopulateYears : CalendarAction // Get Years and month in years
 
     data class ShowPhoto(
         // Jump to photoViewer screen
@@ -47,5 +42,4 @@ sealed interface CalendarAction {
     data class JumpToYear(
         val year: MYear,
     ) : CalendarAction
-
 }

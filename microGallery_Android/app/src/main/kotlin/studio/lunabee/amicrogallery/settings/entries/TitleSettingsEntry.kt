@@ -18,10 +18,10 @@ import studio.lunabee.amicrogallery.app.R
 import studio.lunabee.amicrogallery.core.ui.R as CoreUi
 
 @Composable
-fun TitleSettingsEntry(modifier: Modifier = Modifier, fireAction: () -> Unit) {
+fun TitleSettingsEntry(modifier: Modifier = Modifier, clickAction: () -> Unit) {
     Row(modifier = modifier) {
         IconButton(
-            onClick = fireAction,
+            onClick = clickAction,
             modifier = modifier.align(Alignment.CenterVertically),
         ) {
             Icon(

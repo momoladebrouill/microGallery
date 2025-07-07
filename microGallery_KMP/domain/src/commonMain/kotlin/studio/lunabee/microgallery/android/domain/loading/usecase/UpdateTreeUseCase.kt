@@ -1,26 +1,24 @@
 package studio.lunabee.microgallery.android.domain.loading.usecase
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.first
 import studio.lunabee.microgallery.android.data.Directory
 import studio.lunabee.microgallery.android.data.Picture
 import studio.lunabee.microgallery.android.domain.loading.LoadingRepository
 
-class UpdateTreeUseCase( // update the tree from remote
+class UpdateTreeUseCase(
+    // update the tree from remote
     val loadingRepository: LoadingRepository,
 ) {
-    operator fun invoke() : Flow<Unit> {
-        return loadingRepository.getRootDir().map { rootDir ->
-            loadingRepository.pictureDbFreshStart()
-            for (year in rootDir.content) {
-                val yearDir: Directory = year as Directory
-                if (year.name == "untimed") {
-                    loadingRepository.savePicturesInDb(yearDir.content.map { it as Picture })
-                } else {
-                    for (month in yearDir.content) {
-                        val monthDir = month as Directory
-                        loadingRepository.savePicturesInDb(monthDir.content.map { it as Picture })
-                    }
+    suspend operator fun invoke() {
+        val rootDir = loadingRepository.getRootDir().first()
+        loadingRepository.pictureDbFreshStart()
+        rootDir.content.filterIsInstance<Directory>().forEach { yearDir ->
+            if (yearDir.name == "untimed") {
+                loadingRepository.savePicturesInDb(yearDir.content.map { it as Picture })
+            } else {
+                for (month in yearDir.content) {
+                    val monthDir = month as Directory
+                    loadingRepository.savePicturesInDb(monthDir.content.map { it as Picture })
                 }
             }
         }

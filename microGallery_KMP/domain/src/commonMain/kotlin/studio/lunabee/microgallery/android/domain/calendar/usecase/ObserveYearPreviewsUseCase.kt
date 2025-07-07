@@ -5,9 +5,9 @@ import studio.lunabee.microgallery.android.data.YearPreview
 import studio.lunabee.microgallery.android.domain.calendar.CalendarRepository
 
 class ObserveYearPreviewsUseCase(
-    val calendarRepository: CalendarRepository
+    val calendarRepository: CalendarRepository,
 ) {
-    operator fun invoke() : Flow<List<YearPreview>> {
+    operator fun invoke(): Flow<List<YearPreview>> {
         return calendarRepository.getYearPreviews()
     }
 }

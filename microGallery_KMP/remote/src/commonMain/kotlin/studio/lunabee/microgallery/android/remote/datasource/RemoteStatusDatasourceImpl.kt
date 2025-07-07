@@ -11,6 +11,6 @@ class RemoteStatusDatasourceImpl(
 ) : RemoteStatusDatasource {
 
     override fun fetchStatus(): Flow<RemoteStatus> {
-        return rootService.fetchStatus().map { it.toRemoteStatus()}
+        return rootService.fetchStatus().map { it.toRemoteStatus() }
     }
 }

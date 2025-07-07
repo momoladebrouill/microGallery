@@ -20,8 +20,6 @@ import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.colo
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.radius
 import studio.lunabee.amicrogallery.core.ui.R
 import studio.lunabee.microgallery.android.data.MicroPicture
-import studio.lunabee.microgallery.android.data.Picture
-import studio.lunabee.microgallery.android.data.SettingsData
 
 @Composable
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
@@ -49,6 +47,7 @@ fun MicroGalleryButtonImage(
     ) {
         MicroGalleryImage(
             picture = picture,
+            defaultToHighRes = false,
             modifier = Modifier
                 .align(Alignment.Center)
                 .hazeSource(state = hazeState)

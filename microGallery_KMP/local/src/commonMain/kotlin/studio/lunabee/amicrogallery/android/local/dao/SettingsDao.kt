@@ -15,4 +15,7 @@ interface SettingsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun storeSettings(settingsEntity: SettingsEntity)
+
+    @Query("DELETE FROM $SettingsTable")
+    suspend fun dropSettings()
 }

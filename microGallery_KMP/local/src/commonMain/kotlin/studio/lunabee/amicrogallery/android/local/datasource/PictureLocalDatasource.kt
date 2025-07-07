@@ -15,7 +15,7 @@ import studio.lunabee.microgallery.android.domain.settings.usecase.ObserveSettin
 
 class PictureLocalDatasource(
     private val pictureDao: PictureDao,
-    private val observeSettingsUseCase: ObserveSettingsUseCase
+    private val observeSettingsUseCase: ObserveSettingsUseCase,
 ) : PictureLocal {
 
     val settingsData = observeSettingsUseCase()
@@ -42,7 +42,7 @@ class PictureLocalDatasource(
         pictureDao.freshStart()
     }
 
-    override fun getMonthsInYear(year: MYear): Flow<List<MMonth>>{
+    override fun getMonthsInYear(year: MYear): Flow<List<MMonth>> {
         return pictureDao.monthsInYear(year)
     }
 
@@ -57,7 +57,7 @@ class PictureLocalDatasource(
 
     override fun getPicturesUntimed(): Flow<List<MicroPicture>> {
         return pictureDao.picturesUntimed().combine(settingsData) { pictureEntities, data ->
-            pictureEntities.map {it.toMicroPicture(data)}
+            pictureEntities.map { it.toMicroPicture(data) }
         }
     }
 
@@ -66,5 +66,4 @@ class PictureLocalDatasource(
             pictureEntity.toMicroPicture(data)
         }
     }
-
 }

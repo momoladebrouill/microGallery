@@ -27,7 +27,7 @@ fun LoadingScreen(loadingUiState: LoadingUiState) {
 }
 
 @Composable
-fun WaitingForResponse(uiState: LoadingUiState.Fetching) {
+fun WaitingForResponse() {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.align(Alignment.Center)) {
             Text(
@@ -43,14 +43,6 @@ fun WaitingForResponse(uiState: LoadingUiState.Fetching) {
                 color = colors.main,
                 trackColor = colors.second.copy(alpha = 0.5f),
             )
-            Column {
-                for((key, item) in uiState.foundMap){
-                    if(item)
-                        Text("okay for $key")
-                    else
-                        Text("not okay for $key")
-                }
-            }
         }
     }
 }

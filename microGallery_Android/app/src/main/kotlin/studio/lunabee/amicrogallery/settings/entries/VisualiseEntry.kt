@@ -7,10 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -20,8 +16,7 @@ import studio.lunabee.amicrogallery.app.R
 import studio.lunabee.amicrogallery.settings.SettingsUiState
 
 @Composable
-fun VisualiseSettingsEntry(modifier: Modifier = Modifier, uiState: SettingsUiState.HasData) {
-    var viewInHD: Boolean by remember { mutableStateOf(uiState.data.viewInHD) }
+fun VisualiseSettingsEntry(modifier: Modifier = Modifier, uiState: SettingsUiState) {
     Column(modifier = modifier) {
         Text(
             text = stringResource(R.string.visualisation_option),
@@ -37,7 +32,7 @@ fun VisualiseSettingsEntry(modifier: Modifier = Modifier, uiState: SettingsUiSta
                     text = stringResource(R.string.consumes_more),
                     style = typography.body,
                 )
-                if (!viewInHD) {
+                if (!uiState.data.viewInHD) {
                     Text(
                         text = stringResource(R.string.only_low_res),
                         style = typography.body,
@@ -47,9 +42,8 @@ fun VisualiseSettingsEntry(modifier: Modifier = Modifier, uiState: SettingsUiSta
             }
             Switch(
                 modifier = Modifier.align(alignment = Alignment.CenterVertically),
-                checked = viewInHD,
+                checked = uiState.data.viewInHD,
                 onCheckedChange = {
-                    viewInHD = !viewInHD
                     uiState.toggleViewInHD()
                 },
             )

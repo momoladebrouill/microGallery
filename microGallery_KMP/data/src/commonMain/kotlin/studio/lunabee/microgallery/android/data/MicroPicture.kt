@@ -5,5 +5,6 @@ data class MicroPicture(
     val name: String,
     val year: MYear,
     val month: MMonth,
-    val paths: List<String>
+    val highResPaths: List<String>,
+    val lowResPaths: List<String>,
 )

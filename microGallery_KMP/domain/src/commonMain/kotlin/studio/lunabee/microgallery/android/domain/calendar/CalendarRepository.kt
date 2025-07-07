@@ -4,7 +4,6 @@ import kotlinx.coroutines.flow.Flow
 import studio.lunabee.microgallery.android.data.MMonth
 import studio.lunabee.microgallery.android.data.MYear
 import studio.lunabee.microgallery.android.data.MicroPicture
-import studio.lunabee.microgallery.android.data.Picture
 import studio.lunabee.microgallery.android.data.YearPreview
 
 interface CalendarRepository {

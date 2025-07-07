@@ -10,9 +10,11 @@ class ErrorReducer(
     override val coroutineScope: CoroutineScope,
     override val emitUserAction: (LoadingAction) -> Unit,
 ) : LBReducer<LoadingUiState.Error, LoadingUiState, LoadingNavScope, LoadingAction, LoadingAction.ErrorAction>() {
-    override suspend fun reduce(actualState: LoadingUiState.Error,
+    override suspend fun reduce(
+        actualState: LoadingUiState.Error,
         action: LoadingAction.ErrorAction,
-        performNavigation: (LoadingNavScope.() -> Unit) -> Unit): ReduceResult<LoadingUiState> {
+        performNavigation: (LoadingNavScope.() -> Unit) -> Unit,
+    ): ReduceResult<LoadingUiState> {
         return actualState.asResult()
     }
 
@@ -23,5 +25,4 @@ class ErrorReducer(
     override fun filterUiState(actualState: LoadingUiState): Boolean {
         return actualState is LoadingUiState.Fetching
     }
-
 }
