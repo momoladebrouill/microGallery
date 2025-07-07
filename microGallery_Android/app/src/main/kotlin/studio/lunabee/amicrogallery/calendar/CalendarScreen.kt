@@ -57,7 +57,7 @@ fun CalendarScreen(
 ) {
     Box(modifier = Modifier.fillMaxWidth()) {
         BackHandler(enabled = calendarUiState.yearSelected != null) {
-            fireAction(CalendarAction.ResetToHome())
+            fireAction(CalendarAction.ResetToHome)
         }
         if (calendarUiState.yearSelected != null) {
             ScrollTroughYear(calendarUiState, fireAction)
@@ -66,7 +66,7 @@ fun CalendarScreen(
         }
 
         IconButton(
-            onClick = { fireAction(CalendarAction.JumpToSettings()) },
+            onClick = { fireAction(CalendarAction.JumpToSettings) },
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .statusBarsPadding(),

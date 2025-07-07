@@ -70,6 +70,7 @@ fun mapMaterialColorScheme(
     lightColorScheme(
         primary = coreColors.main,
         onPrimary = coreColors.onMain,
+        secondary = coreColors.second,
         background = coreColors.background,
         onBackground = coreColors.onBackground,
         surface = coreColors.background,
