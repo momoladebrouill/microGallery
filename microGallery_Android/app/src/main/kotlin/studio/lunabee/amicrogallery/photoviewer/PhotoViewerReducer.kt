@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.result.ActivityResult
 import androidx.core.content.FileProvider
+import coil3.Image
 import coil3.ImageLoader
 import coil3.request.ImageRequest
 import coil3.request.SuccessResult
@@ -16,6 +17,7 @@ import studio.lunabee.compose.presenter.LBSingleReducer
 import studio.lunabee.compose.presenter.ReduceResult
 import studio.lunabee.compose.presenter.asResult
 import studio.lunabee.compose.presenter.withSideEffect
+import studio.lunabee.microgallery.android.data.MicroPicture
 import studio.lunabee.microgallery.android.data.Picture
 import java.io.File
 
@@ -24,13 +26,17 @@ class PhotoViewerReducer(
     override val emitUserAction: (PhotoViewerAction) -> Unit,
 ) : LBSingleReducer<PhotoViewerUiState, PhotoViewerNavScope, PhotoViewerAction>() {
 
-    suspend fun downloadAndShareImage(context: Context, picture: Picture, launcher: ManagedActivityResultLauncher<Intent, ActivityResult>) {
+    suspend fun downloadAndShareImage(context: Context, picture: MicroPicture, launcher: ManagedActivityResultLauncher<Intent, ActivityResult>) {
         val loader = ImageLoader(context)
-        val request = ImageRequest.Builder(context)
-            .data("http://92.150.239.130" + picture.fullResPath) // this is fixed in feature/use-settings
-            .build()
-        val result = loader.execute(request)
-        val drawable = (result as? SuccessResult)?.image ?: return
+        val drawable : Image? = picture.highResPaths.fold(null) { acc, path ->
+            if(acc == null) {
+                val request = ImageRequest.Builder(context)
+                    .data(path)
+                    .build()
+                val result = loader.execute(request)
+                (result as? SuccessResult)?.image
+            } else acc
+        }
 
         val file = withContext(Dispatchers.IO) {
             val file = File(context.cacheDir, picture.name)
@@ -59,7 +65,7 @@ class PhotoViewerReducer(
         performNavigation: (PhotoViewerNavScope.() -> Unit) -> Unit,
     ): ReduceResult<PhotoViewerUiState> {
         return when (action) {
-            is PhotoViewerAction.FoundPicture -> actualState.copy(picture = action.picture).asResult()
+            is PhotoViewerAction.FoundPicture -> actualState.copy(picture = action.picture!!).asResult()
             is PhotoViewerAction.SharePicture -> actualState.copy(loading = true) withSideEffect {
                 downloadAndShareImage(action.context, actualState.picture!!, action.launcher)
             }
