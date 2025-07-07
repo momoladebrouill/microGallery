@@ -11,9 +11,9 @@ sealed interface PhotoViewerUiState : PresenterUiState {
     object Waiting : PhotoViewerUiState
     data class HasPicture(
         val picture: MicroPicture,
-    	val loading: Boolean = false,
-    	val share: (Context, ManagedActivityResultLauncher<Intent, ActivityResult>) -> Unit,
-    	val stopLoading: () -> Unit,
+        val loading: Boolean = false,
+        val share: (Context, ManagedActivityResultLauncher<Intent, ActivityResult>) -> Unit,
+        val stopLoading: () -> Unit,
     ) : PhotoViewerUiState
-) : PresenterUiState
+}
 

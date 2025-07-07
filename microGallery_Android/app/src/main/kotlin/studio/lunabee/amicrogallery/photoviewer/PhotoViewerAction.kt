@@ -7,14 +7,17 @@ import androidx.activity.result.ActivityResult
 import studio.lunabee.microgallery.android.data.MicroPicture
 
 sealed interface PhotoViewerAction {
+
+    sealed interface WaitingAction : PhotoViewerAction
+    sealed interface HasPictureAction : PhotoViewerAction
     data class FoundPicture(
         val picture: MicroPicture,
-    ) : PhotoViewerAction
+    ) : WaitingAction
 
     data class SharePicture(
         val context: Context,
         val launcher: ManagedActivityResultLauncher<Intent, ActivityResult>,
-    ) : PhotoViewerAction
+    ) : HasPictureAction
 
-    object StopLoading : PhotoViewerAction
+    object StopLoading : HasPictureAction
 }
