@@ -5,10 +5,12 @@ import studio.lunabee.compose.presenter.LBSingleReducer
 import studio.lunabee.compose.presenter.ReduceResult
 import studio.lunabee.compose.presenter.asResult
 import studio.lunabee.compose.presenter.withSideEffect
+import studio.lunabee.microgallery.android.domain.lastMonth.LastMonthRepository
 
 class LastMonthReducer(
     override val coroutineScope: CoroutineScope,
     override val emitUserAction: (LastMonthAction) -> Unit,
+    val lastMonthRepository: LastMonthRepository,
 ) : LBSingleReducer<LastMonthUiState, LastMonthNavScope, LastMonthAction>() {
     override suspend fun reduce(
         actualState: LastMonthUiState,

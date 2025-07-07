@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 import studio.lunabee.amicrogallery.android.local.entity.PhotosTable
 import studio.lunabee.amicrogallery.android.local.entity.PictureEntity
 
@@ -16,23 +17,23 @@ interface PictureDao {
     suspend fun freshStart()
 
     @Query("SELECT DISTINCT month FROM $PhotosTable WHERE year = :year")
-    suspend fun getMonthsInYear(year: String): List<String>
+    fun monthsInYear(year: String): Flow<List<String>>
 
     @Query("SELECT * FROM $PhotosTable WHERE year = :year AND month = :month")
-    suspend fun getPicturesInMonth(year: String, month: String): List<PictureEntity>
+    fun picturesInMonth(year: String, month: String): Flow<List<PictureEntity>>
 
     @Query("SELECT * FROM $PhotosTable WHERE year = 'untimed' AND month IS NULL")
-    suspend fun getPicturesUntimed(): List<PictureEntity>
+    fun picturesUntimed(): Flow<List<PictureEntity>>
 
     @Query("SELECT * FROM $PhotosTable WHERE id = :id")
-    suspend fun getPictureEntityFromId(id: Long): PictureEntity
+    fun pictureEntityFromId(id: Long): Flow<PictureEntity>
 
     @Query("SELECT DISTINCT year FROM $PhotosTable WHERE year <> 'untimed'")
-    suspend fun getYears(): List<String>
+    fun getYears(): Flow<List<String>>
 
     @Query("SELECT Count(id) FROM $PhotosTable WHERE year=:year")
-    suspend fun getQtyInYear(year: String): Int
+    fun getQtyInYear(year: String): Flow<Int>
 
     @Query("SELECT * FROM $PhotosTable WHERE year = :year ORDER BY RANDOM()")
-    suspend fun getRandomPictureInYear(year: String): PictureEntity
+    fun getRandomPictureInYear(year: String): Flow<PictureEntity>
 }

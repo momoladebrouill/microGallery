@@ -1,6 +1,5 @@
 package studio.lunabee.amicrogallery.photoviewer
 
-import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.rememberTransformableState
@@ -12,7 +11,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,16 +24,13 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
-import androidx.core.net.toUri
 import studio.lunabee.amicrogallery.android.core.ui.component.image.MicroGalleryImage
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.typography
 import studio.lunabee.amicrogallery.app.R
 import studio.lunabee.amicrogallery.utils.getMonthName
-
 import studio.lunabee.amicrogallery.core.ui.R as CoreUi
 
 @Composable
@@ -47,20 +42,8 @@ fun PhotoViewerScreen(
     var offset by remember { mutableStateOf(Offset.Zero) }
     val state = rememberTransformableState { zoomChange, offsetChange, rotationChange ->
         scale *= zoomChange
-        // rotation += rotationChange
         offset += offsetChange * 5.0f
     }
-    val context = LocalContext.current
-    val sendIntent: Intent = Intent().apply {
-        action = Intent.ACTION_SEND
-        // TODO : download photo and send it to be shared
-        putExtra(Intent.EXTRA_STREAM, "http://92.150.239.130" + uiState.picture?.lowResPath)
-        // type = "image/jpeg"
-        setDataAndType(("http://92.150.239.130" + uiState.picture?.lowResPath).toUri(), "image/jpeg")
-    }
-
-    val shareIntent = Intent.createChooser(sendIntent, null)
-
     Box(
         modifier = Modifier
             .pointerInput(Unit) {
@@ -78,7 +61,12 @@ fun PhotoViewerScreen(
             .fillMaxSize()
             .background(Color.Black),
     ) {
-        Box(modifier = Modifier.fillMaxWidth().align(Alignment.TopCenter).statusBarsPadding()) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.TopCenter)
+                .statusBarsPadding(),
+        ) {
             Text(
                 text = uiState.picture?.name.toString().substringBefore("."),
                 style = typography.body,
@@ -87,7 +75,7 @@ fun PhotoViewerScreen(
                     .align(Alignment.Center),
             )
             IconButton(
-                onClick = { context.startActivity(shareIntent) },
+                onClick = { },
                 modifier = Modifier
                     .align(Alignment.CenterEnd),
             ) {

@@ -24,10 +24,12 @@ dependencies {
     implementation(libs.composeMaterial3)
     implementation(libs.haze)
     implementation(libs.hazeMaterials)
+    implementation(libs.koinCore)
     implementation(libs.ktorAndroid)
     implementation(libs.navigationRuntimeAndroid)
     implementation(libs.uiTextGoogleFonts)
 
     api(projects.coreRes)
     implementation(projects.data)
+    implementation(projects.domain)
 }

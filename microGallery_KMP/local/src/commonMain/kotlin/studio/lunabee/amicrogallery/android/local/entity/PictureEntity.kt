@@ -3,7 +3,9 @@ package studio.lunabee.amicrogallery.android.local.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import studio.lunabee.microgallery.android.data.MicroPicture
 import studio.lunabee.microgallery.android.data.Picture
+import studio.lunabee.microgallery.android.data.SettingsData
 
 const val PhotosTable = "PhotosTable"
 
@@ -18,15 +20,14 @@ data class PictureEntity(
     @ColumnInfo(name = "year") val year: String?,
     @ColumnInfo(name = "month") val month: String?,
 ) {
-
-    fun toPicture(): Picture {
-        return Picture(
+    fun toMicroPicture(settingsData: SettingsData): MicroPicture {
+        return MicroPicture(
             id = id,
             name = name,
-            fullResPath = fullResPath,
-            lowResPath = lowResPath,
-            year = year,
-            month = month,
+            lowResPaths = getUrl(settingsData, false, picture = this),
+            highResPaths = getUrl(settingsData, true, picture = this),
+            year = year ?: "",
+            month = month ?: "",
         )
     }
 
@@ -40,5 +41,34 @@ data class PictureEntity(
                 month = picture.month,
             )
         }
+    }
+}
+
+fun getUrl(data: SettingsData, defaultToHighRes: Boolean, picture: PictureEntity): List<String> {
+    val (begin0, begin1) =
+        if (data.useIpv6) {
+            Pair("http://[${data.ipv6}]", "http://${data.ipv4}")
+        } else {
+            Pair("http://${data.ipv4}", "http://[${data.ipv6}]")
+        }
+
+    if (data.viewInHD) {
+        val (end0, end1) =
+            if (defaultToHighRes) {
+                Pair(picture.fullResPath, picture.lowResPath)
+            } else {
+                Pair(picture.lowResPath, picture.fullResPath)
+            }
+        return listOf(
+            begin0 + end0,
+            begin0 + end1,
+            begin1 + end0,
+            begin1 + end1,
+        )
+    } else {
+        return listOf(
+            begin0 + picture.lowResPath,
+            begin1 + picture.lowResPath,
+        )
     }
 }

@@ -1,57 +1,57 @@
 {
-  "formatVersion": 1,
-  "database": {
-    "version": 2,
-    "identityHash": "7c64fd29e7e3daf11cbadaa4e8af1ecb",
-    "entities": [
-      {
-        "tableName": "PhotosTable",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `fullResPath` TEXT, `lowResPath` TEXT, `year` TEXT, `month` TEXT)",
-        "fields": [
-          {
-            "fieldPath": "id",
-            "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "name",
-            "columnName": "name",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "fullResPath",
-            "columnName": "fullResPath",
-            "affinity": "TEXT"
-          },
-          {
-            "fieldPath": "lowResPath",
-            "columnName": "lowResPath",
-            "affinity": "TEXT"
-          },
-          {
-            "fieldPath": "year",
-            "columnName": "year",
-            "affinity": "TEXT"
-          },
-          {
-            "fieldPath": "month",
-            "columnName": "month",
-            "affinity": "TEXT"
-          }
+    "formatVersion": 1,
+    "database": {
+        "version": 2,
+        "identityHash": "7c64fd29e7e3daf11cbadaa4e8af1ecb",
+        "entities": [
+            {
+                "tableName": "PhotosTable",
+                "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `fullResPath` TEXT, `lowResPath` TEXT, `year` TEXT, `month` TEXT)",
+                "fields": [
+                    {
+                        "fieldPath": "id",
+                        "columnName": "id",
+                        "affinity": "INTEGER",
+                        "notNull": true
+                    },
+                    {
+                        "fieldPath": "name",
+                        "columnName": "name",
+                        "affinity": "TEXT",
+                        "notNull": true
+                    },
+                    {
+                        "fieldPath": "fullResPath",
+                        "columnName": "fullResPath",
+                        "affinity": "TEXT"
+                    },
+                    {
+                        "fieldPath": "lowResPath",
+                        "columnName": "lowResPath",
+                        "affinity": "TEXT"
+                    },
+                    {
+                        "fieldPath": "year",
+                        "columnName": "year",
+                        "affinity": "TEXT"
+                    },
+                    {
+                        "fieldPath": "month",
+                        "columnName": "month",
+                        "affinity": "TEXT"
+                    }
+                ],
+                "primaryKey": {
+                    "autoGenerate": true,
+                    "columnNames": [
+                        "id"
+                    ]
+                }
+            }
         ],
-        "primaryKey": {
-          "autoGenerate": true,
-          "columnNames": [
-            "id"
-          ]
-        }
-      }
-    ],
-    "setupQueries": [
-      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7c64fd29e7e3daf11cbadaa4e8af1ecb')"
-    ]
-  }
+        "setupQueries": [
+            "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+            "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7c64fd29e7e3daf11cbadaa4e8af1ecb')"
+        ]
+    }
 }

@@ -2,7 +2,6 @@ package studio.lunabee.amicrogallery.settings
 
 import coil3.imageLoader
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 import studio.lunabee.compose.presenter.LBSingleReducer
 import studio.lunabee.compose.presenter.ReduceResult
 import studio.lunabee.compose.presenter.asResult
@@ -13,7 +12,7 @@ class SettingsReducer(
     override val coroutineScope: CoroutineScope,
     override val emitUserAction: (SettingsAction) -> Unit,
     val settingsRepository: SettingsRepository,
-) : LBSingleReducer<SettingsUiState, SettingsNavScope, SettingsAction> () {
+) : LBSingleReducer<SettingsUiState, SettingsNavScope, SettingsAction>() {
 
     override suspend fun reduce(
         actualState: SettingsUiState,
@@ -21,35 +20,37 @@ class SettingsReducer(
         performNavigation: (SettingsNavScope.() -> Unit) -> Unit,
     ): ReduceResult<SettingsUiState> {
         return when (action) {
-            is SettingsAction.GotData -> actualState.copy(data = action.data).asResult()
             is SettingsAction.JumpBack -> actualState withSideEffect {
-                coroutineScope.launch {
-                    if (actualState.data == null) {
-                        error("Trying to save a null data")
-                    } else {
-                        settingsRepository.setSettingsData(actualState.data)
-                    }
-                }
+                settingsRepository.setSettingsData(actualState.data)
                 performNavigation {
                     jumpBack()
                 }
             }
-            is SettingsAction.SetParameters -> actualState.copy(data = action.data).asResult()
+
+            is SettingsAction.ToggleIpv6 -> actualState.copy(
+                data = actualState.data.copy(
+                    useIpv6 = !(actualState.data.useIpv6),
+                ),
+            ).asResult()
+
+            is SettingsAction.ToggleViewInHD -> actualState.copy(
+                data = actualState.data.copy(
+                    viewInHD = !actualState.data.viewInHD,
+                ),
+            ).asResult()
+
             is SettingsAction.Clear -> actualState withSideEffect {
-                coroutineScope.launch {
-                    val imageLoader = action.context.imageLoader
-                    imageLoader.memoryCache?.clear()
-                    settingsRepository.clearDB()
-                }
+                val imageLoader = action.context.imageLoader
+                imageLoader.memoryCache?.clear()
+                // settingsRepository.clearDB()
             }
 
             is SettingsAction.GotRemoteStatus -> actualState.copy(remoteStatus = action.status).asResult()
-            SettingsAction.GetRemoteStatus -> actualState.withSideEffect {
-                coroutineScope.launch {
-                    val remoteStatus = settingsRepository.getStatus()
-                    emitUserAction(SettingsAction.GotRemoteStatus(remoteStatus))
-                }
-            }
+
+            is SettingsAction.SetIpv4 -> actualState.copy(data = actualState.data.copy(ipv4 = action.ipv4)).asResult()
+            is SettingsAction.SetIpv6 -> actualState.copy(data = actualState.data.copy(ipv6 = action.ipv6)).asResult()
+            is SettingsAction.GotData ->
+                actualState.copy(data = action.data).asResult()
         }
     }
 }

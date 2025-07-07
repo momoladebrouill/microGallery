@@ -5,18 +5,23 @@ import studio.lunabee.microgallery.android.data.RemoteStatus
 import studio.lunabee.microgallery.android.data.SettingsData
 
 sealed interface SettingsAction {
-    object JumpBack : SettingsAction
-
     data class GotData(val data: SettingsData) : SettingsAction
+
+    object JumpBack : SettingsAction
 
     data class Clear(
         val context: Context,
     ) : SettingsAction
-    data class SetParameters(
-        val data: SettingsData,
+    data object ToggleIpv6 : SettingsAction
+    data object ToggleViewInHD : SettingsAction
+    data class SetIpv6(
+        val ipv6: String,
     ) : SettingsAction
 
-    object GetRemoteStatus : SettingsAction
+    data class SetIpv4(
+        val ipv4: String,
+    ) : SettingsAction
+
     data class GotRemoteStatus(
         val status: RemoteStatus,
     ) : SettingsAction

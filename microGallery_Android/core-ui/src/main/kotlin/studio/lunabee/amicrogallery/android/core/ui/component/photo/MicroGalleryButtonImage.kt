@@ -19,11 +19,17 @@ import studio.lunabee.amicrogallery.android.core.ui.component.image.MicroGallery
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.colors
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.radius
 import studio.lunabee.amicrogallery.core.ui.R
-import studio.lunabee.microgallery.android.data.Picture
+import studio.lunabee.microgallery.android.data.MicroPicture
 
 @Composable
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
-fun MicroGalleryButtonImage(picture: Picture, hazeState: HazeState, showMe: (Long) -> Unit, modifier: Modifier = Modifier) {
+fun MicroGalleryButtonImage(
+    picture: MicroPicture,
+    hazeState: HazeState,
+    showMe: (Long) -> Unit,
+    modifier: Modifier = Modifier,
+
+) {
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(radius.RadiusMedium))
@@ -41,6 +47,7 @@ fun MicroGalleryButtonImage(picture: Picture, hazeState: HazeState, showMe: (Lon
     ) {
         MicroGalleryImage(
             picture = picture,
+            defaultToHighRes = false,
             modifier = Modifier
                 .align(Alignment.Center)
                 .hazeSource(state = hazeState)

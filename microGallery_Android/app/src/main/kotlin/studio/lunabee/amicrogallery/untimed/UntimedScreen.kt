@@ -37,7 +37,6 @@ import studio.lunabee.amicrogallery.app.R
 @Composable
 fun UntimedScreen(
     uiState: UntimedUiState,
-    fireAction: (UntimedAction) -> Unit,
 ) {
     val hazeState = remember { HazeState() }
     var topBarPadding by remember { mutableStateOf(0.dp) }
@@ -52,7 +51,7 @@ fun UntimedScreen(
                     picture = picture,
                     modifier = Modifier.padding(spacing.SpacingSmall),
                     hazeState = hazeState,
-                    showMe = { fireAction(UntimedAction.ShowPhoto(it)) },
+                    showMe = { uiState.showPhoto(it) },
                 )
             }
         }
@@ -85,8 +84,7 @@ fun UntimedHeader(
         Column {
             Spacer(modifier = Modifier.height(spacing.SpacingMedium))
             Text(
-                text =
-                stringResource(R.string.untimed_title),
+                text = stringResource(R.string.untimed_title),
                 color = colors.onMain,
                 modifier = modifier
                     .fillMaxWidth()

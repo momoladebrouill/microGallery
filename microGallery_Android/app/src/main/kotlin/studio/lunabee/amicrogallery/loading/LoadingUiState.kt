@@ -2,7 +2,12 @@ package studio.lunabee.amicrogallery.loading
 
 import studio.lunabee.compose.presenter.PresenterUiState
 
-interface LoadingUiState : PresenterUiState {
-    class Default : LoadingUiState
-    data class Error(val errorMessage: String?) : LoadingUiState
+sealed interface LoadingUiState : PresenterUiState {
+
+    data class Error(
+        val errorMessage: String?,
+        val reload: () -> Unit,
+    ) : LoadingUiState
+
+    object Fetching : LoadingUiState
 }

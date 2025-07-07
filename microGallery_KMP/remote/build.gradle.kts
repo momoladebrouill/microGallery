@@ -1,5 +1,3 @@
-
-
 plugins {
     `kmp-library-jvm-convention`
     alias(libs.plugins.kotlinxSerialization)

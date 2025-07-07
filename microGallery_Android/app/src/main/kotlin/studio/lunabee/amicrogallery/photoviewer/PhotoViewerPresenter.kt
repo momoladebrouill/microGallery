@@ -5,37 +5,28 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.map
 import studio.lunabee.compose.presenter.LBSinglePresenter
 import studio.lunabee.compose.presenter.LBSingleReducer
-import studio.lunabee.microgallery.android.data.Picture
-import studio.lunabee.microgallery.android.domain.photoviewer.PhotoViewerRepository
+import studio.lunabee.microgallery.android.domain.photoviewer.usecase.ObservePictureByIdUseCase
 
 class PhotoViewerPresenter(
     savedStateHandle: SavedStateHandle,
-    val photoViewerRepository: PhotoViewerRepository,
+    val observePictureByIdUseCase: ObservePictureByIdUseCase,
 ) : LBSinglePresenter<PhotoViewerUiState, PhotoViewerNavScope, PhotoViewerAction>() {
 
     private val params: PhotoViewerDestination = savedStateHandle.toRoute()
+    val pictureById = observePictureByIdUseCase(params.pictureId).map { PhotoViewerAction.FoundPicture(it) }
 
-    override val flows: List<Flow<PhotoViewerAction>> = listOf()
+    override val flows: List<Flow<PhotoViewerAction>> = listOf(
+        pictureById,
+    )
 
     override fun initReducer(): LBSingleReducer<PhotoViewerUiState, PhotoViewerNavScope, PhotoViewerAction> {
         return PhotoViewerReducer(
             coroutineScope = viewModelScope,
             emitUserAction = ::emitUserAction,
         )
-    }
-
-    init {
-        getPictureById(params.pictureId)
-    }
-
-    fun getPictureById(pictureId: Long) {
-        viewModelScope.launch {
-            val pic: Picture = photoViewerRepository.getPictureById(pictureId)
-            emitUserAction(PhotoViewerAction.FoundPicture(pic))
-        }
     }
 
     override fun getInitialState(): PhotoViewerUiState = PhotoViewerUiState(null)

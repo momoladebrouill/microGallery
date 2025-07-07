@@ -15,14 +15,13 @@ import androidx.compose.ui.res.stringResource
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.spacing
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.typography
 import studio.lunabee.amicrogallery.app.R
-import studio.lunabee.amicrogallery.settings.SettingsAction
 import studio.lunabee.amicrogallery.core.ui.R as CoreUi
 
 @Composable
-fun TitleSettingsEntry(modifier: Modifier = Modifier, fireAction: (SettingsAction) -> Unit) {
+fun TitleSettingsEntry(modifier: Modifier = Modifier, clickAction: () -> Unit) {
     Row(modifier = modifier) {
         IconButton(
-            onClick = { fireAction(SettingsAction.JumpBack) },
+            onClick = clickAction,
             modifier = modifier.align(Alignment.CenterVertically),
         ) {
             Icon(

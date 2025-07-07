@@ -1,8 +1,9 @@
 package studio.lunabee.microgallery.android.repository.datasource.remote
 
-import studio.lunabee.microgallery.android.data.Node
+import kotlinx.coroutines.flow.Flow
+import studio.lunabee.microgallery.android.data.Directory
 
 interface TreeRemoteDatasource {
-    suspend fun fetchRoot()
-    fun getRoot(): Node
+
+    fun getRoot(): Flow<Directory>
 }
