@@ -28,11 +28,19 @@ import java.io.File
 class PhotoViewerHasPhotoReducer(
     override val coroutineScope: CoroutineScope,
     override val emitUserAction: (PhotoViewerAction) -> Unit,
-) : LBReducer<PhotoViewerUiState.HasPicture, PhotoViewerUiState, PhotoViewerNavScope, PhotoViewerAction, PhotoViewerAction.HasPictureAction>() {
+) : LBReducer<
+    PhotoViewerUiState.HasPicture,
+    PhotoViewerUiState,
+    PhotoViewerNavScope,
+    PhotoViewerAction,
+    PhotoViewerAction.HasPictureAction,
+    >() {
 
-    suspend fun downloadAndShareImage(context: Context,
+    suspend fun downloadAndShareImage(
+        context: Context,
         picture: MicroPicture,
-        launcher: ManagedActivityResultLauncher<Intent, ActivityResult>) {
+        launcher: ManagedActivityResultLauncher<Intent, ActivityResult>,
+    ) {
         val loader = ImageLoader(context)
         val drawable: Image? = picture.highResPaths.fold(null) { acc, path ->
             if (acc == null) {
@@ -41,7 +49,9 @@ class PhotoViewerHasPhotoReducer(
                     .build()
                 val result = loader.execute(request)
                 (result as? SuccessResult)?.image
-            } else acc
+            } else {
+                acc
+            }
         }
 
         val file = withContext(Dispatchers.IO) {
@@ -76,7 +86,6 @@ class PhotoViewerHasPhotoReducer(
             }
 
             PhotoViewerAction.StopLoading -> actualState.copy(loading = false).asResult()
-
         }
     }
 

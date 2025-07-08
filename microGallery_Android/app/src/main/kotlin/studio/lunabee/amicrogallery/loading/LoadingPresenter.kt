@@ -12,11 +12,13 @@ import studio.lunabee.microgallery.android.domain.loading.usecase.UpdateTreeUseC
 
 class LoadingPresenter(
     val updateTreeUseCase: UpdateTreeUseCase,
+
 ) : LBPresenter<LoadingUiState, LoadingNavScope, LoadingAction>() {
 
     init {
         viewModelScope.launch {
             updateTreeUseCase()
+
             emitUserAction(LoadingAction.FoundAll)
         }
     }

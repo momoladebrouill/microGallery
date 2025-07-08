@@ -29,9 +29,8 @@ class PhotoViewerWaitingReducer(
             is PhotoViewerAction.FoundPicture -> PhotoViewerUiState.HasPicture(
                 picture = action.picture,
                 share = ::emitShare,
-                stopLoading = { emitUserAction(PhotoViewerAction.StopLoading) }
+                stopLoading = { emitUserAction(PhotoViewerAction.StopLoading) },
             ).asResult()
-
         }
     }
 
@@ -42,5 +41,4 @@ class PhotoViewerWaitingReducer(
     override fun filterUiState(actualState: PhotoViewerUiState): Boolean {
         return actualState is PhotoViewerUiState.Waiting
     }
-
 }

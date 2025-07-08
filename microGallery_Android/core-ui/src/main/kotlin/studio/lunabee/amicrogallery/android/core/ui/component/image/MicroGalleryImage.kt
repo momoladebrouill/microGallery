@@ -69,6 +69,7 @@ fun isConnectionError(result: ErrorResult): Boolean {
             println(exception.message) // Failed to connect to
             true
         }
+
         else -> false
     }
 }

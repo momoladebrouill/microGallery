@@ -9,22 +9,26 @@ import androidx.sqlite.SQLiteDriver
 import androidx.sqlite.execSQL
 import studio.lunabee.amicrogallery.android.local.dao.PictureDao
 import studio.lunabee.amicrogallery.android.local.dao.SettingsDao
+import studio.lunabee.amicrogallery.android.local.dao.StatusDao
 import studio.lunabee.amicrogallery.android.local.entity.PictureEntity
 import studio.lunabee.amicrogallery.android.local.entity.SettingsEntity
 import studio.lunabee.amicrogallery.android.local.entity.SettingsTable
+import studio.lunabee.amicrogallery.android.local.entity.StatusEntity
 import kotlin.coroutines.CoroutineContext
 
 @Database(
     entities = [
         PictureEntity::class,
         SettingsEntity::class,
+        StatusEntity::class,
     ],
-    version = 5,
+    version = 6,
 )
 @ConstructedBy(AppDatabaseConstructor::class)
 abstract class RoomAppDatabase : RoomDatabase() {
     abstract fun pictureDao(): PictureDao
     abstract fun settingsDao(): SettingsDao
+    abstract fun statusDao(): StatusDao
 }
 
 expect class RoomPlatformBuilder {

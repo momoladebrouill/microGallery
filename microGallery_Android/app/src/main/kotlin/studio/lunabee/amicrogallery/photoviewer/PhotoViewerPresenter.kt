@@ -25,16 +25,17 @@ class PhotoViewerPresenter(
     )
 
     override fun getInitialState(): PhotoViewerUiState = PhotoViewerUiState.Waiting
-    override fun getReducerByState(actualState: PhotoViewerUiState): LBSimpleReducer<PhotoViewerUiState, PhotoViewerNavScope, PhotoViewerAction> {
+    override fun getReducerByState(actualState: PhotoViewerUiState):
+        LBSimpleReducer<PhotoViewerUiState, PhotoViewerNavScope, PhotoViewerAction> {
         return when (actualState) {
             is PhotoViewerUiState.Waiting -> PhotoViewerWaitingReducer(
                 coroutineScope = viewModelScope,
-                emitUserAction = ::emitUserAction
+                emitUserAction = ::emitUserAction,
             )
 
             is PhotoViewerUiState.HasPicture -> PhotoViewerHasPhotoReducer(
                 coroutineScope = viewModelScope,
-                emitUserAction = ::emitUserAction
+                emitUserAction = ::emitUserAction,
             )
         }
     }

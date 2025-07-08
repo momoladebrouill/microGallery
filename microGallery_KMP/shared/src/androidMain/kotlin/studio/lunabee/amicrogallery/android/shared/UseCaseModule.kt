@@ -8,7 +8,8 @@ import studio.lunabee.microgallery.android.domain.lastMonth.usecase.ObserveLastM
 import studio.lunabee.microgallery.android.domain.loading.usecase.UpdateTreeUseCase
 import studio.lunabee.microgallery.android.domain.photoviewer.usecase.ObservePictureByIdUseCase
 import studio.lunabee.microgallery.android.domain.settings.usecase.ObserveSettingsUseCase
-import studio.lunabee.microgallery.android.domain.settings.usecase.ObserveStatusUseCase
+import studio.lunabee.microgallery.android.domain.status.usecase.ObserveStatusUseCase
+import studio.lunabee.microgallery.android.domain.status.usecase.SetStatusUseCase
 import studio.lunabee.microgallery.android.domain.untimed.usecase.ObserveUntimedUseCase
 
 val useCaseModule = module {
@@ -20,4 +21,5 @@ val useCaseModule = module {
     factoryOf(::LoadPartialTreeUseCase)
     factoryOf(::UpdateTreeUseCase)
     factoryOf(::ObserveStatusUseCase)
+    factoryOf(::SetStatusUseCase)
 }

@@ -11,6 +11,7 @@ import studio.lunabee.amicrogallery.android.shared.useCaseModule
 import studio.lunabee.amicrogallery.di.presentersModule
 
 class MicroGalleryApplication : Application() {
+
     override fun onCreate() {
         super.onCreate()
 

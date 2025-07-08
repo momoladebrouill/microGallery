@@ -54,4 +54,6 @@
     <string name="only_low_res">Only low resolutions pictures will be visible</string>
     <string name="share_picture">Share picture %s</string>
     <string name="found_settings">Found settings</string>
+    <string name="clearing_cache">Clearing cache</string>
+    <string name="cache_cleared">Cache cleared</string>
 </resources>

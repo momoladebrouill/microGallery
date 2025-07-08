@@ -1,7 +1,5 @@
 package studio.lunabee.microgallery.android.remote.datasource
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import studio.lunabee.microgallery.android.data.Directory
 import studio.lunabee.microgallery.android.data.MMonth
 import studio.lunabee.microgallery.android.data.MYear
@@ -14,9 +12,9 @@ class TreeRemoteDatasourceImpl(
     private val rootService: RootService,
 ) : TreeRemoteDatasource {
 
-    override fun getRoot(): Flow<Directory> {
-        val root: Flow<Directory> = rootService.fetchRootList().map { it[0].toData() as Directory }
-        return root.map { it.copy(content = it.content.map { node -> giveFullNameToFiles(node) }) }
+    override suspend fun getRoot(): Directory {
+        val root: Directory = rootService.fetchRootList()[0].toData() as Directory
+        return root.copy(content = root.content.map { node -> giveFullNameToFiles(node) })
     }
 }
 

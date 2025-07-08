@@ -1,8 +1,8 @@
 {
     "formatVersion": 1,
     "database": {
-        "version": 4,
-        "identityHash": "0d3901b52a976026d48698243301261a",
+        "version": 6,
+        "identityHash": "879283da397ea3151e1ff8631c4e2fc1",
         "entities": [
             {
                 "tableName": "PhotosTable",
@@ -50,7 +50,7 @@
             },
             {
                 "tableName": "SettingsTable",
-                "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `ipvsix` TEXT NOT NULL, `ipvfour` TEXT NOT NULL, `useIpvSix` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+                "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `ipvsix` TEXT NOT NULL, `ipvfour` TEXT NOT NULL, `viewInHD` INTEGER NOT NULL, `useIpvSix` INTEGER NOT NULL, PRIMARY KEY(`id`))",
                 "fields": [
                     {
                         "fieldPath": "id",
@@ -71,8 +71,56 @@
                         "notNull": true
                     },
                     {
+                        "fieldPath": "viewInHD",
+                        "columnName": "viewInHD",
+                        "affinity": "INTEGER",
+                        "notNull": true
+                    },
+                    {
                         "fieldPath": "useIpv6",
                         "columnName": "useIpvSix",
+                        "affinity": "INTEGER",
+                        "notNull": true
+                    }
+                ],
+                "primaryKey": {
+                    "autoGenerate": false,
+                    "columnNames": [
+                        "id"
+                    ]
+                }
+            },
+            {
+                "tableName": "StatusTable",
+                "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `temperature` INTEGER NOT NULL, `photoshr` INTEGER NOT NULL, `photoslr` INTEGER NOT NULL, `isdiskplugged` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+                "fields": [
+                    {
+                        "fieldPath": "id",
+                        "columnName": "id",
+                        "affinity": "INTEGER",
+                        "notNull": true
+                    },
+                    {
+                        "fieldPath": "temp",
+                        "columnName": "temperature",
+                        "affinity": "INTEGER",
+                        "notNull": true
+                    },
+                    {
+                        "fieldPath": "photosHR",
+                        "columnName": "photoshr",
+                        "affinity": "INTEGER",
+                        "notNull": true
+                    },
+                    {
+                        "fieldPath": "photosLR",
+                        "columnName": "photoslr",
+                        "affinity": "INTEGER",
+                        "notNull": true
+                    },
+                    {
+                        "fieldPath": "diskPlugged",
+                        "columnName": "isdiskplugged",
                         "affinity": "INTEGER",
                         "notNull": true
                     }
@@ -87,7 +135,7 @@
         ],
         "setupQueries": [
             "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-            "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0d3901b52a976026d48698243301261a')"
+            "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '879283da397ea3151e1ff8631c4e2fc1')"
         ]
     }
 }

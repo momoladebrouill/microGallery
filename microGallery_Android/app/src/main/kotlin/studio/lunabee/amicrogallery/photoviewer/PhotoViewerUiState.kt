@@ -16,4 +16,3 @@ sealed interface PhotoViewerUiState : PresenterUiState {
         val stopLoading: () -> Unit,
     ) : PhotoViewerUiState
 }
-

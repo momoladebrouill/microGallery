@@ -6,7 +6,8 @@ import kotlinx.coroutines.flow.map
 import studio.lunabee.microgallery.android.data.MMonth
 import studio.lunabee.microgallery.android.data.MYear
 
-class LoadPartialTreeUseCase( // load part of the tree
+class LoadPartialTreeUseCase(
+    // load part of the tree
     val observeYearPreviewsUseCase: ObserveYearPreviewsUseCase,
 ) {
     val yearPreviewsUseCase = observeYearPreviewsUseCase()

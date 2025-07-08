@@ -1,6 +1,5 @@
 package studio.lunabee.microgallery.android.domain.loading.usecase
 
-import kotlinx.coroutines.flow.first
 import studio.lunabee.microgallery.android.data.Directory
 import studio.lunabee.microgallery.android.data.Picture
 import studio.lunabee.microgallery.android.domain.loading.LoadingRepository
@@ -10,7 +9,7 @@ class UpdateTreeUseCase(
     val loadingRepository: LoadingRepository,
 ) {
     suspend operator fun invoke() {
-        val rootDir = loadingRepository.getRootDir().first()
+        val rootDir = loadingRepository.getRootDir()
         loadingRepository.pictureDbFreshStart()
         rootDir.content.filterIsInstance<Directory>().forEach { yearDir ->
             if (yearDir.name == "untimed") {

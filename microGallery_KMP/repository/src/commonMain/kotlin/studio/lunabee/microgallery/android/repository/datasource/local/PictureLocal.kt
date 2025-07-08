@@ -1,4 +1,4 @@
-package studio.lunabee.amicrogallery.picture
+package studio.lunabee.microgallery.android.repository.datasource.local
 
 import kotlinx.coroutines.flow.Flow
 import studio.lunabee.microgallery.android.data.MMonth

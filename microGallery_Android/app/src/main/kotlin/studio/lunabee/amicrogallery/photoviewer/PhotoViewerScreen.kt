@@ -140,7 +140,7 @@ fun PhotoView(uiState: PhotoViewerUiState.HasPicture) {
                 )
                 .transformable(state = state),
 
-            ) {
+        ) {
             MicroGalleryImage(
                 picture = uiState.picture,
                 defaultToHighRes = true,
