@@ -28,6 +28,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
@@ -37,6 +38,8 @@ import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.colo
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.spacing
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.typography
 import studio.lunabee.amicrogallery.app.R
+import studio.lunabee.amicrogallery.utils.clampOffset
+import studio.lunabee.amicrogallery.utils.clampScale
 import studio.lunabee.amicrogallery.utils.getMonthName
 import studio.lunabee.amicrogallery.core.ui.R as CoreUi
 
@@ -63,19 +66,31 @@ fun PhotoWaitScreen() {
 
 @Composable
 fun PhotoView(uiState: PhotoViewerUiState.HasPicture) {
-    var scale by remember { mutableFloatStateOf(1f) }
+    var shownScale by remember { mutableFloatStateOf(1f) }
+    var shownRotation by remember { mutableFloatStateOf(0f) }
+    var shownOffset by remember { mutableStateOf(Offset.Zero) }
+
+    var currentOffset by remember { mutableStateOf(Offset.Zero) }
+
+
+
+    var scale by remember { mutableFloatStateOf(1F) }
     var rotation by remember { mutableFloatStateOf(0f) }
+    var pictureWidth by remember { mutableFloatStateOf(0f) }
+    var pictureHeight by remember { mutableFloatStateOf(0f) }
     var offset by remember { mutableStateOf(Offset.Zero) }
     val state = rememberTransformableState { zoomChange, offsetChange, rotationChange ->
-        scale *= zoomChange
+        scale = clampScale(scale * zoomChange)
+        currentOffset = offsetChange
+
         // add this if you want to allow the user to rotate the picture
-        // rotation += rotationChange
-        offset += offsetChange * 5.0f
+        //rotation += rotationChange
+
     }
     val context = LocalContext.current
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        uiState.stopLoading()
-    }
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result -> uiState.stopLoading() }
+    currentOffset -= currentOffset/7f
+    offset = clampOffset(offset +  currentOffset , scale, pictureWidth, pictureHeight)
 
     Box(
         modifier = Modifier
@@ -84,15 +99,17 @@ fun PhotoView(uiState: PhotoViewerUiState.HasPicture) {
                     onDoubleTap = {
                         scale = 1f
                         rotation = 0f
-                        offset = Offset.Zero
+                        currentOffset = -offset
                     },
                     onLongPress = {
-                        rotation = rotation + 45.0f
+                        rotation = rotation + 90.0f
                     },
                 )
             }
             .fillMaxSize()
-            .background(Color.Black),
+            .transformable(state = state)
+            .background(Color.Black)
+
     ) {
         Box(
             modifier = Modifier
@@ -127,33 +144,32 @@ fun PhotoView(uiState: PhotoViewerUiState.HasPicture) {
                 }
             }
         }
-
-        Box(
+        shownScale += (scale - shownScale)/7f
+        shownRotation += (rotation - shownRotation)/7f
+        shownOffset += (offset - shownOffset)/7f
+        MicroGalleryImage(
+            picture = uiState.picture,
+            defaultToHighRes = true,
             modifier = Modifier
                 .align(Alignment.Center)
-                .graphicsLayer(
-                    scaleX = scale,
-                    scaleY = scale,
-                    rotationZ = rotation,
-                    translationX = offset.x,
-                    translationY = offset.y,
-                )
-                .transformable(state = state),
+                .onGloballyPositioned { coordinates ->
+                    pictureWidth = coordinates.size.width.toFloat()
+                    pictureHeight = coordinates.size.height.toFloat()
+                }
+                .graphicsLayer {
+                    scaleX = shownScale
+                    scaleY = shownScale
+                    rotationZ = shownRotation
+                    translationX = shownOffset.x
+                    translationY = shownOffset.y
+                    clip = true
+                }
 
-            ) {
-            MicroGalleryImage(
-                picture = uiState.picture,
-                defaultToHighRes = true,
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .graphicsLayer(rotationZ = rotation),
-            )
-        }
-
+        )
         Text(
             text = stringResource(
                 R.string.month_year,
-                getMonthName(uiState.picture.month ?: "", stringArrayResource(R.array.months)),
+                getMonthName(uiState.picture.month, stringArrayResource(R.array.months)),
                 uiState.picture.year.toString(),
             ),
             style = typography.title,
