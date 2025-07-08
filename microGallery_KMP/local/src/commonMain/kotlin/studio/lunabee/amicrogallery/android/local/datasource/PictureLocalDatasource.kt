@@ -19,9 +19,14 @@ class PictureLocalDatasource(
 ) : PictureLocal {
 
     val settingsData = observeSettingsUseCase()
+    private var _lastOrder: Double = 0.0
 
     override suspend fun insertPictures(pictures: List<Picture>) {
-        pictureDao.insertPicturesEntities(pictures.map(PictureEntity::fromPicture))
+        val pictureEntities = pictures.map { picture ->
+            _lastOrder = _lastOrder + 1.0
+            PictureEntity.fromPicture(picture, _lastOrder)
+        }
+        pictureDao.insertPicturesEntities(pictureEntities)
     }
 
     override fun getYearPreviews(): Flow<List<YearPreview>> {
@@ -65,5 +70,17 @@ class PictureLocalDatasource(
         return pictureDao.pictureEntityFromId(id = id).combine(settingsData) { pictureEntity, data ->
             pictureEntity.toMicroPicture(data)
         }
+    }
+
+    override suspend fun getOrderById(id: Long): Float {
+        return pictureDao.getOrderById(id)
+    }
+
+    override suspend fun getFirstPictureBefore(order: Float): MicroPicture {
+        return pictureDao.getFirstPictureBefore(order).toMicroPicture(settingsData.first())
+    }
+
+    override suspend fun getFirstPictureAfter(order: Float): MicroPicture {
+        return pictureDao.getFirstPictureAfter(order).toMicroPicture(settingsData.first())
     }
 }

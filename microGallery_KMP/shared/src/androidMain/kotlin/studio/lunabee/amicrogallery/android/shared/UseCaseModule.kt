@@ -6,6 +6,7 @@ import studio.lunabee.microgallery.android.domain.calendar.usecase.LoadPartialTr
 import studio.lunabee.microgallery.android.domain.calendar.usecase.ObserveYearPreviewsUseCase
 import studio.lunabee.microgallery.android.domain.lastMonth.usecase.ObserveLastMonthUseCase
 import studio.lunabee.microgallery.android.domain.loading.usecase.UpdateTreeUseCase
+import studio.lunabee.microgallery.android.domain.photoviewer.usecase.GetNeighborsByPictureUseCase
 import studio.lunabee.microgallery.android.domain.photoviewer.usecase.ObservePictureByIdUseCase
 import studio.lunabee.microgallery.android.domain.settings.usecase.ObserveSettingsUseCase
 import studio.lunabee.microgallery.android.domain.settings.usecase.ObserveStatusUseCase
@@ -20,4 +21,5 @@ val useCaseModule = module {
     factoryOf(::LoadPartialTreeUseCase)
     factoryOf(::UpdateTreeUseCase)
     factoryOf(::ObserveStatusUseCase)
+    factoryOf(::GetNeighborsByPictureUseCase)
 }

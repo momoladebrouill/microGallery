@@ -61,9 +61,7 @@ fun DashboardScreen(
                     CalendarDestination.composable(
                         navGraphBuilder = this,
                         navScope = object : CalendarNavScope {
-
                             override val navigateToSettings: () -> Unit = { navHostController.navigate(SettingsDestination) }
-
                             override val navigateToPhotoViewer: (Long) -> Unit = { photoId: Long ->
                                 navHostController.navigate(PhotoViewerDestination(photoId))
                             }

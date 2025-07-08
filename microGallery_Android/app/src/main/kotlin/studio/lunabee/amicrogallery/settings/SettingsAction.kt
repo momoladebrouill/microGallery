@@ -12,6 +12,7 @@ sealed interface SettingsAction {
     data class Clear(
         val context: Context,
     ) : SettingsAction
+
     data object ToggleIpv6 : SettingsAction
     data object ToggleViewInHD : SettingsAction
     data class SetIpv6(

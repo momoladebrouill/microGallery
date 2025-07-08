@@ -14,6 +14,7 @@ const val PhotosTable = "PhotosTable"
 )
 data class PictureEntity(
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Long = 0,
+    @ColumnInfo(name = "scale") val order: Double,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "fullResPath") val fullResPath: String?,
     @ColumnInfo(name = "lowResPath") val lowResPath: String?,
@@ -32,13 +33,14 @@ data class PictureEntity(
     }
 
     companion object {
-        fun fromPicture(picture: Picture): PictureEntity {
+        fun fromPicture(picture: Picture, order: Double): PictureEntity {
             return PictureEntity(
                 name = picture.name,
                 fullResPath = picture.fullResPath,
                 lowResPath = picture.lowResPath,
                 year = picture.year,
                 month = picture.month,
+                order = order,
             )
         }
     }

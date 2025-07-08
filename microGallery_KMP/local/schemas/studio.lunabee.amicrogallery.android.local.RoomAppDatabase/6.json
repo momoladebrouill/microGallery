@@ -1,17 +1,23 @@
 {
     "formatVersion": 1,
     "database": {
-        "version": 4,
-        "identityHash": "0d3901b52a976026d48698243301261a",
+        "version": 6,
+        "identityHash": "bd854ae9c14f4bedb22796ec59c0452c",
         "entities": [
             {
                 "tableName": "PhotosTable",
-                "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `fullResPath` TEXT, `lowResPath` TEXT, `year` TEXT, `month` TEXT)",
+                "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `order` REAL NOT NULL, `name` TEXT NOT NULL, `fullResPath` TEXT, `lowResPath` TEXT, `year` TEXT, `month` TEXT)",
                 "fields": [
                     {
                         "fieldPath": "id",
                         "columnName": "id",
                         "affinity": "INTEGER",
+                        "notNull": true
+                    },
+                    {
+                        "fieldPath": "order",
+                        "columnName": "order",
+                        "affinity": "REAL",
                         "notNull": true
                     },
                     {
@@ -50,7 +56,7 @@
             },
             {
                 "tableName": "SettingsTable",
-                "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `ipvsix` TEXT NOT NULL, `ipvfour` TEXT NOT NULL, `useIpvSix` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+                "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `ipvsix` TEXT NOT NULL, `ipvfour` TEXT NOT NULL, `viewInHD` INTEGER NOT NULL, `useIpvSix` INTEGER NOT NULL, PRIMARY KEY(`id`))",
                 "fields": [
                     {
                         "fieldPath": "id",
@@ -71,6 +77,12 @@
                         "notNull": true
                     },
                     {
+                        "fieldPath": "viewInHD",
+                        "columnName": "viewInHD",
+                        "affinity": "INTEGER",
+                        "notNull": true
+                    },
+                    {
                         "fieldPath": "useIpv6",
                         "columnName": "useIpvSix",
                         "affinity": "INTEGER",
@@ -87,7 +99,7 @@
         ],
         "setupQueries": [
             "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-            "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0d3901b52a976026d48698243301261a')"
+            "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'bd854ae9c14f4bedb22796ec59c0452c')"
         ]
     }
 }
