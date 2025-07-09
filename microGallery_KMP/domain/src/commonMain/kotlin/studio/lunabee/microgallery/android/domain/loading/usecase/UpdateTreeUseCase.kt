@@ -16,8 +16,7 @@ class UpdateTreeUseCase(
             if (yearDir.name == "untimed") {
                 loadingRepository.savePicturesInDb(yearDir.content.map { it as Picture })
             } else {
-                for (month in yearDir.content) {
-                    val monthDir = month as Directory
+                yearDir.content.filterIsInstance<Directory>().forEach { monthDir ->
                     loadingRepository.savePicturesInDb(monthDir.content.map { it as Picture })
                 }
             }

@@ -8,6 +8,7 @@ sealed interface SettingsAction {
     data class GotData(val data: SettingsData) : SettingsAction
 
     object JumpBack : SettingsAction
+    object JumpUntimed : SettingsAction
 
     data class Clear(
         val context: Context,

@@ -45,6 +45,7 @@ class SettingsPresenter(
         setIpv4 = { emitUserAction(SettingsAction.SetIpv4(it)) },
         setIpv6 = { emitUserAction(SettingsAction.SetIpv6(it)) },
         toggleViewInHD = { emitUserAction(SettingsAction.ToggleViewInHD) },
+        jumpUntimed = { emitUserAction(SettingsAction.JumpUntimed) },
     )
 
     override fun initReducer(): LBSingleReducer<SettingsUiState, SettingsNavScope, SettingsAction> {

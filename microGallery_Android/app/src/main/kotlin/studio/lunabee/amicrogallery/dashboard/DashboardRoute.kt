@@ -89,6 +89,10 @@ fun DashboardScreen(
                             override fun jumpBack() {
                                 navHostController.navigateUp()
                             }
+
+                            override fun jumpUntimed() {
+                                navHostController.navigate(UntimedDestination)
+                            }
                         },
                     )
                 }

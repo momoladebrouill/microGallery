@@ -24,6 +24,7 @@ import studio.lunabee.amicrogallery.settings.entries.CacheSettingsEntry
 import studio.lunabee.amicrogallery.settings.entries.IPAddressesSettingsEntry
 import studio.lunabee.amicrogallery.settings.entries.ServerStatisticsSettingsEntry
 import studio.lunabee.amicrogallery.settings.entries.TitleSettingsEntry
+import studio.lunabee.amicrogallery.settings.entries.ViewUntimedSettingsEntry
 import studio.lunabee.amicrogallery.settings.entries.VisualiseSettingsEntry
 import studio.lunabee.amicrogallery.utils.getAppVersion
 
@@ -36,6 +37,7 @@ fun SettingsScreen(uiState: SettingsUiState) {
         { mod -> VisualiseSettingsEntry(mod, uiState) },
         { mod -> CacheSettingsEntry(mod, uiState.clearCache) },
         { mod -> ServerStatisticsSettingsEntry(mod, uiState) },
+        { mod -> ViewUntimedSettingsEntry(mod, uiState) },
     )
     Column(modifier = Modifier.statusBarsPadding()) {
         val entryModifier = Modifier

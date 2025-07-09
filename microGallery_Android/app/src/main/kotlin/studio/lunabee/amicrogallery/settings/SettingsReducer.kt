@@ -26,6 +26,12 @@ class SettingsReducer(
                     jumpBack()
                 }
             }
+            SettingsAction.JumpUntimed -> actualState withSideEffect {
+                settingsRepository.setSettingsData(actualState.data)
+                performNavigation {
+                    jumpUntimed()
+                }
+            }
 
             is SettingsAction.ToggleIpv6 -> actualState.copy(
                 data = actualState.data.copy(
