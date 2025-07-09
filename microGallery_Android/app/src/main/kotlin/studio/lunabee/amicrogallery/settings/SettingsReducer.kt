@@ -6,12 +6,17 @@ import studio.lunabee.compose.presenter.LBSingleReducer
 import studio.lunabee.compose.presenter.ReduceResult
 import studio.lunabee.compose.presenter.asResult
 import studio.lunabee.compose.presenter.withSideEffect
+import studio.lunabee.microgallery.android.data.SettingsData
+import studio.lunabee.microgallery.android.domain.loading.usecase.PhotoDbIsEmptyUseCase
 import studio.lunabee.microgallery.android.domain.settings.SettingsRepository
+import studio.lunabee.microgallery.android.domain.settings.usecase.EmptyPhotoDbUseCase
+import studio.lunabee.microgallery.android.domain.settings.usecase.SetSettingsUseCase
 
 class SettingsReducer(
     override val coroutineScope: CoroutineScope,
     override val emitUserAction: (SettingsAction) -> Unit,
-    val settingsRepository: SettingsRepository,
+    val setSettingsUseCase: SetSettingsUseCase,
+    val emptyPhotoDbUseCase: EmptyPhotoDbUseCase
 ) : LBSingleReducer<SettingsUiState, SettingsNavScope, SettingsAction>() {
 
     override suspend fun reduce(
@@ -21,13 +26,19 @@ class SettingsReducer(
     ): ReduceResult<SettingsUiState> {
         return when (action) {
             is SettingsAction.JumpBack -> actualState withSideEffect {
-                settingsRepository.setSettingsData(actualState.data)
+                setSettingsUseCase(actualState.data)
                 performNavigation {
                     jumpBack()
                 }
             }
+            SettingsAction.JumpDashBoard -> actualState withSideEffect {
+                setSettingsUseCase(actualState.data)
+                performNavigation {
+                    jumpDashBoard()
+                }
+            }
             SettingsAction.JumpUntimed -> actualState withSideEffect {
-                settingsRepository.setSettingsData(actualState.data)
+                setSettingsUseCase(actualState.data)
                 performNavigation {
                     jumpUntimed()
                 }
@@ -48,7 +59,9 @@ class SettingsReducer(
             is SettingsAction.Clear -> actualState withSideEffect {
                 val imageLoader = action.context.imageLoader
                 imageLoader.memoryCache?.clear()
-                // settingsRepository.clearDB()
+                emptyPhotoDbUseCase()
+                setSettingsUseCase(SettingsData())
+                emitUserAction(SettingsAction.JumpDashBoard)
             }
 
             is SettingsAction.GotRemoteStatus -> actualState.copy(remoteStatus = action.status).asResult()
@@ -57,6 +70,8 @@ class SettingsReducer(
             is SettingsAction.SetIpv6 -> actualState.copy(data = actualState.data.copy(ipv6 = action.ipv6)).asResult()
             is SettingsAction.GotData ->
                 actualState.copy(data = action.data).asResult()
+
+
         }
     }
 }

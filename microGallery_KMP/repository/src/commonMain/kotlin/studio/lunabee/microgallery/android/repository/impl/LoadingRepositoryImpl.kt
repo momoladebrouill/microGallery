@@ -20,6 +20,10 @@ class LoadingRepositoryImpl(
         pictureLocal.freshStart()
     }
 
+    override suspend fun isPictureDbEmpty() : Boolean {
+        return pictureLocal.isDbEmpty()
+    }
+
     override suspend fun savePicturesInDb(pictures: List<Picture>) {
         pictureLocal.insertPictures(pictures)
     }

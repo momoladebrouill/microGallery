@@ -5,21 +5,24 @@ import studio.lunabee.amicrogallery.picture.PictureLocal
 import studio.lunabee.amicrogallery.settings.SettingsLocal
 import studio.lunabee.microgallery.android.data.RemoteStatus
 import studio.lunabee.microgallery.android.data.SettingsData
+import studio.lunabee.microgallery.android.domain.SettingsDataRepository
 import studio.lunabee.microgallery.android.domain.settings.SettingsRepository
 import studio.lunabee.microgallery.android.repository.datasource.remote.RemoteStatusDatasource
 
-class SettingsRepositoryImpl(
+class SettingsDataRepositoryImpl(
     private val settingsLocal: SettingsLocal,
-    private val pictureLocal: PictureLocal,
     private val remoteStatusDatasource: RemoteStatusDatasource,
-) : SettingsRepository {
+) : SettingsDataRepository {
 
-    override fun getStatus(): Flow<RemoteStatus> {
-        return remoteStatusDatasource.fetchStatus()
+    override fun getSettingsData(): Flow<SettingsData> {
+        return settingsLocal.getSettings()
     }
 
-    override suspend fun clearPictureDB() {
-        pictureLocal.freshStart()
+    override suspend fun clearSettingsDB() {
+        settingsLocal.storeSettings(SettingsData()) // put default settings data
     }
 
+    override suspend fun setSettingsData(settingsUiData: SettingsData) {
+        settingsLocal.storeSettings(settingsUiData)
+    }
 }

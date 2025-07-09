@@ -8,5 +8,7 @@ interface LoadingRepository {
 
     fun getRootDir(): Flow<Directory>
     suspend fun pictureDbFreshStart()
+
+    suspend fun isPictureDbEmpty() : Boolean
     suspend fun savePicturesInDb(pictures: List<Picture>)
 }

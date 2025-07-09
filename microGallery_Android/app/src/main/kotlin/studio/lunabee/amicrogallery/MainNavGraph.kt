@@ -7,8 +7,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import studio.lunabee.amicrogallery.dashboard.DashboardDestination
+import studio.lunabee.amicrogallery.dashboard.DashboardNavScope
 import studio.lunabee.amicrogallery.loading.LoadingDestination
 import studio.lunabee.amicrogallery.loading.LoadingNavScope
+import studio.lunabee.amicrogallery.loading.LoadingScreen
 import kotlin.reflect.KClass
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -25,7 +27,7 @@ fun MainNavGraph(
         ) {
             DashboardDestination.composable(
                 navGraphBuilder = this,
-                navController = navController,
+                navController = navController
             )
 
             LoadingDestination.composable(

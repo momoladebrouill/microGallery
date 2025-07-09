@@ -4,6 +4,7 @@ import android.app.Application
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.logger.Level
+import org.koin.core.option.viewModelScopeFactory
 import studio.lunabee.amicrogallery.android.shared.KoinHelper
 import studio.lunabee.amicrogallery.android.shared.remoteDatasourceModule
 import studio.lunabee.amicrogallery.android.shared.repositoryModule
@@ -16,9 +17,7 @@ class MicroGalleryApplication : Application() {
 
         KoinHelper.init {
             androidLogger(level = Level.INFO)
-
             androidContext(this@MicroGalleryApplication)
-
             modules(presentersModule)
             modules(repositoryModule)
             modules(remoteDatasourceModule)

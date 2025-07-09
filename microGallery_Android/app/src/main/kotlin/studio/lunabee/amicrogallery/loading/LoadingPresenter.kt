@@ -8,15 +8,18 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import studio.lunabee.compose.presenter.LBPresenter
 import studio.lunabee.compose.presenter.LBSimpleReducer
+import studio.lunabee.microgallery.android.domain.loading.usecase.PhotoDbIsEmptyUseCase
 import studio.lunabee.microgallery.android.domain.loading.usecase.UpdateTreeUseCase
 
 class LoadingPresenter(
     val updateTreeUseCase: UpdateTreeUseCase,
+    val photoDbIsEmptyUseCase: PhotoDbIsEmptyUseCase
 ) : LBPresenter<LoadingUiState, LoadingNavScope, LoadingAction>() {
 
     init {
         viewModelScope.launch {
-            updateTreeUseCase()
+            if(photoDbIsEmptyUseCase())
+                updateTreeUseCase()
             emitUserAction(LoadingAction.FoundAll)
         }
     }

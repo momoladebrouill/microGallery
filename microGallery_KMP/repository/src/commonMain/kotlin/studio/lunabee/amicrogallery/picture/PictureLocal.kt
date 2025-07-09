@@ -18,4 +18,5 @@ interface PictureLocal {
     suspend fun getOrderById(id: Long): Float
     suspend fun getFirstPictureBefore(order: Float): MicroPicture
     suspend fun getFirstPictureAfter(order: Float): MicroPicture
+    suspend fun isDbEmpty() : Boolean
 }

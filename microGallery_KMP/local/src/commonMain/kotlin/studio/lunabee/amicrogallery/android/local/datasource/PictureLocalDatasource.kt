@@ -83,4 +83,8 @@ class PictureLocalDatasource(
     override suspend fun getFirstPictureAfter(order: Float): MicroPicture {
         return pictureDao.getFirstPictureAfter(order).toMicroPicture(settingsData.first())
     }
+
+    override suspend fun isDbEmpty(): Boolean {
+        return !pictureDao.isThereAnyPicture()
+    }
 }
