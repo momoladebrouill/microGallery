@@ -13,11 +13,12 @@ class SettingsLocalDatasource(
 
     override fun getSettings(): Flow<SettingsData> {
         return settingsDao.getSettings().map {
-            if(it == null) {
+            if (it == null) {
                 storeSettings(SettingsData())
                 SettingsData()
-            } else
+            } else {
                 it.toSettingsData()
+            }
         }
     }
 

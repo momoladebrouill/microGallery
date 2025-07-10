@@ -86,11 +86,11 @@ fun DashboardScreen(
                     )
                     LoadingDestination.composable(
                         navGraphBuilder = this,
-                        navScope = object : LoadingNavScope{
+                        navScope = object : LoadingNavScope {
                             override val navigateToDashboard = {
                                 navController.navigate(CalendarDestination)
                             }
-                        }
+                        },
                     )
                     SettingsDestination.composable(
                         navGraphBuilder = this,

@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.map
 import studio.lunabee.compose.presenter.LBSinglePresenter
 import studio.lunabee.compose.presenter.LBSingleReducer
 import studio.lunabee.microgallery.android.data.SettingsData
-import studio.lunabee.microgallery.android.domain.settings.SettingsRepository
 import studio.lunabee.microgallery.android.domain.settings.usecase.EmptyPhotoDbUseCase
 import studio.lunabee.microgallery.android.domain.settings.usecase.ObserveSettingsUseCase
 import studio.lunabee.microgallery.android.domain.settings.usecase.ObserveStatusUseCase
@@ -17,7 +16,7 @@ class SettingsPresenter(
     val observeSettingsUseCase: ObserveSettingsUseCase,
     val observeStatusUseCase: ObserveStatusUseCase,
     val emptyPhotoDbUseCase: EmptyPhotoDbUseCase,
-    val setSettingsUseCase: SetSettingsUseCase
+    val setSettingsUseCase: SetSettingsUseCase,
 ) : LBSinglePresenter<SettingsUiState, SettingsNavScope, SettingsAction>() {
 
     val settingsData = observeSettingsUseCase().map {
@@ -50,6 +49,7 @@ class SettingsPresenter(
         toggleViewInHD = { emitUserAction(SettingsAction.ToggleViewInHD) },
         jumpUntimed = { emitUserAction(SettingsAction.JumpUntimed) },
         jumpDashBoard = { emitUserAction(SettingsAction.JumpDashBoard) },
+        resetData = { emitUserAction(SettingsAction.ResetSettings) },
     )
 
     override fun initReducer(): LBSingleReducer<SettingsUiState, SettingsNavScope, SettingsAction> {

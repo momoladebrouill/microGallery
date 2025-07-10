@@ -35,7 +35,7 @@ fun SettingsScreen(uiState: SettingsUiState) {
         { mod -> TitleSettingsEntry(mod, uiState.jumpBack) },
         { mod -> IPAddressesSettingsEntry(mod, uiState) },
         { mod -> VisualiseSettingsEntry(mod, uiState) },
-        { mod -> CacheSettingsEntry(mod, uiState.clearCache) },
+        { mod -> CacheSettingsEntry(mod, uiState) },
         { mod -> ServerStatisticsSettingsEntry(mod, uiState) },
         { mod -> ViewUntimedSettingsEntry(mod, uiState) },
     )

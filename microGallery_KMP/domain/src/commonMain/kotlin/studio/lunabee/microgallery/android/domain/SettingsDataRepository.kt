@@ -1,7 +1,6 @@
 package studio.lunabee.microgallery.android.domain
 
 import kotlinx.coroutines.flow.Flow
-import studio.lunabee.microgallery.android.data.RemoteStatus
 import studio.lunabee.microgallery.android.data.SettingsData
 
 interface SettingsDataRepository {

@@ -7,8 +7,6 @@ import studio.lunabee.compose.presenter.ReduceResult
 import studio.lunabee.compose.presenter.asResult
 import studio.lunabee.compose.presenter.withSideEffect
 import studio.lunabee.microgallery.android.data.SettingsData
-import studio.lunabee.microgallery.android.domain.loading.usecase.PhotoDbIsEmptyUseCase
-import studio.lunabee.microgallery.android.domain.settings.SettingsRepository
 import studio.lunabee.microgallery.android.domain.settings.usecase.EmptyPhotoDbUseCase
 import studio.lunabee.microgallery.android.domain.settings.usecase.SetSettingsUseCase
 
@@ -16,7 +14,7 @@ class SettingsReducer(
     override val coroutineScope: CoroutineScope,
     override val emitUserAction: (SettingsAction) -> Unit,
     val setSettingsUseCase: SetSettingsUseCase,
-    val emptyPhotoDbUseCase: EmptyPhotoDbUseCase
+    val emptyPhotoDbUseCase: EmptyPhotoDbUseCase,
 ) : LBSingleReducer<SettingsUiState, SettingsNavScope, SettingsAction>() {
 
     override suspend fun reduce(
@@ -31,12 +29,14 @@ class SettingsReducer(
                     jumpBack()
                 }
             }
+
             SettingsAction.JumpDashBoard -> actualState withSideEffect {
                 setSettingsUseCase(actualState.data)
                 performNavigation {
                     jumpDashBoard()
                 }
             }
+
             SettingsAction.JumpUntimed -> actualState withSideEffect {
                 setSettingsUseCase(actualState.data)
                 performNavigation {
@@ -60,7 +60,6 @@ class SettingsReducer(
                 val imageLoader = action.context.imageLoader
                 imageLoader.memoryCache?.clear()
                 emptyPhotoDbUseCase()
-                setSettingsUseCase(SettingsData())
                 emitUserAction(SettingsAction.JumpDashBoard)
             }
 
@@ -71,7 +70,9 @@ class SettingsReducer(
             is SettingsAction.GotData ->
                 actualState.copy(data = action.data).asResult()
 
-
+            SettingsAction.ResetSettings -> actualState withSideEffect {
+                setSettingsUseCase(SettingsData())
+            }
         }
     }
 }

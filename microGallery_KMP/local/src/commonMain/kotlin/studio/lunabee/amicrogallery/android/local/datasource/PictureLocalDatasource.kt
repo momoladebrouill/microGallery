@@ -72,6 +72,10 @@ class PictureLocalDatasource(
         }
     }
 
+    override fun yearList(): Flow<List<MYear>> {
+        return pictureDao.getYears()
+    }
+
     override suspend fun getOrderById(id: Long): Float {
         return pictureDao.getOrderById(id)
     }

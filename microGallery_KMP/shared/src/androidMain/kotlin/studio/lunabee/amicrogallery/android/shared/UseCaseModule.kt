@@ -5,6 +5,7 @@ import org.koin.dsl.module
 import studio.lunabee.microgallery.android.domain.calendar.usecase.LoadPartialTreeUseCase
 import studio.lunabee.microgallery.android.domain.calendar.usecase.ObserveYearPreviewsUseCase
 import studio.lunabee.microgallery.android.domain.lastMonth.usecase.ObserveLastMonthUseCase
+import studio.lunabee.microgallery.android.domain.loading.usecase.ListYearsFlowUseCase
 import studio.lunabee.microgallery.android.domain.loading.usecase.PhotoDbIsEmptyUseCase
 import studio.lunabee.microgallery.android.domain.loading.usecase.UpdateTreeUseCase
 import studio.lunabee.microgallery.android.domain.photoviewer.usecase.GetNeighborsByPictureUseCase
@@ -28,4 +29,5 @@ val useCaseModule = module {
     factoryOf(::PhotoDbIsEmptyUseCase)
     factoryOf(::EmptyPhotoDbUseCase)
     factoryOf(::SetSettingsUseCase)
+    factoryOf(::ListYearsFlowUseCase)
 }

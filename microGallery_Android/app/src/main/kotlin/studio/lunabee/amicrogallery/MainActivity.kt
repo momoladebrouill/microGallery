@@ -5,8 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.navigation.compose.rememberNavController
-import kotlinx.coroutines.coroutineScope
-import org.koin.core.option.viewModelScopeFactory
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme
 import studio.lunabee.amicrogallery.android.core.ui.theme.coreEnableEdgeToEdge
 

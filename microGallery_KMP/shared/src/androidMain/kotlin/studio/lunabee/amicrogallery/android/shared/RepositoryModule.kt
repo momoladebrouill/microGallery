@@ -4,7 +4,6 @@ import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
-import studio.lunabee.microgallery.android.data.SettingsData
 import studio.lunabee.microgallery.android.domain.SettingsDataRepository
 import studio.lunabee.microgallery.android.domain.calendar.CalendarRepository
 import studio.lunabee.microgallery.android.domain.lastMonth.LastMonthRepository

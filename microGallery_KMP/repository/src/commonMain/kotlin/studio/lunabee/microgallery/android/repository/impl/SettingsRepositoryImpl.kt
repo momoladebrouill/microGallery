@@ -2,14 +2,11 @@ package studio.lunabee.microgallery.android.repository.impl
 
 import kotlinx.coroutines.flow.Flow
 import studio.lunabee.amicrogallery.picture.PictureLocal
-import studio.lunabee.amicrogallery.settings.SettingsLocal
 import studio.lunabee.microgallery.android.data.RemoteStatus
-import studio.lunabee.microgallery.android.data.SettingsData
 import studio.lunabee.microgallery.android.domain.settings.SettingsRepository
 import studio.lunabee.microgallery.android.repository.datasource.remote.RemoteStatusDatasource
 
 class SettingsRepositoryImpl(
-    private val settingsLocal: SettingsLocal,
     private val pictureLocal: PictureLocal,
     private val remoteStatusDatasource: RemoteStatusDatasource,
 ) : SettingsRepository {
@@ -21,5 +18,4 @@ class SettingsRepositoryImpl(
     override suspend fun clearPictureDB() {
         pictureLocal.freshStart()
     }
-
 }
