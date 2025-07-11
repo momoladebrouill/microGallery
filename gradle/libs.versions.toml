@@ -1,6 +1,6 @@
 
 [versions]
-
+glide-compose = "1.0.0-beta01"
 activityKtx = "1.10.1"
 agp = "8.10.1"
 androidxActivityCompose = "1.10.1"
@@ -43,7 +43,9 @@ uiTextGoogleFont = "1.8.2"
 uiToolingPreviewDesktop = "1.7.0"
 
 [libraries]
-
+androidxDraganddrop = "androidx.draganddrop:draganddrop:1.0.0"
+glide = "com.github.bumptech.glide:glide:4.15.1"
+glideCompose = { group = "com.github.bumptech.glide", name = "compose", version.ref = "glide-compose" }
 activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activityKtx" }
 androidxActivityCompose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivityCompose" }
 androidxAppcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppcompat" }

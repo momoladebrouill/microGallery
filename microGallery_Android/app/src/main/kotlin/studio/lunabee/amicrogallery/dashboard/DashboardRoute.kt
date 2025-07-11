@@ -24,6 +24,8 @@ import studio.lunabee.amicrogallery.loading.LoadingDestination
 import studio.lunabee.amicrogallery.loading.LoadingNavScope
 import studio.lunabee.amicrogallery.photoviewer.PhotoViewerDestination
 import studio.lunabee.amicrogallery.photoviewer.PhotoViewerNavScope
+import studio.lunabee.amicrogallery.reorder.ReorderDestination
+import studio.lunabee.amicrogallery.reorder.ReorderNavScope
 import studio.lunabee.amicrogallery.settings.SettingsDestination
 import studio.lunabee.amicrogallery.settings.SettingsNavScope
 import studio.lunabee.amicrogallery.untimed.UntimedDestination
@@ -107,6 +109,10 @@ fun DashboardScreen(
                                 navController.navigate(LoadingDestination)
                             }
                         },
+                    )
+                    ReorderDestination.composable(
+                        navGraphBuilder = this,
+                        navScope = object : ReorderNavScope {}
                     )
                 }
             }

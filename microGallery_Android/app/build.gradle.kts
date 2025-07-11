@@ -22,6 +22,11 @@ dependencies {
     implementation(platform(libs.androidxComposeBom))
     implementation(platform(libs.lbBom))
 
+
+    implementation(libs.androidxDraganddrop)
+    implementation(libs.glide)
+    implementation(libs.glideCompose)
+
     implementation(libs.androidxComposeMaterial3)
     implementation(libs.androidxNavigationCompose)
     implementation(libs.haze)
