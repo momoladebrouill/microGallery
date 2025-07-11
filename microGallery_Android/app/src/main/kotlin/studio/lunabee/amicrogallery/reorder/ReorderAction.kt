@@ -1,3 +1,8 @@
 package studio.lunabee.amicrogallery.reorder
 
-interface ReorderAction
+sealed interface ReorderAction{
+    data class PutPicture(
+        val index : Float,
+        val url : String
+    ) : ReorderAction
+}
