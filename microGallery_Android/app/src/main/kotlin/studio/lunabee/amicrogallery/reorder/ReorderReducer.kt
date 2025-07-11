@@ -1,7 +1,6 @@
 package studio.lunabee.amicrogallery.reorder
 
 import kotlinx.coroutines.CoroutineScope
-import studio.lunabee.amicrogallery.utils.LineMap
 import studio.lunabee.compose.presenter.LBSingleReducer
 import studio.lunabee.compose.presenter.ReduceResult
 import studio.lunabee.compose.presenter.asResult
@@ -23,24 +22,21 @@ class ReorderReducer(
                 return if (oldIndex == null) {
                     actualState.copy(
                         picturesNotPlaced = actualState.picturesNotPlaced - action.url, // remove the newly placed object from the list
-                        picturesInSlots = picMap + (picMap.justAfter(action.index) to action.url)
-                    ).asResult()
+                        picturesInSlots = picMap - null + (picMap.justAfter(action.index) to action.url),
+                    ).asResult() // remove null whom served as placeholder
                 } else {
-                    if (picMap.areFollowing(action.index, oldIndex) || action.index == oldIndex)
-                    // switch places
+                    if (picMap.areFollowing(action.index, oldIndex) || action.index == oldIndex) {
+                        // switch places
                         actualState.copy(
-                            picturesInSlots = picMap + (action.index to action.url) + (oldIndex to picMap[action.index])
+                            picturesInSlots = picMap + (action.index to action.url) + (oldIndex to picMap[action.index]),
                         ).asResult()
-                    else
+                    } else {
                         actualState.copy( // remove from where it was and place it just after were the user wanted to put it
-                            picturesInSlots = picMap - action.url + (picMap.justAfter(action.index) to action.url)
+                            picturesInSlots = picMap - action.url + (picMap.justAfter(action.index) to action.url),
                         ).asResult()
-
+                    }
                 }
-
             }
         }
     }
 }
-
-

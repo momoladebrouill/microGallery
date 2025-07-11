@@ -13,6 +13,7 @@ import androidx.compose.foundation.draganddrop.dragAndDropTarget
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -20,18 +21,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draganddrop.DragAndDropEvent
 import androidx.compose.ui.draganddrop.DragAndDropTarget
 import androidx.compose.ui.draganddrop.DragAndDropTransferData
 import androidx.compose.ui.draganddrop.mimeTypes
 import androidx.compose.ui.draganddrop.toAndroidDragEvent
-import androidx.compose.ui.graphics.Color
-import com.bumptech.glide.integration.compose.CrossFade
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.colors
@@ -40,29 +36,43 @@ import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.spac
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
 fun ReorderScreen(uiState: ReorderUiState) {
-
-    LazyColumn(modifier = Modifier.animateContentSize(), verticalArrangement = Arrangement.SpaceEvenly) {
+    LazyColumn(
+        modifier = Modifier
+            .animateContentSize()
+            .then(
+                if (uiState.picturesInSlots.contains(0.0f)) {
+                    Modifier.fillMaxSize()
+                } else {
+                    Modifier
+                },
+            ),
+        verticalArrangement = Arrangement.SpaceEvenly,
+    ) {
         stickyHeader {
-            Box(modifier = Modifier.statusBarsPadding()) {
-                DragBox(uiState)
-            }
+            DragBox(uiState)
         }
         items(uiState.picturesInSlots.valuesOrdered().toList()) {
-            DropBox(uiState, it, modifier = Modifier.padding(
-                top = spacing.SpacingMedium,
-                bottom = spacing.SpacingMedium
-            ))
+            DropBox(
+                uiState,
+                it,
+                modifier = Modifier.padding(
+                    spacing.SpacingMedium,
+                ),
+            )
         }
     }
-
 }
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
 fun DragBox(uiState: ReorderUiState) {
-    Row(modifier = Modifier
-        .fillMaxWidth()
-        .background(colors.second)) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(colors.second)
+            .statusBarsPadding(),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
         uiState.picturesNotPlaced.forEach { url ->
             Photo(url, modifier = Modifier.weight(1f))
         }
@@ -74,43 +84,39 @@ fun DragBox(uiState: ReorderUiState) {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DropBox(uiState: ReorderUiState, index: Float, modifier: Modifier = Modifier) {
-    val initColor = colors.main
-    var dropBackgroundColor by remember { mutableStateOf(initColor) }
-    val dragAndDropTarget = object : DragAndDropTarget {
-        override fun onDrop(event: DragAndDropEvent): Boolean {
-            println("dropped index $index")
-            val clipData = event.toAndroidDragEvent().clipData
-            if (clipData != null)
-                uiState.putPicture(index, clipData.getItemAt(0).text.toString())
-            return true
-        }
+    val dropModifier: Modifier = modifier
+        .dragAndDropTarget(
+            shouldStartDragAndDrop = { event ->
+                event.mimeTypes().contains(ClipDescription.MIMETYPE_TEXT_PLAIN)
+            },
+            target = object : DragAndDropTarget {
+                override fun onDrop(event: DragAndDropEvent): Boolean {
+                    val clipData = event.toAndroidDragEvent().clipData
+                    uiState.putPicture(index, clipData.getItemAt(0).text.toString())
+                    return true
+                }
+            },
+        )
 
-        override fun onEnded(event: DragAndDropEvent) {
-            super.onExited(event)
-            println("ended index $index")
-            dropBackgroundColor = Color(0xffE5E4E2)
-        }
-    }
+    val url: String? = uiState.picturesInSlots[index]
 
-    Box(
-        modifier = modifier
-            .background(color = dropBackgroundColor)
-            .dragAndDropTarget(
-                shouldStartDragAndDrop = { event ->
-                    val containsText = event.mimeTypes().contains(ClipDescription.MIMETYPE_TEXT_PLAIN)
-                    if (!containsText) println(event)
-                    containsText
-                },
-                target = dragAndDropTarget,
-            ),
-    ) {
-        val url: String? = uiState.picturesInSlots[index]
-        if (url != null){
+    if (url != null) {
+        Box(modifier = dropModifier) {
             Text(url)
             Photo(url)
         }
-        else
-            Text(uiState.picturesInSlots.toString())
+    } else {
+        NoOrder(dropModifier)
+    }
+}
+
+@Composable
+fun NoOrder(modifier: Modifier = Modifier) {
+    Box(modifier = modifier.fillMaxSize()) {
+        Text(
+            modifier = Modifier.align(Alignment.Center),
+            text = "Start by dropping a picture in the middle !!",
+        )
     }
 }
 
@@ -125,11 +131,11 @@ fun Photo(urlStr: String, modifier: Modifier = Modifier) {
             .dragAndDropSource { _ ->
                 DragAndDropTransferData(
                     ClipData.newPlainText(
-                        "image Url", urlStr,
+                        "image Url",
+                        urlStr,
                     ),
-                    flags = View.DRAG_FLAG_GLOBAL
+                    flags = View.DRAG_FLAG_GLOBAL,
                 )
             },
-        transition = CrossFade
     )
 }

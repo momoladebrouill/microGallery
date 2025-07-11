@@ -112,7 +112,7 @@ fun DashboardScreen(
                     )
                     ReorderDestination.composable(
                         navGraphBuilder = this,
-                        navScope = object : ReorderNavScope {}
+                        navScope = object : ReorderNavScope {},
                     )
                 }
             }

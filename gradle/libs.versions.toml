@@ -1,6 +1,6 @@
 
 [versions]
-glide-compose = "1.0.0-beta01"
+
 activityKtx = "1.10.1"
 agp = "8.10.1"
 androidxActivityCompose = "1.10.1"
@@ -17,6 +17,7 @@ coilCompose = "3.2.0"
 coreKtx = "1.16.0"
 desugarJdkLibs = "2.1.5"
 detekt = "1.23.8"
+glide-compose = "1.0.0-beta01"
 haze = "1.5.4"
 koin = "4.1.0"
 kotlin = "2.1.20"
@@ -43,9 +44,7 @@ uiTextGoogleFont = "1.8.2"
 uiToolingPreviewDesktop = "1.7.0"
 
 [libraries]
-androidxDraganddrop = "androidx.draganddrop:draganddrop:1.0.0"
-glide = "com.github.bumptech.glide:glide:4.15.1"
-glideCompose = { group = "com.github.bumptech.glide", name = "compose", version.ref = "glide-compose" }
+
 activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activityKtx" }
 androidxActivityCompose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivityCompose" }
 androidxAppcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppcompat" }
@@ -53,6 +52,7 @@ androidxComposeBom = { group = "androidx.compose", name = "compose-bom", version
 androidxComposeFoundation = { group = "androidx.compose.foundation", name = "foundation" }
 androidxComposeMaterial3 = { group = "androidx.compose.material3", name = "material3" }
 androidxComposeUi = { group = "androidx.compose.ui", name = "ui" }
+androidxDraganddrop = "androidx.draganddrop:draganddrop:1.0.0"
 androidxLifecycleViewModelKtx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidxLifecycle" }
 androidxNavigationCompose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxNavigationCompose" }
 androidxPagingCommon = { group = "androidx.paging", name = "paging-common", version.ref = "androidxPaging" }
@@ -66,6 +66,8 @@ composeMaterial3 = { group = "androidx.compose.material3", name = "material3", v
 coreKtx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugarJdkLibs" }
 detekt = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt" }
+glide = "com.github.bumptech.glide:glide:4.15.1"
+glideCompose = { group = "com.github.bumptech.glide", name = "compose", version.ref = "glide-compose" }
 gradleAndroid = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 haze = { group = "dev.chrisbanes.haze", name = "haze", version.ref = "haze" }
 hazeMaterials = { group = "dev.chrisbanes.haze", name = "haze-materials", version.ref = "haze" }
