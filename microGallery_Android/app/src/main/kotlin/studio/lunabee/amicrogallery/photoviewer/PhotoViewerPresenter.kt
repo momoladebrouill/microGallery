@@ -1,5 +1,9 @@
 package studio.lunabee.amicrogallery.photoviewer
 
+import android.content.Context
+import android.content.Intent
+import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.activity.result.ActivityResult
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
@@ -38,7 +42,15 @@ class PhotoViewerPresenter(
         }
     }
 
-    override fun getInitialState(): PhotoViewerUiState = PhotoViewerUiState(null)
+    fun emitShare(context: Context, launcher: ManagedActivityResultLauncher<Intent, ActivityResult>) =
+        emitUserAction(PhotoViewerAction.SharePicture(context, launcher))
+
+    override fun getInitialState(): PhotoViewerUiState = PhotoViewerUiState(
+        picture = null,
+        loading = false,
+        share = ::emitShare,
+        stopLoading = { emitUserAction(PhotoViewerAction.StopLoading) },
+    )
 
     override val content: @Composable (PhotoViewerUiState) -> Unit = { PhotoViewerScreen(it) }
 }

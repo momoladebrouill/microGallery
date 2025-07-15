@@ -52,4 +52,5 @@
     <string name="visualisation_option">Viewing options</string>
     <string name="view_in_hd">View pictures in the highest resolution</string>
     <string name="only_low_res">Only low resolutions pictures will be visible</string>
+    <string name="share_picture">Share picture %s</string>
 </resources>
