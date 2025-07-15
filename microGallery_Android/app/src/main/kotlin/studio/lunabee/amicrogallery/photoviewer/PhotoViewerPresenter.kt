@@ -9,9 +9,13 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import studio.lunabee.compose.presenter.LBSinglePresenter
 import studio.lunabee.compose.presenter.LBSingleReducer
+import studio.lunabee.microgallery.android.data.MicroPicture
+import studio.lunabee.microgallery.android.data.Picture
 import studio.lunabee.microgallery.android.domain.photoviewer.usecase.ObservePictureByIdUseCase
 
 class PhotoViewerPresenter(
@@ -39,7 +43,7 @@ class PhotoViewerPresenter(
 
     fun getPictureById(pictureId: Long) {
         viewModelScope.launch {
-            val pic: Picture = photoViewerRepository.getPictureById(pictureId)
+            val pic: MicroPicture = observePictureByIdUseCase(pictureId).first()
             emitUserAction(PhotoViewerAction.FoundPicture(pic))
         }
     }

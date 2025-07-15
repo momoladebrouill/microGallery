@@ -16,6 +16,7 @@ import studio.lunabee.compose.presenter.LBSingleReducer
 import studio.lunabee.compose.presenter.ReduceResult
 import studio.lunabee.compose.presenter.asResult
 import studio.lunabee.compose.presenter.withSideEffect
+import studio.lunabee.microgallery.android.data.MicroPicture
 import studio.lunabee.microgallery.android.data.Picture
 import java.io.File
 
@@ -24,10 +25,10 @@ class PhotoViewerReducer(
     override val emitUserAction: (PhotoViewerAction) -> Unit,
 ) : LBSingleReducer<PhotoViewerUiState, PhotoViewerNavScope, PhotoViewerAction>() {
 
-    suspend fun downloadAndShareImage(context: Context, picture: Picture, launcher: ManagedActivityResultLauncher<Intent, ActivityResult>) {
+    suspend fun downloadAndShareImage(context: Context, picture: MicroPicture, launcher: ManagedActivityResultLauncher<Intent, ActivityResult>) {
         val loader = ImageLoader(context)
         val request = ImageRequest.Builder(context)
-            .data("http://92.150.239.130" + picture.fullResPath) // this is fixed in feature/use-settings
+            .data(picture.highResPaths[0])
             .build()
         val result = loader.execute(request)
         val drawable = (result as? SuccessResult)?.image ?: return
