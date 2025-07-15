@@ -2,6 +2,7 @@ package studio.lunabee.amicrogallery.android.shared
 
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
+import studio.lunabee.microgallery.android.domain.SetClientHttpUrlUseCase
 import studio.lunabee.microgallery.android.domain.calendar.usecase.LoadPartialTreeUseCase
 import studio.lunabee.microgallery.android.domain.calendar.usecase.ObserveYearPreviewsUseCase
 import studio.lunabee.microgallery.android.domain.lastMonth.usecase.ObserveLastMonthUseCase
@@ -30,4 +31,5 @@ val useCaseModule = module {
     factoryOf(::EmptyPhotoDbUseCase)
     factoryOf(::SetSettingsUseCase)
     factoryOf(::ListYearsFlowUseCase)
+    factoryOf(::SetClientHttpUrlUseCase)
 }

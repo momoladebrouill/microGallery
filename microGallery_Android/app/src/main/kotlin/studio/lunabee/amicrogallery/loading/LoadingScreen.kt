@@ -5,24 +5,49 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.colors
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.spacing
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.typography
 import studio.lunabee.amicrogallery.app.R
+import studio.lunabee.amicrogallery.core.ui.R as CoreUi
 
 @Composable
 fun LoadingScreen(loadingUiState: LoadingUiState) {
-    when (loadingUiState) {
-        is LoadingUiState.Error -> ShowError(loadingUiState)
-        is LoadingUiState.Fetching -> WaitingForResponse(loadingUiState)
+    Box(modifier = Modifier.fillMaxSize()) {
+        SettingsButton(loadingUiState, Modifier.align(Alignment.TopEnd))
+        when (loadingUiState) {
+            is LoadingUiState.Error -> ShowError(loadingUiState)
+            is LoadingUiState.Fetching -> WaitingForResponse(loadingUiState)
+        }
+    }
+}
+
+@Composable
+fun SettingsButton(uiState: LoadingUiState, modifier: Modifier = Modifier) {
+    IconButton(
+        onClick = when (uiState) {
+            is LoadingUiState.Error -> uiState.jumpToSettings
+            is LoadingUiState.Fetching -> uiState.jumpToSettings
+        },
+
+        modifier = modifier.statusBarsPadding(),
+    ) {
+        Icon(
+            painter = painterResource(CoreUi.drawable.settings_24px),
+            contentDescription = stringResource(R.string.settings),
+        )
     }
 }
 

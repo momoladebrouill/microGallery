@@ -35,4 +35,8 @@ class LoadingRepositoryImpl(
     override suspend fun savePicturesInDb(pictures: List<Picture>) {
         pictureLocal.insertPictures(pictures)
     }
+
+    override fun setBaseRemoteUrl(url: String) {
+        treeRemoteDatasource.setRemoteBaseUrl(url)
+    }
 }

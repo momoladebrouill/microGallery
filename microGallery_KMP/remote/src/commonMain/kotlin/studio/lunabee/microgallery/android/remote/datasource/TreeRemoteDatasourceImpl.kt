@@ -23,6 +23,10 @@ class TreeRemoteDatasourceImpl(
             giveFullNameToFiles(it[0].toData())
         }.filterIsInstance()
     }
+
+    override fun setRemoteBaseUrl(url: String) {
+        rootService.initHttpClient(url)
+    }
 }
 
 fun giveFullNameToFiles(node: Node, path: String = "", year: MYear? = null, month: MMonth? = null): Node {

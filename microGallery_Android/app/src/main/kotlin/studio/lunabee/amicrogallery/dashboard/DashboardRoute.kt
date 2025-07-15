@@ -90,6 +90,9 @@ fun DashboardScreen(
                             override val navigateToDashboard = {
                                 navController.navigate(CalendarDestination)
                             }
+                            override val navigateToSettings = {
+                                navController.navigate(SettingsDestination)
+                            }
                         },
                     )
                     SettingsDestination.composable(

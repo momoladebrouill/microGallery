@@ -15,7 +15,7 @@ import studio.lunabee.microgallery.android.domain.calendar.usecase.ObserveYearPr
 class CalendarPresenter(
     val calendarRepository: CalendarRepository,
     val observeYearPreviewsUseCase: ObserveYearPreviewsUseCase,
-    val loadPartialTreeUseCase: LoadPartialTreeUseCase,
+    loadPartialTreeUseCase: LoadPartialTreeUseCase,
 ) : LBSinglePresenter<CalendarUiState, CalendarNavScope, CalendarAction>() {
 
     private val yearPreviews = observeYearPreviewsUseCase().map { CalendarAction.GotYears(it) }
