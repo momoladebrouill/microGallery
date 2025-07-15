@@ -30,7 +30,7 @@ data class StatusEntity(
     companion object {
         fun fromRemoteStatus(remoteStatus: RemoteStatus): StatusEntity {
             return StatusEntity(
-                id = magickNumber,
+                id = MagickNumber,
                 temp = remoteStatus.temperature,
                 photosHR = remoteStatus.quantityHighRes,
                 photosLR = remoteStatus.quantityLowRes,
