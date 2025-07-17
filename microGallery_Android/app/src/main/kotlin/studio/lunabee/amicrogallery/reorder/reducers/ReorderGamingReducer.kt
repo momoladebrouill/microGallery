@@ -1,17 +1,22 @@
-package studio.lunabee.amicrogallery.reorder
+package studio.lunabee.amicrogallery.reorder.reducers
 
 import kotlinx.coroutines.CoroutineScope
+import studio.lunabee.amicrogallery.reorder.ReorderAction
+import studio.lunabee.amicrogallery.reorder.ReorderNavScope
+import studio.lunabee.amicrogallery.reorder.ReorderUiState
+import studio.lunabee.compose.presenter.LBReducer
 import studio.lunabee.compose.presenter.LBSingleReducer
 import studio.lunabee.compose.presenter.ReduceResult
 import studio.lunabee.compose.presenter.asResult
+import kotlin.collections.get
 
-class ReorderReducer(
+class ReorderGamingReducer(
     override val coroutineScope: CoroutineScope,
     override val emitUserAction: (ReorderAction) -> Unit,
-) : LBSingleReducer<ReorderUiState, ReorderNavScope, ReorderAction>() {
+) : LBReducer<ReorderUiState.ReorderGamingUiState, ReorderUiState, ReorderNavScope, ReorderAction, ReorderAction.ReorderGamingAction>() {
     override suspend fun reduce(
-        actualState: ReorderUiState,
-        action: ReorderAction,
+        actualState: ReorderUiState.ReorderGamingUiState,
+        action: ReorderAction.ReorderGamingAction,
         performNavigation: (ReorderNavScope.() -> Unit) -> Unit,
     ): ReduceResult<ReorderUiState> {
         when (action) {
@@ -38,5 +43,13 @@ class ReorderReducer(
                 }
             }
         }
+    }
+
+    override fun filterAction(action: ReorderAction): Boolean {
+        return action is ReorderAction.ReorderGamingAction
+    }
+
+    override fun filterUiState(actualState: ReorderUiState): Boolean {
+        return actualState is ReorderUiState.ReorderGamingUiState
     }
 }
