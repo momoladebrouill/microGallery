@@ -17,7 +17,7 @@ import studio.lunabee.compose.presenter.ReduceResult
 import studio.lunabee.compose.presenter.asResult
 import studio.lunabee.compose.presenter.withSideEffect
 import studio.lunabee.microgallery.android.data.MicroPicture
-import studio.lunabee.microgallery.android.data.Picture
+import studio.lunabee.microgallery.android.domain.photoviewer.UrlIndex
 import java.io.File
 
 class PhotoViewerReducer(
@@ -25,10 +25,14 @@ class PhotoViewerReducer(
     override val emitUserAction: (PhotoViewerAction) -> Unit,
 ) : LBSingleReducer<PhotoViewerUiState, PhotoViewerNavScope, PhotoViewerAction>() {
 
-    suspend fun downloadAndShareImage(context: Context, picture: MicroPicture, launcher: ManagedActivityResultLauncher<Intent, ActivityResult>) {
+    suspend fun downloadAndShareImage(
+        context: Context, picture: MicroPicture,
+        launcher: ManagedActivityResultLauncher<Intent, ActivityResult>,
+        index: UrlIndex,
+    ) {
         val loader = ImageLoader(context)
         val request = ImageRequest.Builder(context)
-            .data(picture.highResPaths[0])
+            .data(picture.highResPaths[index.get()]) // only used in PhotoViewer always using highResPaths so the index match
             .build()
         val result = loader.execute(request)
         val drawable = (result as? SuccessResult)?.image ?: return
@@ -62,7 +66,7 @@ class PhotoViewerReducer(
         return when (action) {
             is PhotoViewerAction.FoundPicture -> actualState.copy(picture = action.picture).asResult()
             is PhotoViewerAction.SharePicture -> actualState.copy(loading = true) withSideEffect {
-                downloadAndShareImage(action.context, actualState.picture!!, action.launcher)
+                downloadAndShareImage(action.context, actualState.picture!!, action.launcher, action.index)
             }
 
             PhotoViewerAction.StopLoading -> actualState.copy(loading = false).asResult()

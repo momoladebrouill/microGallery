@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.result.ActivityResult
 import studio.lunabee.microgallery.android.data.MicroPicture
+import studio.lunabee.microgallery.android.domain.photoviewer.UrlIndex
 
 sealed interface PhotoViewerAction {
     data class FoundPicture(
@@ -14,6 +15,7 @@ sealed interface PhotoViewerAction {
     data class SharePicture(
         val context: Context,
         val launcher: ManagedActivityResultLauncher<Intent, ActivityResult>,
+        val index: UrlIndex,
     ) : PhotoViewerAction
 
     object StopLoading : PhotoViewerAction

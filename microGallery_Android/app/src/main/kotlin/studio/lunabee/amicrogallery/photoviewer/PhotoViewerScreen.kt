@@ -38,6 +38,7 @@ import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.spac
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.typography
 import studio.lunabee.amicrogallery.app.R
 import studio.lunabee.amicrogallery.utils.getMonthName
+import studio.lunabee.microgallery.android.domain.photoviewer.UrlIndex
 import studio.lunabee.amicrogallery.core.ui.R as CoreUi
 
 @Composable
@@ -51,6 +52,7 @@ fun PhotoViewerScreen(
         scale *= zoomChange
         offset += offsetChange * 5.0f
     }
+    val currentInd = UrlIndex()
     val context = LocalContext.current
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         uiState.stopLoading()
@@ -65,9 +67,7 @@ fun PhotoViewerScreen(
                         rotation = 0f
                         offset = Offset.Zero
                     },
-                    onLongPress = {
-                        rotation = rotation + 45.0f
-                    },
+                    onLongPress = { rotation = rotation + 45.0f },
                 )
             }
             .fillMaxSize()
@@ -87,7 +87,7 @@ fun PhotoViewerScreen(
                     .align(Alignment.Center),
             )
             IconButton(
-                onClick = { uiState.share(context, launcher) },
+                onClick = { uiState.share(context, launcher, currentInd) },
                 modifier = Modifier
                     .align(Alignment.CenterEnd),
             ) {
@@ -119,12 +119,12 @@ fun PhotoViewerScreen(
                 )
                 .transformable(state = state),
 
-        ) {
-            // TODO : handle when it's null ( aka loading for DB entity)
-            if (uiState.picture != null) {
+            ) {
+            if (uiState.picture != null) { // TODO : handle when it's null ( aka loading for DB entity)
                 MicroGalleryImage(
                     picture = uiState.picture,
                     defaultToHighRes = true,
+                    currentInd = currentInd,
                     modifier = Modifier
                         .align(Alignment.Center)
                         .graphicsLayer(rotationZ = rotation),

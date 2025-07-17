@@ -38,7 +38,7 @@ class CalendarPresenter(
         showPhoto = { emitUserAction(CalendarAction.ShowPhoto(it)) },
         askForExpand = { year: MYear, month: MMonth -> emitUserAction(CalendarAction.AskForExpand(year, month)) },
 
-    )
+        )
 
     override fun initReducer(): LBSingleReducer<CalendarUiState, CalendarNavScope, CalendarAction> {
         return CalendarReducer(

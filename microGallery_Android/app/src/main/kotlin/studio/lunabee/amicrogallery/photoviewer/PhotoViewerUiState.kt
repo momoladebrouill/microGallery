@@ -6,11 +6,12 @@ import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.result.ActivityResult
 import studio.lunabee.compose.presenter.PresenterUiState
 import studio.lunabee.microgallery.android.data.MicroPicture
+import studio.lunabee.microgallery.android.domain.photoviewer.UrlIndex
 
 data class PhotoViewerUiState(
     // picture is not here at the beginning, it must be found in db
     val picture: MicroPicture?,
     val loading: Boolean = false,
-    val share: (Context, ManagedActivityResultLauncher<Intent, ActivityResult>) -> Unit,
+    val share: (Context, ManagedActivityResultLauncher<Intent, ActivityResult>, UrlIndex) -> Unit,
     val stopLoading: () -> Unit,
 ) : PresenterUiState

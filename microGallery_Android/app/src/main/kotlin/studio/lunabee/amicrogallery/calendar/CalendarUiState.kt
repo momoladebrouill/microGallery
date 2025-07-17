@@ -18,4 +18,4 @@ data class CalendarUiState(
     val showPhoto: (Long) -> Unit,
     val askForExpand: (MYear, MMonth) -> Unit,
 
-) : PresenterUiState
+    ) : PresenterUiState

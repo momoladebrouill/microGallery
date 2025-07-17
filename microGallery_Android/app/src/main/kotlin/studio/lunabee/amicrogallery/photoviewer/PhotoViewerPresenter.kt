@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import studio.lunabee.compose.presenter.LBSinglePresenter
 import studio.lunabee.compose.presenter.LBSingleReducer
 import studio.lunabee.microgallery.android.data.MicroPicture
-import studio.lunabee.microgallery.android.data.Picture
+import studio.lunabee.microgallery.android.domain.photoviewer.UrlIndex
 import studio.lunabee.microgallery.android.domain.photoviewer.usecase.ObservePictureByIdUseCase
 
 class PhotoViewerPresenter(
@@ -48,8 +48,8 @@ class PhotoViewerPresenter(
         }
     }
 
-    fun emitShare(context: Context, launcher: ManagedActivityResultLauncher<Intent, ActivityResult>) =
-        emitUserAction(PhotoViewerAction.SharePicture(context, launcher))
+    fun emitShare(context: Context, launcher: ManagedActivityResultLauncher<Intent, ActivityResult>, index: UrlIndex) =
+        emitUserAction(PhotoViewerAction.SharePicture(context, launcher, index))
 
     override fun getInitialState(): PhotoViewerUiState = PhotoViewerUiState(
         picture = null,
