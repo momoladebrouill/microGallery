@@ -40,6 +40,7 @@ import studio.lunabee.amicrogallery.core.ui.R as CoreUi
 fun LastMonthScreen(
     uiState: LastMonthUiState,
 ) {
+
     if (uiState.pictures.isEmpty()) {
         EmptyList()
     } else {

@@ -48,4 +48,7 @@ interface PictureDao {
 
     @Query("SELECT EXISTS(SELECT * FROM PhotosTable LIMIT 1) FROM PhotosTable LIMIT 1")
     suspend fun isThereAnyPicture(): Boolean
+
+    @Query("SELECT * FROM $PhotosTable WHERE year = :year ORDER BY RANDOM() LIMIT 1")
+    suspend fun getShuffledInYear(year : String) : PictureEntity
 }

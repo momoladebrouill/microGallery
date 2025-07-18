@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import studio.lunabee.amicrogallery.bottom_bar.MicroGalleryBottomBar
 import studio.lunabee.amicrogallery.calendar.CalendarDestination
 import studio.lunabee.amicrogallery.calendar.CalendarNavScope
 import studio.lunabee.amicrogallery.lastmonth.LastMonthDestination
@@ -31,7 +32,6 @@ import studio.lunabee.amicrogallery.settings.SettingsDestination
 import studio.lunabee.amicrogallery.settings.SettingsNavScope
 import studio.lunabee.amicrogallery.untimed.UntimedDestination
 import studio.lunabee.amicrogallery.untimed.UntimedNavScope
-import studio.lunabee.microgallery.android.data.GameParameters
 import kotlin.reflect.KClass
 
 @Composable
@@ -114,7 +114,11 @@ fun DashboardScreen(
                     )
                     ReorderDestination.composable(
                         navGraphBuilder = this,
-                        navScope = object : ReorderNavScope {},
+                        navScope = object : ReorderNavScope {
+                            override val navigateToPicture: (Long) -> Unit = {
+                                navController.navigate(PhotoViewerDestination(it))
+                            }
+                        },
                     )
                 }
             }

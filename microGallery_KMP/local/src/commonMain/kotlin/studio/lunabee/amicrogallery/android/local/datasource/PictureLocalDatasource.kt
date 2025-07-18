@@ -91,4 +91,8 @@ class PictureLocalDatasource(
     override suspend fun isDbEmpty(): Boolean {
         return !pictureDao.isThereAnyPicture()
     }
+
+    override suspend fun getRandomInYear(year: String): MicroPicture {
+        return pictureDao.getRandomPictureInYear(year).first().toMicroPicture(settingsData.first())
+    }
 }

@@ -1,4 +1,4 @@
-package studio.lunabee.amicrogallery.utils
+package studio.lunabee.microgallery.android.domain.utils
 
 import kotlin.random.Random
 

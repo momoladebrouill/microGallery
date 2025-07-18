@@ -9,6 +9,7 @@ import studio.lunabee.amicrogallery.android.shared.remoteDatasourceModule
 import studio.lunabee.amicrogallery.android.shared.repositoryModule
 import studio.lunabee.amicrogallery.android.shared.useCaseModule
 import studio.lunabee.amicrogallery.di.presentersModule
+import studio.lunabee.amicrogallery.di.uiHelpersModule
 
 class MicroGalleryApplication : Application() {
     override fun onCreate() {
@@ -21,6 +22,7 @@ class MicroGalleryApplication : Application() {
             modules(repositoryModule)
             modules(remoteDatasourceModule)
             modules(useCaseModule)
+            modules(uiHelpersModule)
         }
     }
 }

@@ -8,6 +8,7 @@ import studio.lunabee.compose.presenter.LBReducer
 import studio.lunabee.compose.presenter.LBSingleReducer
 import studio.lunabee.compose.presenter.ReduceResult
 import studio.lunabee.compose.presenter.asResult
+import studio.lunabee.compose.presenter.withSideEffect
 import kotlin.collections.get
 
 class ReorderGamingReducer(
@@ -22,24 +23,31 @@ class ReorderGamingReducer(
         when (action) {
             is ReorderAction.PutPicture -> {
                 val picMap = actualState.picturesInSlots
-                val oldIndex: Float? = picMap.getByValue(action.url) // where the picture was (null if in waiting drawer)
+                val oldIndex: Float? = picMap.getByValue(action.picture) // where the picture was (null if in waiting drawer)
 
                 return if (oldIndex == null) {
                     actualState.copy(
-                        picturesNotPlaced = actualState.picturesNotPlaced - action.url, // remove the newly placed object from the list
-                        picturesInSlots = picMap - null + (picMap.justAfter(action.index) to action.url),
+                        picturesNotPlaced = actualState.picturesNotPlaced - action.picture, // remove the newly placed object from the list
+                        picturesInSlots = picMap - null + (picMap.justAfter(action.index) to action.picture),
                     ).asResult() // remove null whom served as placeholder
                 } else {
                     if (picMap.areFollowing(action.index, oldIndex) || action.index == oldIndex) {
                         // switch places
                         actualState.copy(
-                            picturesInSlots = picMap + (action.index to action.url) + (oldIndex to picMap[action.index]),
+                            picturesInSlots = picMap + (action.index to action.picture) + (oldIndex to picMap[action.index]),
                         ).asResult()
                     } else {
-                        actualState.copy( // remove from where it was and place it just after were the user wanted to put it
-                            picturesInSlots = picMap - action.url + (picMap.justAfter(action.index) to action.url),
+                        actualState.copy(
+                            // remove from where it was and place it just after were the user wanted to put it
+                            picturesInSlots = picMap - action.picture + (picMap.justAfter(action.index) to action.picture),
                         ).asResult()
                     }
+                }
+            }
+
+            is ReorderAction.JumpToPicture -> return actualState withSideEffect {
+                performNavigation {
+                    navigateToPicture(action.pictureId)
                 }
             }
         }

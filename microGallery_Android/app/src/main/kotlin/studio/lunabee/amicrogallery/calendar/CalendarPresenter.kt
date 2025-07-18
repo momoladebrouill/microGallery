@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import studio.lunabee.amicrogallery.bottom_bar.BottomBarManager
+import studio.lunabee.amicrogallery.bottom_bar.BottomBarViewModel
 import studio.lunabee.compose.presenter.LBSinglePresenter
 import studio.lunabee.compose.presenter.LBSingleReducer
 import studio.lunabee.microgallery.android.data.MMonth
@@ -13,6 +15,7 @@ import studio.lunabee.microgallery.android.domain.calendar.usecase.LoadPartialTr
 import studio.lunabee.microgallery.android.domain.calendar.usecase.ObserveYearPreviewsUseCase
 
 class CalendarPresenter(
+    val bottomBarManager: BottomBarManager,
     val calendarRepository: CalendarRepository,
     val observeYearPreviewsUseCase: ObserveYearPreviewsUseCase,
     val loadPartialTreeUseCase: LoadPartialTreeUseCase,
@@ -26,6 +29,12 @@ class CalendarPresenter(
         monthsInYears,
     )
 
+    init {
+        println("call made from calendar")
+        bottomBarManager.setValue(true)
+    }
+
+
     override fun getInitialState(): CalendarUiState = CalendarUiState(
         years = listOf(),
         monthsOfYears = mapOf(),
@@ -37,7 +46,6 @@ class CalendarPresenter(
         resetToHome = { emitUserAction(CalendarAction.ResetToHome) },
         showPhoto = { emitUserAction(CalendarAction.ShowPhoto(it)) },
         askForExpand = { year: MYear, month: MMonth -> emitUserAction(CalendarAction.AskForExpand(year, month)) },
-
     )
 
     override fun initReducer(): LBSingleReducer<CalendarUiState, CalendarNavScope, CalendarAction> {

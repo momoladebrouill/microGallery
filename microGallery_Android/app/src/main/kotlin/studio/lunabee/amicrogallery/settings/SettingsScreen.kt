@@ -30,6 +30,7 @@ import studio.lunabee.amicrogallery.utils.getAppVersion
 
 @Composable
 fun SettingsScreen(uiState: SettingsUiState) {
+
     val settingsEntries: List<@Composable (modifier: Modifier) -> Unit> = listOf(
         // mod as a short term for modifier
         { mod -> TitleSettingsEntry(mod, uiState.jumpBack) },

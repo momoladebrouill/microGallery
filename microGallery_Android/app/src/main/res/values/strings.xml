@@ -60,4 +60,7 @@
     <string name="year_found">found : %s</string>
     <string name="reset_data">Restore defaults</string>
     <string name="cache_and_settings">Reset settings and cache</string>
+    <string name="start">Start</string>
+    <string name="reorder_game">Reorder Game</string>
+    <string name="reorder_game_explain">Place the pictures in the right order in the shortest amount of time !!</string>
 </resources>

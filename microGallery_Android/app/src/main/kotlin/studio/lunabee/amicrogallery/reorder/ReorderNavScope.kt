@@ -1,3 +1,5 @@
 package studio.lunabee.amicrogallery.reorder
 
-interface ReorderNavScope
+interface ReorderNavScope{
+    val navigateToPicture : (Long) -> Unit
+}

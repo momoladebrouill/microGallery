@@ -20,6 +20,7 @@ import studio.lunabee.amicrogallery.app.R
 
 @Composable
 fun LoadingScreen(loadingUiState: LoadingUiState) {
+
     when (loadingUiState) {
         is LoadingUiState.Error -> ShowError(loadingUiState)
         is LoadingUiState.Fetching -> WaitingForResponse(loadingUiState)

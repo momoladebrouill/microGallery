@@ -5,22 +5,29 @@ import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.Flow
+import studio.lunabee.amicrogallery.bottom_bar.BottomBarManager
 import studio.lunabee.amicrogallery.reorder.reducers.ReorderGamingReducer
 import studio.lunabee.amicrogallery.reorder.reducers.ReorderMenuReducer
 
 import studio.lunabee.compose.presenter.LBPresenter
 import studio.lunabee.compose.presenter.LBSimpleReducer
+import studio.lunabee.microgallery.android.domain.reorder.usecase.GetPicturesShuffledUseCase
 
-class ReorderPresenter : LBPresenter<ReorderUiState, ReorderNavScope, ReorderAction>() {
+class ReorderPresenter (
+    val getPicturesShuffledUseCase: GetPicturesShuffledUseCase,
+    private val bottomBarManager: BottomBarManager
+): LBPresenter<ReorderUiState, ReorderNavScope, ReorderAction>() {
 
     override val flows: List<Flow<ReorderAction>> = listOf()
 
 
 
     override fun getInitialState(): ReorderUiState = ReorderUiState.ReorderMenuUiState(
-        pictures = emptySet(),
+        qty = 3,
         time = 0,
-        jumpToGaming = {emitUserAction(ReorderAction.JumpToGaming)},
+        isJumpingToGame = false,
+        jumpToGaming = {emitUserAction(ReorderAction.WantToJumpToGaming)},
+        setQty = {emitUserAction(ReorderAction.SetQty(it))}
     )
 
     override fun getReducerByState(actualState: ReorderUiState): LBSimpleReducer<ReorderUiState, ReorderNavScope, ReorderAction> {
@@ -31,7 +38,9 @@ class ReorderPresenter : LBPresenter<ReorderUiState, ReorderNavScope, ReorderAct
             )
             is ReorderUiState.ReorderMenuUiState -> ReorderMenuReducer(
                 coroutineScope = viewModelScope,
-                emitUserAction = ::emitUserAction
+                emitUserAction = ::emitUserAction,
+                getPicturesShuffledUseCase = getPicturesShuffledUseCase,
+                bottomBarManager = bottomBarManager
             )
         }
     }

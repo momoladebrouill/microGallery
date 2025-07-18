@@ -6,7 +6,6 @@ import androidx.navigation.compose.composable
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
-import studio.lunabee.microgallery.android.data.GameParameters
 
 @Serializable
 data object ReorderDestination {

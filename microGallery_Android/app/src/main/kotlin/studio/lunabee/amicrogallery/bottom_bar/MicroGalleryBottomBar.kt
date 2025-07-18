@@ -1,4 +1,4 @@
-package studio.lunabee.amicrogallery.dashboard
+package studio.lunabee.amicrogallery.bottom_bar
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -6,15 +6,19 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FloatingToolbarColors
 import androidx.compose.material3.HorizontalFloatingToolbar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import org.koin.compose.viewmodel.koinViewModel
 import studio.lunabee.amicrogallery.android.core.ui.component.topappbar.NavBarButton
 import studio.lunabee.amicrogallery.android.core.ui.theme.CoreSpacing
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.colors
@@ -28,16 +32,15 @@ import studio.lunabee.amicrogallery.reorder.ReorderDestination
 fun MicroGalleryBottomBar(
     navController: NavHostController,
     modifier: Modifier = Modifier,
+    bottomBarViewModel: BottomBarViewModel = koinViewModel()
 ) {
     val currentBackStackEntry: NavBackStackEntry? by navController.currentBackStackEntryAsState()
 
-    // Show the bottom bar if any of the screens is displayed
-    val isOn = listOf(CalendarDestination, LastMonthDestination, ReorderDestination).any { dest ->
-        currentBackStackEntry?.destination?.hierarchy?.any { it.hasRoute(dest::class) } == true
-    }
+    val manager = bottomBarViewModel.bottomBarManager
+    
 
     AnimatedVisibility(
-        visible = isOn,
+        visible = manager.shown,
         modifier = modifier,
     ) {
         HorizontalFloatingToolbar(

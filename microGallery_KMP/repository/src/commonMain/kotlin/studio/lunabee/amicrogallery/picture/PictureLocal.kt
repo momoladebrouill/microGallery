@@ -15,10 +15,10 @@ interface PictureLocal {
     fun getPicturesInMonth(year: MYear, month: MMonth): Flow<List<MicroPicture>>
     fun getPicturesUntimed(): Flow<List<MicroPicture>>
     fun getPictureById(id: Long): Flow<MicroPicture>
-
     fun yearList(): Flow<List<MYear>>
     suspend fun getOrderById(id: Long): Float
     suspend fun getFirstPictureBefore(order: Float): MicroPicture
     suspend fun getFirstPictureAfter(order: Float): MicroPicture
     suspend fun isDbEmpty(): Boolean
+    suspend fun getRandomInYear(year : String) : MicroPicture
 }
