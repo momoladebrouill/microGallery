@@ -10,10 +10,10 @@ import studio.lunabee.microgallery.android.domain.utils.derange
 
 class GetPicturesShuffledUseCase(
     val reorderRepository: ReorderRepository,
-    val listYearsFlowUseCase: ListYearsFlowUseCase
+    val listYearsFlowUseCase: ListYearsFlowUseCase,
 ) {
-    suspend operator fun invoke(qty : Int) : Array<MicroPicture>{
-        val years : Iterator<MYear> = derange(listYearsFlowUseCase().first().toTypedArray()).cycle()
+    suspend operator fun invoke(qty: Int): Array<MicroPicture> {
+        val years: Iterator<MYear> = derange(listYearsFlowUseCase().first().toTypedArray()).cycle()
         return Array(qty) { index ->
             reorderRepository.getRandomInYear(years.next())
         }

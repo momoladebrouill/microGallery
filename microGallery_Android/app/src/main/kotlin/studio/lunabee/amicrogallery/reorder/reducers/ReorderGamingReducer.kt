@@ -5,7 +5,6 @@ import studio.lunabee.amicrogallery.reorder.ReorderAction
 import studio.lunabee.amicrogallery.reorder.ReorderNavScope
 import studio.lunabee.amicrogallery.reorder.ReorderUiState
 import studio.lunabee.compose.presenter.LBReducer
-import studio.lunabee.compose.presenter.LBSingleReducer
 import studio.lunabee.compose.presenter.ReduceResult
 import studio.lunabee.compose.presenter.asResult
 import studio.lunabee.compose.presenter.withSideEffect

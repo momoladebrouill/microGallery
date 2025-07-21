@@ -7,20 +7,17 @@ import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.draganddrop.dragAndDropSource
 import androidx.compose.foundation.draganddrop.dragAndDropTarget
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -36,9 +33,7 @@ import androidx.compose.ui.draganddrop.mimeTypes
 import androidx.compose.ui.draganddrop.toAndroidDragEvent
 import androidx.compose.ui.input.pointer.pointerInput
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
 import studio.lunabee.amicrogallery.android.core.ui.component.image.MicroGalleryImage
-import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.colors
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.spacing
 import studio.lunabee.amicrogallery.reorder.ReorderUiState
 import studio.lunabee.microgallery.android.data.MicroPicture
@@ -103,9 +98,10 @@ fun DropBox(uiState: ReorderUiState.ReorderGamingUiState, index: Float, modifier
             target = object : DragAndDropTarget {
                 override fun onDrop(event: DragAndDropEvent): Boolean {
                     val clipData = event.toAndroidDragEvent().clipData
-                    val picture : MicroPicture? = uiState.pictureMap[clipData.getItemAt(0).text.toString().toLong()]
-                    if(picture != null)
+                    val picture: MicroPicture? = uiState.pictureMap[clipData.getItemAt(0).text.toString().toLong()]
+                    if (picture != null) {
                         uiState.putPicture(index, picture)
+                    }
                     return true
                 }
             },
@@ -136,15 +132,15 @@ fun NoOrder(modifier: Modifier = Modifier) {
 @RequiresApi(Build.VERSION_CODES.N)
 @OptIn(ExperimentalGlideComposeApi::class, ExperimentalFoundationApi::class)
 @Composable
-fun Photo(picture : MicroPicture, modifier: Modifier = Modifier, uiState: ReorderUiState.ReorderGamingUiState) {
+fun Photo(picture: MicroPicture, modifier: Modifier = Modifier, uiState: ReorderUiState.ReorderGamingUiState) {
     MicroGalleryImage(
         modifier = modifier
-            .pointerInput("aa"){
+            .pointerInput("aa") {
                 detectTapGestures(
                     onDoubleTap = {
                         println("offset $it")
                         uiState.jumpToPicture(picture.id)
-                    }
+                    },
                 )
             }
             .dragAndDropSource { _ ->

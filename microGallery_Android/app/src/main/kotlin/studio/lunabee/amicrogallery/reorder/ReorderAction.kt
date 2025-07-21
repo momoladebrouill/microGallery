@@ -7,19 +7,19 @@ sealed interface ReorderAction {
     sealed interface ReorderMenuAction : ReorderAction
     data class PutPicture(
         val index: Float,
-        val picture: MicroPicture
+        val picture: MicroPicture,
     ) : ReorderGamingAction
 
     data class JumpToPicture(
-        val pictureId : Long
+        val pictureId: Long,
     ) : ReorderGamingAction
 
     object WantToJumpToGaming : ReorderMenuAction
     data class JumpToGaming(
-        val pictures: Set<MicroPicture>
+        val pictures: Set<MicroPicture>,
     ) : ReorderMenuAction
 
     data class SetQty(
-        val qty : Int
+        val qty: Int,
     ) : ReorderMenuAction
 }

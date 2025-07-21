@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import studio.lunabee.amicrogallery.bottom_bar.MicroGalleryBottomBar
+import studio.lunabee.amicrogallery.bottomBar.MicroGalleryBottomBar
 import studio.lunabee.amicrogallery.calendar.CalendarDestination
 import studio.lunabee.amicrogallery.calendar.CalendarNavScope
 import studio.lunabee.amicrogallery.lastmonth.LastMonthDestination

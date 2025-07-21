@@ -33,18 +33,18 @@ fun ReorderMenuScreen(uiState: ReorderUiState.ReorderMenuUiState) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.align(Alignment.Center).fillMaxWidth().fillMaxHeight(0.4f)
+            modifier = Modifier.align(Alignment.Center).fillMaxWidth().fillMaxHeight(0.4f),
         ) {
             Text(
                 text = stringResource(R.string.reorder_game),
                 style = typography.header,
-                color = colors.onBackground
+                color = colors.onBackground,
             )
             Text(
                 text = stringResource(R.string.reorder_game_explain),
                 style = typography.body,
                 color = colors.onBackground,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
 
             var numberStr by remember { mutableStateOf("5") }
@@ -53,26 +53,25 @@ fun ReorderMenuScreen(uiState: ReorderUiState.ReorderMenuUiState) {
                 value = numberStr,
                 onValueChange = {
                     numberStr = it
-                    if(it.isInt()){
+                    if (it.isInt()) {
                         uiState.setQty(it.toInt())
                     }
-                                },
+                },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number,
-                    imeAction = ImeAction.Done
+                    imeAction = ImeAction.Done,
                 ),
-                label = { Text("Number of pictures", color = colors.onMain) }
+                label = { Text("Number of pictures", color = colors.onMain) },
             )
 
             Button(
-                onClick = uiState.jumpToGaming
+                onClick = uiState.jumpToGaming,
             ) {
                 Text(
                     text = stringResource(R.string.start),
-                    color = colors.onBackground
+                    color = colors.onBackground,
                 )
             }
         }
-
     }
 }

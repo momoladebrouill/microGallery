@@ -4,8 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import studio.lunabee.amicrogallery.bottom_bar.BottomBarManager
-import studio.lunabee.amicrogallery.bottom_bar.BottomBarViewModel
+import studio.lunabee.amicrogallery.bottomBar.BottomBarViewModel
 import studio.lunabee.compose.presenter.LBSinglePresenter
 import studio.lunabee.compose.presenter.LBSingleReducer
 import studio.lunabee.microgallery.android.data.MMonth
@@ -34,7 +33,6 @@ class CalendarPresenter(
         val manager = bottomBarViewModel.bottomBarManager
         manager.setValue(true)
     }
-
 
     override fun getInitialState(): CalendarUiState = CalendarUiState(
         years = listOf(),

@@ -49,7 +49,6 @@ import studio.lunabee.amicrogallery.core.ui.R as CoreUi
 fun PhotoViewerScreen(
     uiState: PhotoViewerUiState,
 ) {
-
     when (uiState) {
         is PhotoViewerUiState.Waiting -> PhotoWaitScreen()
         is PhotoViewerUiState.HasPicture -> PhotoView(uiState)

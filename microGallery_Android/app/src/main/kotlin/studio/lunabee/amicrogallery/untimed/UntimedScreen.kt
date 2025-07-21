@@ -38,7 +38,6 @@ import studio.lunabee.amicrogallery.app.R
 fun UntimedScreen(
     uiState: UntimedUiState,
 ) {
-
     val hazeState = remember { HazeState() }
     var topBarPadding by remember { mutableStateOf(0.dp) }
     Box {

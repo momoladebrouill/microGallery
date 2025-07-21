@@ -50,5 +50,5 @@ interface PictureDao {
     suspend fun isThereAnyPicture(): Boolean
 
     @Query("SELECT * FROM $PhotosTable WHERE year = :year ORDER BY RANDOM() LIMIT 1")
-    suspend fun getShuffledInYear(year : String) : PictureEntity
+    suspend fun getShuffledInYear(year: String): PictureEntity
 }

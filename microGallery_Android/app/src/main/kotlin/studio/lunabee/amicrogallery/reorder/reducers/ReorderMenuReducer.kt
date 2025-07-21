@@ -1,7 +1,7 @@
 package studio.lunabee.amicrogallery.reorder.reducers
 
 import kotlinx.coroutines.CoroutineScope
-import studio.lunabee.amicrogallery.bottom_bar.BottomBarManager
+import studio.lunabee.amicrogallery.bottomBar.BottomBarManager
 import studio.lunabee.amicrogallery.reorder.ReorderAction
 import studio.lunabee.amicrogallery.reorder.ReorderAction.PutPicture
 import studio.lunabee.amicrogallery.reorder.ReorderNavScope
@@ -19,20 +19,24 @@ class ReorderMenuReducer(
     override val coroutineScope: CoroutineScope,
     val bottomBarManager: BottomBarManager,
     override val emitUserAction: (ReorderAction) -> Unit,
-    val getPicturesShuffledUseCase : GetPicturesShuffledUseCase
+    val getPicturesShuffledUseCase: GetPicturesShuffledUseCase,
 ) : LBReducer<ReorderUiState.ReorderMenuUiState, ReorderUiState, ReorderNavScope, ReorderAction, ReorderAction.ReorderMenuAction>() {
 
-    override suspend fun reduce(actualState: ReorderUiState.ReorderMenuUiState,
+    override suspend fun reduce(
+        actualState: ReorderUiState.ReorderMenuUiState,
         action: ReorderAction.ReorderMenuAction,
-        performNavigation: (ReorderNavScope.() -> Unit) -> Unit): ReduceResult<ReorderUiState> {
+        performNavigation: (ReorderNavScope.() -> Unit) -> Unit,
+    ): ReduceResult<ReorderUiState> {
         return when (action) {
             is ReorderAction.WantToJumpToGaming -> actualState.copy(isJumpingToGame = true) withSideEffect {
                 val pictures = derange(
                     getPicturesShuffledUseCase(actualState.qty),
                 ).toSet()
-                emitUserAction(ReorderAction.JumpToGaming(
-                    pictures = pictures.toSet()
-                ))
+                emitUserAction(
+                    ReorderAction.JumpToGaming(
+                        pictures = pictures.toSet(),
+                    ),
+                )
             }
 
             is ReorderAction.JumpToGaming -> {
@@ -43,12 +47,11 @@ class ReorderMenuReducer(
                     putPicture = fun(index: Float, picture: MicroPicture) { emitUserAction(PutPicture(index, picture)) },
                     picturesInSlots = emptyLineMap<MicroPicture?>() + (0.0f to null),
                     pictureMap = action.pictures.associateBy { it.id },
-                    jumpToPicture = { emitUserAction(ReorderAction.JumpToPicture(it)) }
+                    jumpToPicture = { emitUserAction(ReorderAction.JumpToPicture(it)) },
                 ).asResult()
             }
 
             is ReorderAction.SetQty -> actualState.copy(qty = action.qty).asResult()
-
         }
     }
 
@@ -59,5 +62,4 @@ class ReorderMenuReducer(
     override fun filterUiState(actualState: ReorderUiState): Boolean {
         return actualState is ReorderUiState.ReorderMenuUiState
     }
-
 }
