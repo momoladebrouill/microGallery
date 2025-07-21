@@ -5,14 +5,11 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class BottomBarManager {
 
-    var shown: Boolean = true
+    private val _shown: MutableStateFlow<Boolean> = MutableStateFlow(true)
+    internal val shown: StateFlow<Boolean> = _shown.asStateFlow()
 
-    fun consumeBottomBar(){
-        shown = true
-    }
-
-    fun setValue(value : Boolean) = {
-        println("set is called with value $value")
-        shown = value
+    fun setValue(value : Boolean) {
+        println("call received $value")
+        _shown.value = value
     }
 }

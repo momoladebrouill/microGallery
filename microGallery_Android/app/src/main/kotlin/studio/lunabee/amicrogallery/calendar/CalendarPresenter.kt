@@ -15,7 +15,7 @@ import studio.lunabee.microgallery.android.domain.calendar.usecase.LoadPartialTr
 import studio.lunabee.microgallery.android.domain.calendar.usecase.ObserveYearPreviewsUseCase
 
 class CalendarPresenter(
-    val bottomBarManager: BottomBarManager,
+    val bottomBarViewModel: BottomBarViewModel,
     val calendarRepository: CalendarRepository,
     val observeYearPreviewsUseCase: ObserveYearPreviewsUseCase,
     val loadPartialTreeUseCase: LoadPartialTreeUseCase,
@@ -31,7 +31,8 @@ class CalendarPresenter(
 
     init {
         println("call made from calendar")
-        bottomBarManager.setValue(true)
+        val manager = bottomBarViewModel.bottomBarManager
+        manager.setValue(true)
     }
 
 

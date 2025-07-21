@@ -9,7 +9,6 @@ class BottomBarViewModel(
 
     //val shownBottomBar: StateFlow<Boolean?> = bottomBarManager.shown
 
-    fun consumeBottomBar(): Unit = bottomBarManager.consumeBottomBar()
 
     fun set(value : Boolean) {
         bottomBarManager.setValue(value)

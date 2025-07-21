@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import studio.lunabee.amicrogallery.bottom_bar.BottomBarViewModel
 import studio.lunabee.compose.presenter.LBSinglePresenter
 import studio.lunabee.compose.presenter.LBSingleReducer
 import studio.lunabee.microgallery.android.data.SettingsData
@@ -13,6 +14,7 @@ import studio.lunabee.microgallery.android.domain.settings.usecase.ObserveStatus
 import studio.lunabee.microgallery.android.domain.settings.usecase.SetSettingsUseCase
 
 class SettingsPresenter(
+    val bottomBarViewModel: BottomBarViewModel,
     val observeSettingsUseCase: ObserveSettingsUseCase,
     val observeStatusUseCase: ObserveStatusUseCase,
     val emptyPhotoDbUseCase: EmptyPhotoDbUseCase,
@@ -31,6 +33,12 @@ class SettingsPresenter(
         settingsData,
         statusData,
     )
+
+    init {
+        val manager = bottomBarViewModel.bottomBarManager
+        println("call made from settings")
+        manager.setValue(false)
+    }
 
     override fun getInitialState(): SettingsUiState = SettingsUiState(
         data = SettingsData(

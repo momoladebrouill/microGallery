@@ -8,6 +8,9 @@ import androidx.compose.material3.HorizontalFloatingToolbar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -37,10 +40,14 @@ fun MicroGalleryBottomBar(
     val currentBackStackEntry: NavBackStackEntry? by navController.currentBackStackEntryAsState()
 
     val manager = bottomBarViewModel.bottomBarManager
-    
+
+    val shown by manager.shown.collectAsStateWithLifecycle()
+    var isOn by remember { mutableStateOf(true) }
+
+    LaunchedEffect(shown) { isOn = shown }
 
     AnimatedVisibility(
-        visible = manager.shown,
+        visible = isOn,
         modifier = modifier,
     ) {
         HorizontalFloatingToolbar(
