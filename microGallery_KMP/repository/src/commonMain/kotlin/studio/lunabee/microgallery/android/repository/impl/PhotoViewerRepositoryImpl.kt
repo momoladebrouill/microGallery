@@ -1,14 +1,27 @@
 package studio.lunabee.microgallery.android.repository.impl
 
+import kotlinx.coroutines.flow.Flow
 import studio.lunabee.amicrogallery.picture.PictureLocal
-import studio.lunabee.microgallery.android.data.Picture
+import studio.lunabee.microgallery.android.data.MicroPicture
 import studio.lunabee.microgallery.android.domain.photoviewer.PhotoViewerRepository
 
 class PhotoViewerRepositoryImpl(
     private val pictureLocal: PictureLocal,
 ) : PhotoViewerRepository {
 
-    override suspend fun getPictureById(id: Long): Picture {
+    override fun getPictureById(id: Long): Flow<MicroPicture> {
         return pictureLocal.getPictureById(id)
+    }
+
+    override suspend fun getPictureBefore(order: Float): MicroPicture {
+        return pictureLocal.getFirstPictureBefore(order)
+    }
+
+    override suspend fun getPictureAfter(order: Float): MicroPicture {
+        return pictureLocal.getFirstPictureAfter(order)
+    }
+
+    override suspend fun getOrderById(id: Long): Float {
+        return pictureLocal.getOrderById(id)
     }
 }

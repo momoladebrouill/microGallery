@@ -5,12 +5,15 @@ import studio.lunabee.compose.presenter.LBSingleReducer
 import studio.lunabee.compose.presenter.ReduceResult
 import studio.lunabee.compose.presenter.asResult
 import studio.lunabee.compose.presenter.withSideEffect
+import studio.lunabee.microgallery.android.domain.calendar.CalendarRepository
 
 class CalendarReducer(
 
     override val coroutineScope: CoroutineScope,
     override val emitUserAction: (CalendarAction) -> Unit,
-) : LBSingleReducer<CalendarUiState, CalendarNavScope, CalendarAction> () {
+    val calendarRepository: CalendarRepository,
+
+) : LBSingleReducer<CalendarUiState, CalendarNavScope, CalendarAction>() {
 
     override suspend fun reduce(
         actualState: CalendarUiState,
@@ -24,25 +27,21 @@ class CalendarReducer(
             is CalendarAction.GotYears -> actualState.copy(years = action.years).asResult()
             is CalendarAction.GotMonthsOfYears -> actualState.copy(monthsOfYears = action.monthsOfYears).asResult()
 
-            is CalendarAction.ForgetMYPhotos -> actualState.copy(
-                photosOfMonth = actualState.photosOfMonth.filter { (pair, _) -> pair != Pair(action.year, action.month) },
-                expandedMonths = actualState.expandedMonths - setOf(Pair(action.year, action.month)),
-            ).asResult()
-
-            is CalendarAction.GotMY -> actualState.copy(
+            is CalendarAction.GotPicturesInMonth -> actualState.copy(
                 photosOfMonth = actualState.photosOfMonth + (Pair(action.year, action.month) to action.pictures),
             ).asResult()
 
-            // the presenter called for the db query, we just update year the list of things to show in UI
             is CalendarAction.AskForExpand -> actualState.copy(
                 expandedMonths = actualState.expandedMonths + Pair(action.year, action.month),
-            ).asResult()
-
-            is CalendarAction.AskForCollapse -> actualState.copy(
-                expandedMonths = actualState.expandedMonths - Pair(action.year, action.month),
-            ).asResult()
+            ) withSideEffect {
+                val picturesInMonth = calendarRepository.getPicturesInMonth(action.year, action.month)
+                picturesInMonth.collect {
+                    emitUserAction(CalendarAction.GotPicturesInMonth(action.year, action.month, it))
+                }
+            }
 
             is CalendarAction.JumpToYear -> actualState.copy(yearSelected = action.year).asResult()
+
             is CalendarAction.ResetToHome -> actualState.copy(yearSelected = null).asResult()
         }
     }

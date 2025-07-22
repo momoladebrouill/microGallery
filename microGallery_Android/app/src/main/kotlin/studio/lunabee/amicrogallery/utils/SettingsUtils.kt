@@ -2,8 +2,6 @@ package studio.lunabee.amicrogallery.utils
 
 import android.content.Context
 import android.content.pm.PackageManager
-import studio.lunabee.amicrogallery.settings.SettingsAction
-import studio.lunabee.microgallery.android.data.SettingsData
 
 fun Context.getAppVersion(): String {
     return try {
@@ -12,10 +10,4 @@ fun Context.getAppVersion(): String {
     } catch (e: PackageManager.NameNotFoundException) {
         "Unknown"
     }
-}
-
-fun changeCheck(ipv6force: Boolean, fireAction: (SettingsAction) -> Unit, data: SettingsData): Boolean {
-    val ipv6forceN = !ipv6force
-    fireAction(SettingsAction.SetParameters(data.copy(useIpv6 = ipv6force)))
-    return ipv6forceN
 }

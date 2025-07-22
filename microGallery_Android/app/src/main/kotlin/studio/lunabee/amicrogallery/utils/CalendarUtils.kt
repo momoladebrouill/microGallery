@@ -1,8 +1,8 @@
 package studio.lunabee.amicrogallery.utils
 
-import androidx.compose.foundation.lazy.LazyListItemInfo
+import studio.lunabee.microgallery.android.data.MMonth
 
-fun getMonthName(value: String, monthArray: Array<String>): String {
+fun getMonthName(value: MMonth, monthArray: Array<String>): String {
     val task = runCatching {
         val number = value.toInt()
         if (number < 13) {
@@ -12,14 +12,4 @@ fun getMonthName(value: String, monthArray: Array<String>): String {
         }
     }
     return task.getOrElse { value }
-}
-
-fun getMonthFromKey(key: String): String {
-    return key.substringAfter("/")
-}
-
-fun calculateInterpolationValue(density: Float, currentShownYear: LazyListItemInfo?): Float {
-    val currentFirstHeightInDp = (currentShownYear?.size ?: 1) / density
-    val currentFirstOffsetInDp = -(currentShownYear?.offset ?: 0) / density
-    return currentFirstOffsetInDp / currentFirstHeightInDp
 }

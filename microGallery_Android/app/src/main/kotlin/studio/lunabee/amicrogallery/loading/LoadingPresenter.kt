@@ -1,51 +1,53 @@
 package studio.lunabee.amicrogallery.loading
 
+import ErrorReducer
+import FetchingReducer
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewModelScope
-import com.lunabee.lbcore.model.LBResult
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-
-import studio.lunabee.compose.presenter.LBSinglePresenter
-import studio.lunabee.compose.presenter.LBSingleReducer
-import studio.lunabee.microgallery.android.domain.loading.LoadingRepository
+import studio.lunabee.compose.presenter.LBPresenter
+import studio.lunabee.compose.presenter.LBSimpleReducer
+import studio.lunabee.microgallery.android.domain.loading.usecase.ListYearsFlowUseCase
+import studio.lunabee.microgallery.android.domain.loading.usecase.PhotoDbIsEmptyUseCase
 import studio.lunabee.microgallery.android.domain.loading.usecase.UpdateTreeUseCase
 
 class LoadingPresenter(
-    val loadingRepository: LoadingRepository,
-) : LBSinglePresenter<LoadingUiState, LoadingNavScope, LoadingAction>() {
-    override val flows: List<Flow<LoadingAction>> = emptyList()
-
-    override fun getInitialState(): LoadingUiState = LoadingUiState.Default()
-
-    override fun initReducer(): LBSingleReducer<LoadingUiState, LoadingNavScope, LoadingAction> {
-        return LoadingReducer(viewModelScope, ::emitUserAction)
-    }
+    val updateTreeUseCase: UpdateTreeUseCase,
+    val photoDbIsEmptyUseCase: PhotoDbIsEmptyUseCase,
+    val yearsFlowUseCase: ListYearsFlowUseCase,
+) : LBPresenter<LoadingUiState, LoadingNavScope, LoadingAction>() {
+    val yearsFlow = yearsFlowUseCase().map { LoadingAction.FoundYear(it) }
 
     init {
-        refreshDB()
-    }
-
-    private fun refreshDB() {
         viewModelScope.launch {
-            when (val result: LBResult<Unit> = UpdateTreeUseCase(loadingRepository).invoke()) {
-                is LBResult.Success -> {
-                    emitUserAction(LoadingAction.FoundData)
-                }
-
-                is LBResult.Failure<Unit> -> {
-                    emitUserAction(LoadingAction.Error(result.throwable?.message))
-                }
+            if (photoDbIsEmptyUseCase()) {
+                updateTreeUseCase()
             }
+            emitUserAction(LoadingAction.FoundAll)
         }
     }
 
-    private fun onAction(action: LoadingAction) {
-        if (action is LoadingAction.Reload) {
-            refreshDB()
+    override val flows: List<Flow<LoadingAction>> = listOf(
+        yearsFlow,
+    )
+
+    override fun getInitialState(): LoadingUiState = LoadingUiState.Fetching(emptyList())
+
+    override fun getReducerByState(actualState: LoadingUiState): LBSimpleReducer<LoadingUiState, LoadingNavScope, LoadingAction> {
+        return when (actualState) {
+            is LoadingUiState.Fetching -> FetchingReducer(
+                coroutineScope = viewModelScope,
+                emitUserAction = ::emitUserAction,
+            )
+
+            is LoadingUiState.Error -> ErrorReducer(
+                coroutineScope = viewModelScope,
+                emitUserAction = ::emitUserAction,
+            )
         }
-        viewModelScope.launch { emitUserAction(action) }
     }
 
-    override val content: @Composable ((LoadingUiState) -> Unit) = { LoadingScreen(it, ::onAction) }
+    override val content: @Composable ((LoadingUiState) -> Unit) = { LoadingScreen(it) }
 }

@@ -16,16 +16,17 @@ data class RemoteMicroElement(
         return when (type) {
             "directory" -> Directory(
                 name = name,
-                content = (contents?.map { it.toData() })!!,
+                content = (contents ?: emptyList()).map { it.toData() },
             )
+
             "file" -> Picture(
-                id = 4L,
                 name = name,
                 fullResPath = null,
                 lowResPath = null,
                 year = null,
                 month = null,
             )
+
             else ->
                 throw CoreError("found a new type in request")
         }

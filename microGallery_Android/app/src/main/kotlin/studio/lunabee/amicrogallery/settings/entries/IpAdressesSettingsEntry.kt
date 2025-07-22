@@ -13,10 +13,6 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
@@ -27,24 +23,22 @@ import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.colo
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.spacing
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.typography
 import studio.lunabee.amicrogallery.app.R
-import studio.lunabee.amicrogallery.settings.SettingsAction
-import studio.lunabee.amicrogallery.utils.changeCheck
-import studio.lunabee.microgallery.android.data.SettingsData
+import studio.lunabee.amicrogallery.settings.SettingsUiState
 
 @Composable
-fun IPAddressesSettingsEntry(modifier: Modifier = Modifier, data: SettingsData, fireAction: (SettingsAction) -> Unit) {
-    var ipv4: String by remember { mutableStateOf(data.ipv4) }
-    var ipv6: String by remember { mutableStateOf(data.ipv6) }
-    var ipv6force: Boolean by remember { mutableStateOf(data.useIpv6) }
+fun IPAddressesSettingsEntry(modifier: Modifier = Modifier, uiState: SettingsUiState) {
+    val data = uiState.data
+
     val keyboardController = LocalSoftwareKeyboardController.current
     Column(modifier = modifier) {
         Text(
             text = stringResource(R.string.adress_of_server),
             style = typography.title,
+            color = colors.onBackground,
         )
 
         OutlinedTextField(
-            value = ipv4,
+            value = data.ipv4,
             singleLine = true,
             shape = shapes.large,
             modifier = Modifier,
@@ -53,7 +47,7 @@ fun IPAddressesSettingsEntry(modifier: Modifier = Modifier, data: SettingsData, 
                 unfocusedContainerColor = colors.background,
                 disabledContainerColor = colors.background,
             ),
-            onValueChange = { ipv4 = it },
+            onValueChange = { uiState.setIpv4(it) },
             label = { Text(stringResource(R.string.ipv4), style = typography.body) },
             isError = false,
             keyboardOptions = KeyboardOptions.Default.copy(
@@ -61,14 +55,13 @@ fun IPAddressesSettingsEntry(modifier: Modifier = Modifier, data: SettingsData, 
             ),
             keyboardActions = KeyboardActions(
                 onDone = {
-                    fireAction(SettingsAction.SetParameters(data.copy(ipv4 = ipv4)))
                     keyboardController?.hide()
                 },
             ),
         )
 
         OutlinedTextField(
-            value = ipv6,
+            value = data.ipv6,
             singleLine = true,
             shape = shapes.large,
             modifier = Modifier,
@@ -77,7 +70,7 @@ fun IPAddressesSettingsEntry(modifier: Modifier = Modifier, data: SettingsData, 
                 unfocusedContainerColor = colors.background,
                 disabledContainerColor = colors.background,
             ),
-            onValueChange = { ipv6 = it },
+            onValueChange = { uiState.setIpv6(it) },
             label = { Text(stringResource(R.string.ipv6), style = typography.body) },
             isError = false,
             keyboardOptions = KeyboardOptions.Default.copy(
@@ -85,7 +78,6 @@ fun IPAddressesSettingsEntry(modifier: Modifier = Modifier, data: SettingsData, 
             ),
             keyboardActions = KeyboardActions(
                 onDone = {
-                    fireAction(SettingsAction.SetParameters(data.copy(ipv6 = ipv6)))
                     keyboardController?.hide()
                 },
             ),
@@ -93,24 +85,26 @@ fun IPAddressesSettingsEntry(modifier: Modifier = Modifier, data: SettingsData, 
 
         Row(verticalAlignment = Alignment.CenterVertically) {
             Switch(
-                checked = ipv6force,
-                onCheckedChange = { ipv6force = changeCheck(ipv6force, fireAction, data) },
+                checked = data.useIpv6,
+                onCheckedChange = { _ -> uiState.toggleIpV6() },
             )
             Spacer(modifier = Modifier.padding(horizontal = spacing.SpacingMedium))
             Column(
                 modifier = Modifier.pointerInput(null) {
                     detectTapGestures(
-                        onTap = { ipv6force = changeCheck(ipv6force, fireAction, data) },
+                        onTap = { _ -> uiState.toggleIpV6() },
                     )
                 },
             ) {
                 Text(
                     text = stringResource(R.string.use_ipv6),
                     style = typography.labelBold,
+                    color = colors.onBackground,
                 )
                 Text(
                     text = stringResource(R.string.wifi_prevention),
                     style = typography.body,
+                    color = colors.onBackground,
                 )
             }
         }

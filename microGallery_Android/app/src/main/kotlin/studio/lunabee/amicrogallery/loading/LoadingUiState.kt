@@ -1,8 +1,16 @@
 package studio.lunabee.amicrogallery.loading
 
 import studio.lunabee.compose.presenter.PresenterUiState
+import studio.lunabee.microgallery.android.data.MYear
 
-interface LoadingUiState : PresenterUiState {
-    class Default : LoadingUiState
-    data class Error(val errorMessage: String?) : LoadingUiState
+sealed interface LoadingUiState : PresenterUiState {
+
+    data class Error(
+        val errorMessage: String?,
+        val reload: () -> Unit,
+    ) : LoadingUiState
+
+    data class Fetching(
+        val years: List<MYear>,
+    ) : LoadingUiState
 }

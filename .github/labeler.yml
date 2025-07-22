@@ -1,9 +1,9 @@
 "🤖 Android":
-- changed-files:
-  - any-glob-to-any-file: ['microGallery_Android/**']
+  - changed-files:
+      - any-glob-to-any-file: [ 'microGallery_Android/**' ]
 "🍎 iOS":
-- changed-files:
-  - any-glob-to-any-file: ['microGallery_iOS/**']
+  - changed-files:
+      - any-glob-to-any-file: [ 'microGallery_iOS/**' ]
 "🫏 KMP":
-- changed-files:
-  - any-glob-to-any-file: ['microGallery_KMP/**']
+  - changed-files:
+      - any-glob-to-any-file: [ 'microGallery_KMP/**' ]

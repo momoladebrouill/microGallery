@@ -21,7 +21,6 @@ import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.colo
 import studio.lunabee.amicrogallery.calendar.CalendarDestination
 import studio.lunabee.amicrogallery.core.ui.R
 import studio.lunabee.amicrogallery.lastmonth.LastMonthDestination
-import studio.lunabee.amicrogallery.untimed.UntimedDestination
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -32,8 +31,7 @@ fun MicroGalleryBottomBar(
     val currentBackStackEntry: NavBackStackEntry? by navController.currentBackStackEntryAsState()
 
     // Show the bottom bar if any of the screens is displayed
-    val isOn = listOf(CalendarDestination, UntimedDestination, LastMonthDestination).any {
-            dest ->
+    val isOn = listOf(CalendarDestination, LastMonthDestination).any { dest ->
         currentBackStackEntry?.destination?.hierarchy?.any { it.hasRoute(dest::class) } == true
     }
 
@@ -57,12 +55,6 @@ fun MicroGalleryBottomBar(
                 icon = painterResource(R.drawable.calendar),
                 description = stringResource(R.string.calendar_icon_button),
                 activated = currentBackStackEntry?.destination?.hierarchy?.any { it.hasRoute(CalendarDestination::class) } == true,
-            )
-            NavBarButton(
-                onClick = { navController.navigate(UntimedDestination) },
-                icon = painterResource(R.drawable.not_time),
-                description = stringResource(R.string.untimed_icon_button),
-                activated = currentBackStackEntry?.destination?.hierarchy?.any { it.hasRoute(UntimedDestination::class) } == true,
             )
             NavBarButton(
                 onClick = { navController.navigate(LastMonthDestination) },

@@ -1,8 +1,10 @@
 package studio.lunabee.microgallery.android.repository.datasource.remote
 
-import studio.lunabee.microgallery.android.data.Node
+import kotlinx.coroutines.flow.Flow
+import studio.lunabee.microgallery.android.data.Directory
+import studio.lunabee.microgallery.android.data.MYear
 
 interface TreeRemoteDatasource {
-    suspend fun fetchRoot()
-    fun getRoot(): Node
+    suspend fun getYears(): List<MYear>
+    fun getYearDirs(years: List<MYear>): Flow<Directory>
 }

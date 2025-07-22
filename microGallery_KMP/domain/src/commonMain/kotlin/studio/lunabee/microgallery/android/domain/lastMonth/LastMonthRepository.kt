@@ -1,7 +1,10 @@
 package studio.lunabee.microgallery.android.domain.lastMonth
 
-import studio.lunabee.microgallery.android.data.Picture
+import kotlinx.coroutines.flow.Flow
+import studio.lunabee.microgallery.android.data.MMonth
+import studio.lunabee.microgallery.android.data.MYear
+import studio.lunabee.microgallery.android.data.MicroPicture
 
 interface LastMonthRepository {
-    suspend fun getLastMonthPictures(year: String, month: String): List<Picture>
+    fun getLastMonthPictures(year: MYear, month: MMonth): Flow<List<MicroPicture>>
 }

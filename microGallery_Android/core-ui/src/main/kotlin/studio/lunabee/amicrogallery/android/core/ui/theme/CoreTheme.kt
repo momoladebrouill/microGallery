@@ -25,7 +25,8 @@ fun MicroGalleryTheme(
             CoreColorLightTheme
         }
 
-    MaterialTheme( // map the ButtonDefaultColor etc
+    MaterialTheme(
+        // map the ButtonDefaultColor etc
         colorScheme = mapMaterialColorScheme(isSystemInDarkTheme(), colors),
     ) {
         CompositionLocalProvider(
@@ -63,8 +64,13 @@ fun mapMaterialColorScheme(
     darkColorScheme(
         primary = coreColors.main,
         onPrimary = coreColors.onMain,
+        secondary = coreColors.second,
         background = coreColors.background,
         onBackground = coreColors.onBackground,
+        surface = coreColors.background,
+        onSurface = coreColors.onBackground,
+        surfaceContainer = coreColors.background,
+        onPrimaryContainer = coreColors.onBackground,
     )
 } else {
     lightColorScheme(
