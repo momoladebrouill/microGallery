@@ -56,7 +56,9 @@ fun CalendarScreen(
     calendarUiState: CalendarUiState,
 ) {
     val bottomBarViewModel = koinInject<BottomBarViewModel>()
-    LaunchedEffect(Unit) { bottomBarViewModel.set(true) }
+    LaunchedEffect(calendarUiState.yearSelected) {
+        bottomBarViewModel.set(calendarUiState.yearSelected == null)
+    }
 
     Box(modifier = Modifier.fillMaxWidth()) {
         BackHandler(enabled = calendarUiState.yearSelected != null) {
