@@ -72,6 +72,10 @@ class PictureLocalDatasource(
         }
     }
 
+    override fun yearList(): Flow<List<MYear>> {
+        return pictureDao.getYears()
+    }
+
     override suspend fun getOrderById(id: Long): Float {
         return pictureDao.getOrderById(id)
     }
@@ -82,5 +86,9 @@ class PictureLocalDatasource(
 
     override suspend fun getFirstPictureAfter(order: Float): MicroPicture {
         return pictureDao.getFirstPictureAfter(order).toMicroPicture(settingsData.first())
+    }
+
+    override suspend fun isDbEmpty(): Boolean {
+        return !pictureDao.isThereAnyPicture()
     }
 }

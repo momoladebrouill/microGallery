@@ -45,4 +45,7 @@ interface PictureDao {
 
     @Query("SELECT * FROM $PhotosTable WHERE scale = (SELECT MIN(scale) FROM $PhotosTable WHERE scale > :scale)")
     suspend fun getFirstPictureAfter(scale: Float): PictureEntity
+
+    @Query("SELECT EXISTS(SELECT * FROM PhotosTable LIMIT 1) FROM PhotosTable LIMIT 1")
+    suspend fun isThereAnyPicture(): Boolean
 }

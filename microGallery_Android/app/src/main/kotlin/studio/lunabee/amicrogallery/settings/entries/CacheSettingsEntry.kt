@@ -1,6 +1,5 @@
 package studio.lunabee.amicrogallery.settings.entries
 
-import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,22 +12,31 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.typography
 import studio.lunabee.amicrogallery.app.R
+import studio.lunabee.amicrogallery.settings.SettingsUiState
 
 @Composable
-fun CacheSettingsEntry(modifier: Modifier = Modifier, clearCache: (Context) -> Unit) {
+fun CacheSettingsEntry(modifier: Modifier = Modifier, uiState: SettingsUiState) {
     val context = LocalContext.current
+    Text(
+        text = stringResource(R.string.cache_and_settings),
+        style = typography.title,
+    )
     Row(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(
-            text = stringResource(R.string.cache),
-            style = typography.title,
-        )
+        Button(
+            onClick = uiState.resetData,
+        ) {
+            Text(
+                text = stringResource(R.string.reset_data),
+                style = typography.body,
+            )
+        }
 
         Button(
-            onClick = { clearCache(context) },
+            onClick = { uiState.clearCache(context) },
         ) {
             Text(
                 text = stringResource(R.string.empty_cache),

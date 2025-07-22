@@ -11,7 +11,7 @@ import studio.lunabee.amicrogallery.android.local.entity.SettingsTable
 @Dao
 interface SettingsDao {
     @Query("SELECT * FROM $SettingsTable")
-    fun getSettings(): Flow<SettingsEntity> // flow will emit at each store called
+    fun getSettings(): Flow<SettingsEntity?> // flow will emit at each store called
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun storeSettings(settingsEntity: SettingsEntity)
