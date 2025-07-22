@@ -9,17 +9,22 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import org.koin.compose.koinInject
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.colors
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.spacing
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.typography
 import studio.lunabee.amicrogallery.app.R
+import studio.lunabee.amicrogallery.bottomBar.BottomBarViewModel
 
 @Composable
 fun LoadingScreen(loadingUiState: LoadingUiState) {
+    val bottomBarViewModel = koinInject<BottomBarViewModel>()
+    LaunchedEffect(Unit) { bottomBarViewModel.set(false) }
     when (loadingUiState) {
         is LoadingUiState.Error -> ShowError(loadingUiState)
         is LoadingUiState.Fetching -> WaitingForResponse(loadingUiState)

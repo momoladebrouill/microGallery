@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.Flow
 import studio.lunabee.amicrogallery.bottomBar.BottomBarManager
+import studio.lunabee.amicrogallery.bottomBar.BottomBarViewModel
 import studio.lunabee.amicrogallery.reorder.reducers.ReorderGamingReducer
 import studio.lunabee.amicrogallery.reorder.reducers.ReorderMenuReducer
 
@@ -15,10 +16,11 @@ import studio.lunabee.microgallery.android.domain.reorder.usecase.GetPicturesShu
 
 class ReorderPresenter(
     val getPicturesShuffledUseCase: GetPicturesShuffledUseCase,
-    private val bottomBarManager: BottomBarManager,
+    val bottomBarViewModel: BottomBarViewModel
 ) : LBPresenter<ReorderUiState, ReorderNavScope, ReorderAction>() {
 
     override val flows: List<Flow<ReorderAction>> = listOf()
+
 
     override fun getInitialState(): ReorderUiState = ReorderUiState.ReorderMenuUiState(
         qty = 3,
@@ -38,7 +40,7 @@ class ReorderPresenter(
                 coroutineScope = viewModelScope,
                 emitUserAction = ::emitUserAction,
                 getPicturesShuffledUseCase = getPicturesShuffledUseCase,
-                bottomBarManager = bottomBarManager,
+                bottomBarViewModel = bottomBarViewModel
             )
         }
     }

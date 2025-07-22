@@ -35,11 +35,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import org.koin.compose.koinInject
 import studio.lunabee.amicrogallery.android.core.ui.component.image.MicroGalleryImage
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.colors
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.spacing
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.typography
 import studio.lunabee.amicrogallery.app.R
+import studio.lunabee.amicrogallery.bottomBar.BottomBarViewModel
 import studio.lunabee.amicrogallery.utils.clampOffset
 import studio.lunabee.amicrogallery.utils.clampScale
 import studio.lunabee.amicrogallery.utils.getMonthName
@@ -49,6 +51,8 @@ import studio.lunabee.amicrogallery.core.ui.R as CoreUi
 fun PhotoViewerScreen(
     uiState: PhotoViewerUiState,
 ) {
+    val bottomBarViewModel = koinInject<BottomBarViewModel>()
+    LaunchedEffect(Unit) { bottomBarViewModel.set(false) }
     when (uiState) {
         is PhotoViewerUiState.Waiting -> PhotoWaitScreen()
         is PhotoViewerUiState.HasPicture -> PhotoView(uiState)

@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import studio.lunabee.amicrogallery.bottomBar.BottomBarViewModel
 import studio.lunabee.amicrogallery.photoviewer.reducers.PhotoViewerHasPhotoReducer
 import studio.lunabee.amicrogallery.photoviewer.reducers.PhotoViewerWaitingReducer
 import studio.lunabee.compose.presenter.LBPresenter
@@ -17,7 +18,6 @@ class PhotoViewerPresenter(
     savedStateHandle: SavedStateHandle,
     val observePictureByIdUseCase: ObservePictureByIdUseCase,
     val getNeighborsByPictureUseCase: GetNeighborsByPictureUseCase,
-
 ) : LBPresenter<PhotoViewerUiState, PhotoViewerNavScope, PhotoViewerAction>() {
 
     private val params: PhotoViewerDestination = savedStateHandle.toRoute()

@@ -19,6 +19,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,12 +37,14 @@ import dev.chrisbanes.haze.hazeEffect
 import dev.chrisbanes.haze.hazeSource
 import dev.chrisbanes.haze.materials.ExperimentalHazeMaterialsApi
 import dev.chrisbanes.haze.materials.HazeMaterials
+import org.koin.compose.koinInject
 import studio.lunabee.amicrogallery.android.core.ui.component.image.MicroGalleryImage
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.colors
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.radius
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.spacing
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.typography
 import studio.lunabee.amicrogallery.app.R
+import studio.lunabee.amicrogallery.bottomBar.BottomBarViewModel
 import studio.lunabee.amicrogallery.dashboard.LocalBottomBarHeight
 
 import studio.lunabee.microgallery.android.data.YearPreview
@@ -52,6 +55,9 @@ import studio.lunabee.amicrogallery.core.ui.R as CoreUi
 fun CalendarScreen(
     calendarUiState: CalendarUiState,
 ) {
+    val bottomBarViewModel = koinInject<BottomBarViewModel>()
+    LaunchedEffect(Unit) { bottomBarViewModel.set(true) }
+
     Box(modifier = Modifier.fillMaxWidth()) {
         BackHandler(enabled = calendarUiState.yearSelected != null) {
             calendarUiState.resetToHome()

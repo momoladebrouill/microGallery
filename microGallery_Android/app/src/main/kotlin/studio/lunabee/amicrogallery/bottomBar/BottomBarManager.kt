@@ -9,7 +9,6 @@ class BottomBarManager {
     internal val shown: StateFlow<Boolean> = _shown.asStateFlow()
 
     fun setValue(value: Boolean) {
-        println("call received $value")
         _shown.value = value
     }
 }

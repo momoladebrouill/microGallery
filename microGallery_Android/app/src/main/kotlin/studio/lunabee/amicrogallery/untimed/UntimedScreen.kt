@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,16 +29,20 @@ import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.hazeEffect
 import dev.chrisbanes.haze.materials.ExperimentalHazeMaterialsApi
 import dev.chrisbanes.haze.materials.HazeMaterials
+import org.koin.compose.koinInject
 import studio.lunabee.amicrogallery.android.core.ui.component.photo.MicroGalleryButtonImage
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.colors
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.spacing
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.typography
 import studio.lunabee.amicrogallery.app.R
+import studio.lunabee.amicrogallery.bottomBar.BottomBarViewModel
 
 @Composable
 fun UntimedScreen(
     uiState: UntimedUiState,
 ) {
+    val bottomBarViewModel = koinInject<BottomBarViewModel>()
+    LaunchedEffect(Unit) { bottomBarViewModel.set(false) }
     val hazeState = remember { HazeState() }
     var topBarPadding by remember { mutableStateOf(0.dp) }
     Box {

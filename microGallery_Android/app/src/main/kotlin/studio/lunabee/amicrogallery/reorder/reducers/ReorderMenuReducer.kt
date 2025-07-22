@@ -2,6 +2,7 @@ package studio.lunabee.amicrogallery.reorder.reducers
 
 import kotlinx.coroutines.CoroutineScope
 import studio.lunabee.amicrogallery.bottomBar.BottomBarManager
+import studio.lunabee.amicrogallery.bottomBar.BottomBarViewModel
 import studio.lunabee.amicrogallery.reorder.ReorderAction
 import studio.lunabee.amicrogallery.reorder.ReorderAction.PutPicture
 import studio.lunabee.amicrogallery.reorder.ReorderNavScope
@@ -17,7 +18,7 @@ import studio.lunabee.microgallery.android.domain.reorder.usecase.GetPicturesShu
 
 class ReorderMenuReducer(
     override val coroutineScope: CoroutineScope,
-    val bottomBarManager: BottomBarManager,
+    val bottomBarViewModel: BottomBarViewModel,
     override val emitUserAction: (ReorderAction) -> Unit,
     val getPicturesShuffledUseCase: GetPicturesShuffledUseCase,
 ) : LBReducer<ReorderUiState.ReorderMenuUiState, ReorderUiState, ReorderNavScope, ReorderAction, ReorderAction.ReorderMenuAction>() {
@@ -40,7 +41,7 @@ class ReorderMenuReducer(
             }
 
             is ReorderAction.JumpToGaming -> {
-                bottomBarManager.setValue(false)
+                bottomBarViewModel.set(false)
                 ReorderUiState.ReorderGamingUiState(
                     picturesNotPlaced = action.pictures,
                     picturesQQty = action.pictures.size,

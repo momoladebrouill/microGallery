@@ -13,13 +13,16 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import org.koin.compose.koinInject
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.colors
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.spacing
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.typography
 import studio.lunabee.amicrogallery.app.R
+import studio.lunabee.amicrogallery.bottomBar.BottomBarViewModel
 import studio.lunabee.amicrogallery.settings.entries.CacheSettingsEntry
 import studio.lunabee.amicrogallery.settings.entries.IPAddressesSettingsEntry
 import studio.lunabee.amicrogallery.settings.entries.ServerStatisticsSettingsEntry
@@ -30,6 +33,8 @@ import studio.lunabee.amicrogallery.utils.getAppVersion
 
 @Composable
 fun SettingsScreen(uiState: SettingsUiState) {
+    val bottomBarViewModel = koinInject<BottomBarViewModel>()
+    LaunchedEffect(Unit) { bottomBarViewModel.set(false) }
     val settingsEntries: List<@Composable (modifier: Modifier) -> Unit> = listOf(
         // mod as a short term for modifier
         { mod -> TitleSettingsEntry(mod, uiState.jumpBack) },

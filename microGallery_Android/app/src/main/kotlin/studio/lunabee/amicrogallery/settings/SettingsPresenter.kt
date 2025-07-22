@@ -34,11 +34,6 @@ class SettingsPresenter(
         statusData,
     )
 
-    init {
-        val manager = bottomBarViewModel.bottomBarManager
-        println("call made from settings")
-        manager.setValue(false)
-    }
 
     override fun getInitialState(): SettingsUiState = SettingsUiState(
         data = SettingsData(

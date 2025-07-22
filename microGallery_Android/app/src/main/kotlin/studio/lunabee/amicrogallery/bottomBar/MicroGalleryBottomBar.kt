@@ -38,9 +38,7 @@ fun MicroGalleryBottomBar(
 ) {
     val currentBackStackEntry: NavBackStackEntry? by navController.currentBackStackEntryAsState()
 
-    val manager = bottomBarViewModel.bottomBarManager
-
-    val shown by manager.shown.collectAsStateWithLifecycle()
+    val shown by bottomBarViewModel.isShown.collectAsStateWithLifecycle()
     var isOn by remember { mutableStateOf(true) }
 
     LaunchedEffect(shown) { isOn = shown }

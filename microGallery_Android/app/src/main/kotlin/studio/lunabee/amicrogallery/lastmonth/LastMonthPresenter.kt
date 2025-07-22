@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import studio.lunabee.amicrogallery.bottomBar.BottomBarManager
+import studio.lunabee.amicrogallery.bottomBar.BottomBarViewModel
 import studio.lunabee.compose.presenter.LBSinglePresenter
 import studio.lunabee.compose.presenter.LBSingleReducer
 import studio.lunabee.microgallery.android.data.MicroPicture
@@ -13,6 +15,7 @@ import studio.lunabee.microgallery.android.domain.lastMonth.usecase.ObserveLastM
 class LastMonthPresenter(
     val lastMonthRepository: LastMonthRepository,
     val observeLastMonthUseCase: ObserveLastMonthUseCase,
+
 ) : LBSinglePresenter<LastMonthUiState, LastMonthNavScope, LastMonthAction>() {
 
     val lastMonth = observeLastMonthUseCase().map { LastMonthAction.GotTheList(it) }
@@ -26,6 +29,8 @@ class LastMonthPresenter(
             lastMonthRepository,
         )
     }
+
+
 
     override fun getInitialState(): LastMonthUiState = LastMonthUiState(
         pictures = listOf<MicroPicture>(),
