@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -171,12 +172,9 @@ fun YearButton(yearPreview: YearPreview, navigateToYear: () -> Unit, showPicture
                     modifier = Modifier
                         .square()
                         .clip(RoundedCornerShape(radius.RadiusLarge))
-                        .background(
-                            Brush.verticalGradient(
-                                Pair(0.0f, colors.main),
-                                Pair(1.0f, colors.second),
-                            ),
-                        )
+
+                            .background(MaterialTheme.colorScheme.surfaceContainer)
+
                         .hazeSource(state = hazeLabelState)
                         .hazeSource(state = hazeState),
                     contentScale = ContentScale.Crop,

@@ -48,6 +48,7 @@ class LineMap<V>(
 
     operator fun get(key: Float): V? = forward[key]
     fun getByValue(value: V): Float? = backward[value]
+    fun isEmpty(): Boolean = forward.isEmpty()
 }
 
 fun <V> emptyLineMap(): LineMap<V> {

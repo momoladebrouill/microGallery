@@ -46,7 +46,7 @@ class ReorderMenuReducer(
                     picturesNotPlaced = action.pictures,
                     picturesQQty = action.pictures.size,
                     putPicture = fun(index: Float, picture: MicroPicture) { emitUserAction(PutPicture(index, picture)) },
-                    picturesInSlots = emptyLineMap<MicroPicture?>() + (0.0f to null),
+                    picturesInSlots = emptyLineMap(),
                     pictureMap = action.pictures.associateBy { it.id },
                     jumpToPicture = { emitUserAction(ReorderAction.JumpToPicture(it)) },
                 ).asResult()

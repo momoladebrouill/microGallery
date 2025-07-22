@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,12 +35,7 @@ fun MicroGalleryButtonImage(
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(radius.RadiusMedium))
-            .background(
-                Brush.verticalGradient(
-                    Pair(0.0f, colors.main),
-                    Pair(1.0f, colors.second),
-                ),
-            )
+            .background(MaterialTheme.colorScheme.surfaceContainer)
             .pointerInput(Unit) {
                 detectTapGestures(
                     onTap = { showMe(picture.id) },
@@ -53,7 +49,7 @@ fun MicroGalleryButtonImage(
                 .align(Alignment.Center)
                 .hazeSource(state = hazeState)
                 .wrapContentHeight(),
-            errorPainter = painterResource(R.drawable.nopicture),
+            //errorPainter = painterResource(R.drawable.nopicture),
 
         )
     }

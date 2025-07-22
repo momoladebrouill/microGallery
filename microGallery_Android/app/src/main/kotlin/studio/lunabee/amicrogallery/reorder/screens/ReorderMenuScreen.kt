@@ -3,15 +3,20 @@ package studio.lunabee.amicrogallery.reorder.screens
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -27,8 +32,12 @@ import studio.lunabee.amicrogallery.app.R
 import studio.lunabee.amicrogallery.reorder.ReorderUiState
 import studio.lunabee.amicrogallery.utils.isInt
 
+
+
+
 @Composable
 fun ReorderMenuScreen(uiState: ReorderUiState.ReorderMenuUiState) {
+
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -49,23 +58,28 @@ fun ReorderMenuScreen(uiState: ReorderUiState.ReorderMenuUiState) {
 
             var numberStr by remember { mutableStateOf("5") }
 
-            TextField(
-                value = numberStr,
-                onValueChange = {
-                    numberStr = it
-                    if (it.isInt()) {
-                        uiState.setQty(it.toInt())
-                    }
-                },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Number,
-                    imeAction = ImeAction.Done,
-                ),
-                label = { Text("Number of pictures", color = colors.onMain) },
-            )
+
+            Row() {
+                Button(onClick = { if(numberStr.isInt()) numberStr = (numberStr.toInt() - 1).toString() }) { Text("-")}
+                TextField(
+                    value = numberStr,
+                    onValueChange = {
+                        numberStr = it
+                    },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number,
+                        imeAction = ImeAction.Done,
+                    ),
+                    label = { Text("Number of pictures", color = colors.onMain) },
+                )
+                Button(onClick = { if(numberStr.isInt()) numberStr = (numberStr.toInt() + 1).toString() }) { Text("+")}
+            }
 
             Button(
-                onClick = uiState.jumpToGaming,
+                onClick = {
+                    uiState.setQty(if(numberStr.isInt())numberStr.toInt() else 5)
+                    uiState.jumpToGaming()
+                },
             ) {
                 Text(
                     text = stringResource(R.string.start),

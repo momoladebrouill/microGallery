@@ -25,9 +25,10 @@ class ReorderGamingReducer(
                 val oldIndex: Float? = picMap.getByValue(action.picture) // where the picture was (null if in waiting drawer)
 
                 return if (oldIndex == null) {
+                    val index = if(picMap.isEmpty()) 0.0f else picMap.justAfter(action.index)
                     actualState.copy(
                         picturesNotPlaced = actualState.picturesNotPlaced - action.picture, // remove the newly placed object from the list
-                        picturesInSlots = picMap - null + (picMap.justAfter(action.index) to action.picture),
+                        picturesInSlots = picMap  + (index to action.picture),
                     ).asResult() // remove null whom served as placeholder
                 } else {
                     if (picMap.areFollowing(action.index, oldIndex) || action.index == oldIndex) {

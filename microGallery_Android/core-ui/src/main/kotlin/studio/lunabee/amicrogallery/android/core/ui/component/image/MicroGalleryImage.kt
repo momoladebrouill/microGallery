@@ -1,5 +1,8 @@
 package studio.lunabee.amicrogallery.android.core.ui.component.image
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -11,12 +14,14 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import coil3.compose.AsyncImage
+import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImagePainter
+import coil3.compose.SubcomposeAsyncImage
 import coil3.network.HttpException
 import coil3.request.ErrorResult
 import coil3.request.ImageRequest
 import coil3.request.placeholder
+import studio.lunabee.amicrogallery.android.core.ui.shimmerLoading
 import studio.lunabee.amicrogallery.core.ui.R
 import studio.lunabee.compose.core.LbcTextSpec
 import studio.lunabee.microgallery.android.data.MicroPicture
@@ -31,13 +36,12 @@ fun MicroGalleryImage(
     contentScale: ContentScale = ContentScale.Fit,
     alignment: Alignment = Alignment.Center,
     colorFilter: ColorFilter? = null,
-    errorPainter: Painter? = null,
 ) {
     val context = LocalContext.current
     var currentInd by remember { mutableIntStateOf(0) }
     val urlsToTry = if (defaultToHighRes) picture.highResPaths else picture.lowResPaths
     val len = urlsToTry.size
-    AsyncImage(
+    SubcomposeAsyncImage(
         model = ImageRequest.Builder(context)
             .data(urlsToTry[currentInd])
             .placeholder(R.drawable.ic_launcher_foreground)
@@ -49,11 +53,13 @@ fun MicroGalleryImage(
                 },
             )
             .build(),
+        loading = {
+            Box(modifier = Modifier.size(200.dp).shimmerLoading())
+        },
         contentDescription = contentDescription?.string,
         modifier = modifier,
         alignment = alignment,
         contentScale = contentScale,
-        error = errorPainter,
         onError = onState,
         onLoading = onState,
         onSuccess = onState,
