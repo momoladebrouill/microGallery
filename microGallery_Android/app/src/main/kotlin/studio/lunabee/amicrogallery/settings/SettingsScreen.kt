@@ -34,7 +34,7 @@ import studio.lunabee.amicrogallery.utils.getAppVersion
 @Composable
 fun SettingsScreen(uiState: SettingsUiState) {
     val bottomBarViewModel = koinInject<BottomBarViewModel>()
-    LaunchedEffect(Unit) { bottomBarViewModel.set(false) }
+    LaunchedEffect(Unit) { bottomBarViewModel.showBottomBar(false) }
     val settingsEntries: List<@Composable (modifier: Modifier) -> Unit> = listOf(
         // mod as a short term for modifier
         { mod -> TitleSettingsEntry(mod, uiState.jumpBack) },

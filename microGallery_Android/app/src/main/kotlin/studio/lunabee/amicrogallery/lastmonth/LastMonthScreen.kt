@@ -44,7 +44,7 @@ fun LastMonthScreen(
     uiState: LastMonthUiState,
 ) {
     val bottomBarViewModel = koinInject<BottomBarViewModel>()
-    LaunchedEffect(Unit) { bottomBarViewModel.set(true) }
+    LaunchedEffect(Unit) { bottomBarViewModel.showBottomBar(true) }
     if (uiState.pictures.isEmpty()) {
         EmptyList()
     } else {

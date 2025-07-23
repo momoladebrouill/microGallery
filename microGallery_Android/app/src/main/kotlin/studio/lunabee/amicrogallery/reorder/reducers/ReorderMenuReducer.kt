@@ -1,7 +1,6 @@
 package studio.lunabee.amicrogallery.reorder.reducers
 
 import kotlinx.coroutines.CoroutineScope
-import studio.lunabee.amicrogallery.bottomBar.BottomBarManager
 import studio.lunabee.amicrogallery.bottomBar.BottomBarViewModel
 import studio.lunabee.amicrogallery.reorder.ReorderAction
 import studio.lunabee.amicrogallery.reorder.ReorderAction.PutPicture
@@ -41,7 +40,7 @@ class ReorderMenuReducer(
             }
 
             is ReorderAction.JumpToGaming -> {
-                bottomBarViewModel.set(false)
+                bottomBarViewModel.showBottomBar(false)
                 ReorderUiState.ReorderGamingUiState(
                     picturesNotPlaced = action.pictures,
                     picturesQQty = action.pictures.size,

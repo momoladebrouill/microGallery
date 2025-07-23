@@ -52,7 +52,7 @@ fun PhotoViewerScreen(
     uiState: PhotoViewerUiState,
 ) {
     val bottomBarViewModel = koinInject<BottomBarViewModel>()
-    LaunchedEffect(Unit) { bottomBarViewModel.set(false) }
+    LaunchedEffect(Unit) { bottomBarViewModel.showBottomBar(false) }
     when (uiState) {
         is PhotoViewerUiState.Waiting -> PhotoWaitScreen()
         is PhotoViewerUiState.HasPicture -> PhotoView(uiState)

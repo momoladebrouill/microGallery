@@ -24,7 +24,7 @@ import studio.lunabee.amicrogallery.bottomBar.BottomBarViewModel
 @Composable
 fun LoadingScreen(loadingUiState: LoadingUiState) {
     val bottomBarViewModel = koinInject<BottomBarViewModel>()
-    LaunchedEffect(Unit) { bottomBarViewModel.set(false) }
+    LaunchedEffect(Unit) { bottomBarViewModel.showBottomBar(false) }
     when (loadingUiState) {
         is LoadingUiState.Error -> ShowError(loadingUiState)
         is LoadingUiState.Fetching -> WaitingForResponse(loadingUiState)

@@ -9,7 +9,7 @@ class BottomBarViewModel(
 
     val isShown: StateFlow<Boolean> = bottomBarManager.shown
 
-    fun set(value: Boolean) {
+    fun showBottomBar(value: Boolean) {
         bottomBarManager.setValue(value)
     }
 }

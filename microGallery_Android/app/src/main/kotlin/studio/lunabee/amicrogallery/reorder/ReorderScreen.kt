@@ -13,7 +13,7 @@ import studio.lunabee.amicrogallery.reorder.screens.ReorderMenuScreen
 @Composable
 fun ReorderScreen(uiState: ReorderUiState) {
     val bottomBarViewModel = koinInject<BottomBarViewModel>()
-    LaunchedEffect(Unit) { bottomBarViewModel.set(uiState is ReorderUiState.ReorderMenuUiState) }
+    LaunchedEffect(Unit) { bottomBarViewModel.showBottomBar(uiState is ReorderUiState.ReorderMenuUiState) }
     when (uiState) {
         is ReorderUiState.ReorderMenuUiState -> ReorderMenuScreen(uiState)
         is ReorderUiState.ReorderGamingUiState -> ReorderGamingScreen(uiState)

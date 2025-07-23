@@ -24,7 +24,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
@@ -58,7 +57,7 @@ fun CalendarScreen(
 ) {
     val bottomBarViewModel = koinInject<BottomBarViewModel>()
     LaunchedEffect(calendarUiState.yearSelected) {
-        bottomBarViewModel.set(calendarUiState.yearSelected == null)
+        bottomBarViewModel.showBottomBar(calendarUiState.yearSelected == null)
     }
 
     Box(modifier = Modifier.fillMaxWidth()) {

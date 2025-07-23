@@ -42,7 +42,7 @@ fun UntimedScreen(
     uiState: UntimedUiState,
 ) {
     val bottomBarViewModel = koinInject<BottomBarViewModel>()
-    LaunchedEffect(Unit) { bottomBarViewModel.set(false) }
+    LaunchedEffect(Unit) { bottomBarViewModel.showBottomBar(false) }
     val hazeState = remember { HazeState() }
     var topBarPadding by remember { mutableStateOf(0.dp) }
     Box {
