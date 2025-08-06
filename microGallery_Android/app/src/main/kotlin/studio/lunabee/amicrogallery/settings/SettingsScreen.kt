@@ -38,6 +38,15 @@ fun SettingsScreen(uiState: SettingsUiState) {
         { mod -> CacheSettingsEntry(mod, uiState) },
         { mod -> ServerStatisticsSettingsEntry(mod, uiState) },
         { mod -> ViewUntimedSettingsEntry(mod, uiState) },
+        { mod ->
+            Row(modifier = mod.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                Text(
+                    stringResource(R.string.application_name) + LocalContext.current.getAppVersion(),
+                    style = typography.labelBold,
+                    color = colors.onBackground,
+                )
+            }
+        },
     )
     Column(modifier = Modifier.statusBarsPadding()) {
         val entryModifier = Modifier
@@ -53,12 +62,6 @@ fun SettingsScreen(uiState: SettingsUiState) {
                     Spacer(Modifier.height(spacing.SpacingMedium))
                 }
             }
-        }
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-            Text(
-                stringResource(R.string.application_name) + LocalContext.current.getAppVersion(),
-                style = typography.labelBold,
-            )
         }
     }
 }

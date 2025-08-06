@@ -130,6 +130,7 @@ fun PhotoView(uiState: PhotoViewerUiState.HasPicture) {
                     defaultToHighRes = (scale > 5.0f),
                     modifier = Modifier
                         .align(Alignment.Center)
+                        .fillMaxSize()
                         .onGloballyPositioned { coordinates ->
                             pictureWidth = coordinates.size.width.toFloat()
                             pictureHeight = coordinates.size.height.toFloat()
@@ -145,6 +146,7 @@ fun PhotoView(uiState: PhotoViewerUiState.HasPicture) {
             } else {
                 MicroGalleryImage(
                     picture = if (index == 0) uiState.neighbors.first else uiState.neighbors.second,
+                    modifier = Modifier.fillMaxSize(),
                     defaultToHighRes = false,
                 )
             }
