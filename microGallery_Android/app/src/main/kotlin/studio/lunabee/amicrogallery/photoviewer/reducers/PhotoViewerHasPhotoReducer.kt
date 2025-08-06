@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.result.ActivityResult
+import androidx.compose.foundation.pager.PagerState
 import androidx.core.content.FileProvider
 import coil3.BitmapImage
 import coil3.Image
@@ -13,6 +14,8 @@ import coil3.request.ImageRequest
 import coil3.request.SuccessResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import studio.lunabee.amicrogallery.app.R
 import studio.lunabee.amicrogallery.photoviewer.PhotoViewerAction
@@ -23,11 +26,15 @@ import studio.lunabee.compose.presenter.ReduceResult
 import studio.lunabee.compose.presenter.asResult
 import studio.lunabee.compose.presenter.withSideEffect
 import studio.lunabee.microgallery.android.data.MicroPicture
+import studio.lunabee.microgallery.android.domain.photoviewer.usecase.GetNeighborsByPictureUseCase
+import studio.lunabee.microgallery.android.domain.photoviewer.usecase.ObservePictureByIdUseCase
 import java.io.File
 
 class PhotoViewerHasPhotoReducer(
     override val coroutineScope: CoroutineScope,
     override val emitUserAction: (PhotoViewerAction) -> Unit,
+    val observePictureByIdUseCase: ObservePictureByIdUseCase,
+    val getNeighborsByPictureUseCase: GetNeighborsByPictureUseCase,
 ) : LBReducer<
     PhotoViewerUiState.HasPicture,
     PhotoViewerUiState,
@@ -86,6 +93,20 @@ class PhotoViewerHasPhotoReducer(
             }
 
             PhotoViewerAction.StopLoading -> actualState.copy(loading = false).asResult()
+
+            is PhotoViewerAction.GetPictures -> actualState withSideEffect {
+                coroutineScope.launch {
+                    val picture = observePictureByIdUseCase(action.centerId).first()
+                    val neighbors = getNeighborsByPictureUseCase(picture.id)
+                    emitUserAction(PhotoViewerAction.FoundPictures(picture, neighbors))
+                }
+            }
+
+            is PhotoViewerAction.FoundPictures -> actualState.copy(
+                picture = action.picture,
+                neighbors = action.neighbors,
+                pagerState = PagerState(currentPage = 1, pageCount = { 3 }),
+            ).asResult()
         }
     }
 

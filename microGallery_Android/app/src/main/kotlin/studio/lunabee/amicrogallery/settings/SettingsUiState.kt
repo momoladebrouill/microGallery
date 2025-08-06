@@ -15,4 +15,7 @@ data class SettingsUiState(
     val setIpv4: (String) -> Unit,
     val setIpv6: (String) -> Unit,
     val toggleViewInHD: () -> Unit,
+    val jumpUntimed: () -> Unit,
+    val jumpDashBoard: () -> Unit,
+    val resetData: () -> Unit,
 ) : PresenterUiState

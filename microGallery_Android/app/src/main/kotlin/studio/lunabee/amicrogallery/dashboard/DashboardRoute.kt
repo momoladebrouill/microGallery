@@ -20,6 +20,8 @@ import studio.lunabee.amicrogallery.calendar.CalendarDestination
 import studio.lunabee.amicrogallery.calendar.CalendarNavScope
 import studio.lunabee.amicrogallery.lastmonth.LastMonthDestination
 import studio.lunabee.amicrogallery.lastmonth.LastMonthNavScope
+import studio.lunabee.amicrogallery.loading.LoadingDestination
+import studio.lunabee.amicrogallery.loading.LoadingNavScope
 import studio.lunabee.amicrogallery.photoviewer.PhotoViewerDestination
 import studio.lunabee.amicrogallery.photoviewer.PhotoViewerNavScope
 import studio.lunabee.amicrogallery.settings.SettingsDestination
@@ -31,7 +33,7 @@ import kotlin.reflect.KClass
 @Composable
 fun DashboardRoute(navController: NavHostController) {
     DashboardScreen(
-        navHostController = navController,
+        navController = navController,
         startDestination = CalendarDestination::class,
     )
 }
@@ -41,7 +43,7 @@ val LocalBottomBarHeight = compositionLocalOf<Int> { error("No value found !") }
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun DashboardScreen(
-    navHostController: NavHostController,
+    navController: NavHostController,
     startDestination: KClass<*>,
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
@@ -50,22 +52,19 @@ fun DashboardScreen(
         CompositionLocalProvider(LocalBottomBarHeight provides barHeight) {
             SharedTransitionLayout {
                 NavHost(
-                    navController = navHostController,
+                    navController = navController,
                     startDestination = startDestination,
                 ) {
                     PhotoViewerDestination().composable(
                         navGraphBuilder = this,
                         navScope = object : PhotoViewerNavScope {},
                     )
-
                     CalendarDestination.composable(
                         navGraphBuilder = this,
                         navScope = object : CalendarNavScope {
-
-                            override val navigateToSettings: () -> Unit = { navHostController.navigate(SettingsDestination) }
-
+                            override val navigateToSettings: () -> Unit = { navController.navigate(SettingsDestination) }
                             override val navigateToPhotoViewer: (Long) -> Unit = { photoId: Long ->
-                                navHostController.navigate(PhotoViewerDestination(photoId))
+                                navController.navigate(PhotoViewerDestination(photoId))
                             }
                         },
                     )
@@ -73,7 +72,7 @@ fun DashboardScreen(
                         navGraphBuilder = this,
                         navScope = object : UntimedNavScope {
                             override val navigateToPhotoViewer: (Long) -> Unit = { photoId: Long ->
-                                navHostController.navigate(PhotoViewerDestination(photoId))
+                                navController.navigate(PhotoViewerDestination(photoId))
                             }
                         },
                     )
@@ -81,7 +80,15 @@ fun DashboardScreen(
                         navGraphBuilder = this,
                         navScope = object : LastMonthNavScope {
                             override val navigateToPhotoViewer: (Long) -> Unit = { photoId: Long ->
-                                navHostController.navigate(PhotoViewerDestination(photoId))
+                                navController.navigate(PhotoViewerDestination(photoId))
+                            }
+                        },
+                    )
+                    LoadingDestination.composable(
+                        navGraphBuilder = this,
+                        navScope = object : LoadingNavScope {
+                            override val navigateToDashboard = {
+                                navController.navigate(CalendarDestination)
                             }
                         },
                     )
@@ -89,14 +96,22 @@ fun DashboardScreen(
                         navGraphBuilder = this,
                         navScope = object : SettingsNavScope {
                             override fun jumpBack() {
-                                navHostController.navigateUp()
+                                navController.navigateUp()
+                            }
+
+                            override fun jumpUntimed() {
+                                navController.navigate(UntimedDestination)
+                            }
+
+                            override fun jumpDashBoard() {
+                                navController.navigate(LoadingDestination)
                             }
                         },
                     )
                 }
             }
             MicroGalleryBottomBar(
-                navController = navHostController,
+                navController = navController,
                 modifier = Modifier
                     .align(alignment = Alignment.BottomCenter)
                     .onGloballyPositioned { coordinates ->

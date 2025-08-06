@@ -1,5 +1,8 @@
 package studio.lunabee.microgallery.android.remote.datasource
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.map
 import studio.lunabee.microgallery.android.data.Directory
 import studio.lunabee.microgallery.android.data.MMonth
 import studio.lunabee.microgallery.android.data.MYear
@@ -11,15 +14,18 @@ import studio.lunabee.microgallery.android.repository.datasource.remote.TreeRemo
 class TreeRemoteDatasourceImpl(
     private val rootService: RootService,
 ) : TreeRemoteDatasource {
+    override suspend fun getYears(): List<MYear> {
+        return rootService.fetchYearList()
+    }
 
-    override suspend fun getRoot(): Directory {
-        val root: Directory = rootService.fetchRootList()[0].toData() as Directory
-        return root.copy(content = root.content.map { node -> giveFullNameToFiles(node) })
+    override fun getYearDirs(years: List<MYear>): Flow<Directory> {
+        return rootService.fetchYears(years).map {
+            giveFullNameToFiles(it[0].toData())
+        }.filterIsInstance()
     }
 }
 
-// TODO : get the string of initial path another way
-fun giveFullNameToFiles(node: Node, path: String = "/disque/photos/ranged", year: MYear? = null, month: MMonth? = null): Node {
+fun giveFullNameToFiles(node: Node, path: String = "", year: MYear? = null, month: MMonth? = null): Node {
     return when (node) {
         is Directory -> Directory(
             name = node.name,
@@ -27,8 +33,8 @@ fun giveFullNameToFiles(node: Node, path: String = "/disque/photos/ranged", year
                 giveFullNameToFiles(
                     node = child,
                     path = "$path/${node.name}",
-                    year = year ?: node.name, // if year is not defined, it's a year directory
-                    month = if (year != null) node.name else month, // if year is definied but not month, it's a month
+                    year = year ?: node.name.substringAfterLast('/'), // if year is not defined, it's a year directory
+                    month = if (year != null) node.name else month, // if year is defined but not month, it's a month
                 )
             },
         )

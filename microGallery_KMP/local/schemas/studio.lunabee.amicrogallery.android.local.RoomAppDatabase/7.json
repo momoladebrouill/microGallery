@@ -1,12 +1,12 @@
 {
     "formatVersion": 1,
     "database": {
-        "version": 6,
-        "identityHash": "bd854ae9c14f4bedb22796ec59c0452c",
+        "version": 7,
+        "identityHash": "4955e983fd1eb2967dbcba79b83e2c82",
         "entities": [
             {
                 "tableName": "PhotosTable",
-                "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `order` REAL NOT NULL, `name` TEXT NOT NULL, `fullResPath` TEXT, `lowResPath` TEXT, `year` TEXT, `month` TEXT)",
+                "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `scale` REAL NOT NULL, `name` TEXT NOT NULL, `fullResPath` TEXT, `lowResPath` TEXT, `year` TEXT, `month` TEXT)",
                 "fields": [
                     {
                         "fieldPath": "id",
@@ -16,7 +16,7 @@
                     },
                     {
                         "fieldPath": "order",
-                        "columnName": "order",
+                        "columnName": "scale",
                         "affinity": "REAL",
                         "notNull": true
                     },
@@ -99,7 +99,7 @@
         ],
         "setupQueries": [
             "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-            "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'bd854ae9c14f4bedb22796ec59c0452c')"
+            "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4955e983fd1eb2967dbcba79b83e2c82')"
         ]
     }
 }

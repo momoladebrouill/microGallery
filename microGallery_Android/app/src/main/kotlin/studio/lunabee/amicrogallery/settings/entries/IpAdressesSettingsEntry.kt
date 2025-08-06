@@ -34,6 +34,7 @@ fun IPAddressesSettingsEntry(modifier: Modifier = Modifier, uiState: SettingsUiS
         Text(
             text = stringResource(R.string.adress_of_server),
             style = typography.title,
+            color = colors.onBackground,
         )
 
         OutlinedTextField(
@@ -98,10 +99,12 @@ fun IPAddressesSettingsEntry(modifier: Modifier = Modifier, uiState: SettingsUiS
                 Text(
                     text = stringResource(R.string.use_ipv6),
                     style = typography.labelBold,
+                    color = colors.onBackground,
                 )
                 Text(
                     text = stringResource(R.string.wifi_prevention),
                     style = typography.body,
+                    color = colors.onBackground,
                 )
             }
         }

@@ -36,4 +36,16 @@ interface PictureDao {
 
     @Query("SELECT * FROM $PhotosTable WHERE year = :year ORDER BY RANDOM()")
     fun getRandomPictureInYear(year: String): Flow<PictureEntity>
+
+    @Query("SELECT scale FROM $PhotosTable WHERE id=:id")
+    suspend fun getOrderById(id: Long): Float
+
+    @Query("SELECT * FROM $PhotosTable WHERE scale = (SELECT MAX(scale) FROM $PhotosTable WHERE scale < :scale)")
+    suspend fun getFirstPictureBefore(scale: Float): PictureEntity
+
+    @Query("SELECT * FROM $PhotosTable WHERE scale = (SELECT MIN(scale) FROM $PhotosTable WHERE scale > :scale)")
+    suspend fun getFirstPictureAfter(scale: Float): PictureEntity
+
+    @Query("SELECT EXISTS(SELECT * FROM PhotosTable LIMIT 1) FROM PhotosTable LIMIT 1")
+    suspend fun isThereAnyPicture(): Boolean
 }

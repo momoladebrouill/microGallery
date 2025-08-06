@@ -24,6 +24,7 @@ import studio.lunabee.amicrogallery.settings.entries.CacheSettingsEntry
 import studio.lunabee.amicrogallery.settings.entries.IPAddressesSettingsEntry
 import studio.lunabee.amicrogallery.settings.entries.ServerStatisticsSettingsEntry
 import studio.lunabee.amicrogallery.settings.entries.TitleSettingsEntry
+import studio.lunabee.amicrogallery.settings.entries.ViewUntimedSettingsEntry
 import studio.lunabee.amicrogallery.settings.entries.VisualiseSettingsEntry
 import studio.lunabee.amicrogallery.utils.getAppVersion
 
@@ -34,8 +35,18 @@ fun SettingsScreen(uiState: SettingsUiState) {
         { mod -> TitleSettingsEntry(mod, uiState.jumpBack) },
         { mod -> IPAddressesSettingsEntry(mod, uiState) },
         { mod -> VisualiseSettingsEntry(mod, uiState) },
-        { mod -> CacheSettingsEntry(mod, uiState.clearCache) },
+        { mod -> CacheSettingsEntry(mod, uiState) },
         { mod -> ServerStatisticsSettingsEntry(mod, uiState) },
+        { mod -> ViewUntimedSettingsEntry(mod, uiState) },
+        { mod ->
+            Row(modifier = mod.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                Text(
+                    stringResource(R.string.application_name) + LocalContext.current.getAppVersion(),
+                    style = typography.labelBold,
+                    color = colors.onBackground,
+                )
+            }
+        },
     )
     Column(modifier = Modifier.statusBarsPadding()) {
         val entryModifier = Modifier
@@ -51,12 +62,6 @@ fun SettingsScreen(uiState: SettingsUiState) {
                     Spacer(Modifier.height(spacing.SpacingMedium))
                 }
             }
-        }
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-            Text(
-                stringResource(R.string.application_name) + LocalContext.current.getAppVersion(),
-                style = typography.labelBold,
-            )
         }
     }
 }

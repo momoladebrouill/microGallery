@@ -13,7 +13,7 @@ import studio.lunabee.amicrogallery.android.local.dao.StatusDao
 import studio.lunabee.amicrogallery.android.local.entity.PictureEntity
 import studio.lunabee.amicrogallery.android.local.entity.SettingsEntity
 import studio.lunabee.amicrogallery.android.local.entity.SettingsTable
-import studio.lunabee.amicrogallery.android.local.entity.StatusEntity
+import studio.lunabee.microgallery.android.data.SettingsData
 import kotlin.coroutines.CoroutineContext
 
 @Database(
@@ -22,7 +22,7 @@ import kotlin.coroutines.CoroutineContext
         SettingsEntity::class,
         StatusEntity::class,
     ],
-    version = 6,
+    version = 7,
 )
 @ConstructedBy(AppDatabaseConstructor::class)
 abstract class RoomAppDatabase : RoomDatabase() {
@@ -59,7 +59,7 @@ fun buildRoomDatabase(
 
                 override fun onCreate(connection: SQLiteConnection) {
                     super.onCreate(connection)
-                    val settingsEntity = SettingsEntity()
+                    val settingsEntity = SettingsEntity.fromSettingsData(SettingsData())
                     // this is executed only when the app is first launched after install
                     connection.execSQL(
                         "INSERT INTO $SettingsTable (ipvfour, ipvsix, useIpvSix, viewInHD)" +

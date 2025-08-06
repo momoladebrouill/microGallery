@@ -6,9 +6,8 @@ import studio.lunabee.microgallery.android.repository.datasource.remote.StatusRe
 
 class RemoteStatusDatasourceImpl(
     private val rootService: RootService,
-) : StatusRemoteDatasource {
-
-    override suspend fun getStatus(): RemoteStatus {
-        return rootService.fetchStatus().toRemoteStatus()
+) : RemoteStatusDatasource {
+    override fun fetchStatus(): Flow<RemoteStatus> {
+        return rootService.fetchStatus().map { it.toRemoteStatus() }
     }
 }

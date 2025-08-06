@@ -10,9 +10,10 @@ sealed interface PhotoViewerAction {
 
     sealed interface WaitingAction : PhotoViewerAction
     sealed interface HasPictureAction : PhotoViewerAction
-    data class FoundPicture(
+    data class FoundPictures(
         val picture: MicroPicture,
-    ) : WaitingAction
+        val neighbors: Pair<MicroPicture, MicroPicture>,
+    ) : WaitingAction, HasPictureAction
 
     data class SharePicture(
         val context: Context,
@@ -20,4 +21,7 @@ sealed interface PhotoViewerAction {
     ) : HasPictureAction
 
     object StopLoading : HasPictureAction
+    data class GetPictures(
+        val centerId: Long,
+    ) : HasPictureAction, WaitingAction
 }

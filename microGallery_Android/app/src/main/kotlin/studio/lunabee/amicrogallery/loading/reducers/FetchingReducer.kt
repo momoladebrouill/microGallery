@@ -28,6 +28,8 @@ class FetchingReducer(
                 errorMessage = action.errorMessage,
                 reload = { },
             ).asResult()
+
+            is LoadingAction.FoundYear -> actualState.copy(years = action.years).asResult()
         }
     }
 
