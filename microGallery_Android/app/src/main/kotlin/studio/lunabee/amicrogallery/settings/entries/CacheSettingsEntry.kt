@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.colors
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.typography
 import studio.lunabee.amicrogallery.app.R
 import studio.lunabee.amicrogallery.settings.SettingsUiState
@@ -20,6 +21,7 @@ fun CacheSettingsEntry(modifier: Modifier = Modifier, uiState: SettingsUiState) 
     Text(
         text = stringResource(R.string.cache_and_settings),
         style = typography.title,
+        color = colors.onBackground,
     )
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -32,6 +34,7 @@ fun CacheSettingsEntry(modifier: Modifier = Modifier, uiState: SettingsUiState) 
             Text(
                 text = stringResource(R.string.reset_data),
                 style = typography.body,
+                color = colors.onMain,
             )
         }
 
@@ -41,6 +44,7 @@ fun CacheSettingsEntry(modifier: Modifier = Modifier, uiState: SettingsUiState) 
             Text(
                 text = stringResource(R.string.empty_cache),
                 style = typography.body,
+                color = colors.onMain,
             )
         }
     }

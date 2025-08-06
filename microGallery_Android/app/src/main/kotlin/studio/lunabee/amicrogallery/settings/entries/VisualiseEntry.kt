@@ -21,16 +21,19 @@ fun VisualiseSettingsEntry(modifier: Modifier = Modifier, uiState: SettingsUiSta
         Text(
             text = stringResource(R.string.visualisation_option),
             style = typography.title,
+            color = colors.onBackground,
         )
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Column {
                 Text(
                     text = stringResource(R.string.view_in_hd),
                     style = typography.labelBold,
+                    color = colors.onBackground,
                 )
                 Text(
                     text = stringResource(R.string.consumes_more),
                     style = typography.body,
+                    color = colors.onBackground,
                 )
                 if (!uiState.data.viewInHD) {
                     Text(

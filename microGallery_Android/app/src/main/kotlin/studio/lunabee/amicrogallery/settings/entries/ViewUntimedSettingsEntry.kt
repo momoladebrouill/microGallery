@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.colors
 import studio.lunabee.amicrogallery.android.core.ui.theme.MicroGalleryTheme.typography
 import studio.lunabee.amicrogallery.app.R
 import studio.lunabee.amicrogallery.settings.SettingsUiState
@@ -19,16 +20,19 @@ fun ViewUntimedSettingsEntry(modifier: Modifier = Modifier, uiState: SettingsUiS
         Text(
             text = stringResource(R.string.untimed_title),
             style = typography.title,
+            color = colors.onBackground,
         )
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Column {
                 Text(
                     text = stringResource(R.string.view_date_less),
                     style = typography.labelBold,
+                    color = colors.onBackground,
                 )
                 Text(
                     text = stringResource(R.string.pictures_without_date),
                     style = typography.body,
+                    color = colors.onBackground,
                 )
             }
             Button(
@@ -37,6 +41,7 @@ fun ViewUntimedSettingsEntry(modifier: Modifier = Modifier, uiState: SettingsUiS
                 Text(
                     text = stringResource(R.string.view_untimed),
                     style = typography.body,
+                    color = colors.onMain,
                 )
             }
         }
