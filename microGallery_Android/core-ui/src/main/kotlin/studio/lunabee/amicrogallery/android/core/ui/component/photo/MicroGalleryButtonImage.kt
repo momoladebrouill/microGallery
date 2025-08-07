@@ -1,5 +1,6 @@
 package studio.lunabee.amicrogallery.android.core.ui.component.photo
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
@@ -22,7 +23,7 @@ import studio.lunabee.amicrogallery.core.ui.R
 import studio.lunabee.microgallery.android.data.MicroPicture
 
 @Composable
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalSharedTransitionApi::class)
 fun MicroGalleryButtonImage(
     picture: MicroPicture,
     hazeState: HazeState,

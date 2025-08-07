@@ -8,10 +8,15 @@ sealed interface SettingsAction {
     data class GotData(val data: SettingsData) : SettingsAction
 
     object JumpBack : SettingsAction
+    object JumpUntimed : SettingsAction
+    object JumpDashBoard : SettingsAction
 
     data class Clear(
         val context: Context,
     ) : SettingsAction
+
+    object ResetSettings : SettingsAction
+
     data object ToggleIpv6 : SettingsAction
     data object ToggleViewInHD : SettingsAction
     data class SetIpv6(

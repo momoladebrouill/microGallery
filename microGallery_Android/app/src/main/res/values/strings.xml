@@ -52,6 +52,12 @@
     <string name="visualisation_option">Viewing options</string>
     <string name="view_in_hd">View pictures in the highest resolution</string>
     <string name="only_low_res">Only low resolutions pictures will be visible</string>
-    <string name="found_settings">Found settings</string>
     <string name="share_picture">Share picture %s</string>
+    <string name="found_settings">Found settings</string>
+    <string name="view_untimed">View</string>
+    <string name="view_date_less">View date less pictures</string>
+    <string name="pictures_without_date">Pictures without timestamp</string>
+    <string name="year_found">found : %s</string>
+    <string name="reset_data">Restore defaults</string>
+    <string name="cache_and_settings">Reset settings and cache</string>
 </resources>

@@ -6,11 +6,9 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -29,7 +27,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layout
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -73,6 +70,7 @@ fun CalendarScreen(
             Icon(
                 painter = painterResource(CoreUi.drawable.settings_24px),
                 contentDescription = stringResource(R.string.settings),
+                tint = colors.onBackground,
             )
         }
     }
@@ -80,22 +78,38 @@ fun CalendarScreen(
 
 @Composable
 fun Years(uiState: CalendarUiState) {
+    val hazeState = HazeState()
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
         contentPadding = PaddingValues(
-            top = (WindowInsets.statusBars.getTop(LocalDensity.current) / 2).dp,
+
             bottom = LocalBottomBarHeight.current.dp,
         ),
     ) {
         stickyHeader {
-            Column(modifier = Modifier.padding(start = spacing.SpacingMedium)) {
+            Column(
+                modifier = Modifier
+                    .background(Color.Transparent)
+                    .hazeEffect(
+                        state = hazeState,
+                        style = HazeMaterials.ultraThin(
+                            colors.background,
+                        ),
+                    ),
+            ) {
                 Text(
                     text = "Calendar",
                     style = typography.header,
+                    color = colors.onBackground,
+                    modifier = Modifier
+                        .statusBarsPadding()
+                        .padding(start = spacing.SpacingMedium, top = spacing.SpacingMedium),
                 )
                 Text(
                     text = stringResource(R.string.select_year),
                     style = typography.body,
+                    color = colors.onBackground,
+                    modifier = Modifier.padding(start = spacing.SpacingMedium, bottom = spacing.SpacingMedium),
                 )
             }
         }
@@ -104,6 +118,7 @@ fun Years(uiState: CalendarUiState) {
                 it,
                 navigateToYear = { uiState.jumpToYear(it.year) },
                 showPictureInButton = { uiState.showPhoto(it.picturePreview.id) },
+                hazeState = hazeState,
             )
         }
     }
@@ -126,7 +141,7 @@ fun Modifier.square(): Modifier = this.then(
 
 @OptIn(ExperimentalHazeMaterialsApi::class)
 @Composable
-fun YearButton(yearPreview: YearPreview, navigateToYear: () -> Unit, showPictureInButton: () -> Unit) {
+fun YearButton(yearPreview: YearPreview, navigateToYear: () -> Unit, showPictureInButton: () -> Unit, hazeState: HazeState) {
     Box(
         modifier = Modifier
             .fillMaxHeight(0.3f)
@@ -138,8 +153,9 @@ fun YearButton(yearPreview: YearPreview, navigateToYear: () -> Unit, showPicture
             }
             .clip(RoundedCornerShape(radius.RadiusLarge)),
 
-        ) {
-        val hazeState = HazeState()
+
+    ) {
+        val hazeLabelState = HazeState()
         Column(modifier = Modifier.padding(PaddingValues(horizontal = spacing.SpacingSmall, vertical = spacing.SpacingMedium))) {
             Box {
                 MicroGalleryImage(
@@ -153,6 +169,7 @@ fun YearButton(yearPreview: YearPreview, navigateToYear: () -> Unit, showPicture
                                 Pair(1.0f, colors.second),
                             ),
                         )
+                        .hazeSource(state = hazeLabelState)
                         .hazeSource(state = hazeState),
                     contentScale = ContentScale.Crop,
                 )
@@ -174,7 +191,7 @@ fun YearButton(yearPreview: YearPreview, navigateToYear: () -> Unit, showPicture
                             .hazeEffect(
                                 state = hazeState,
                                 style = HazeMaterials.ultraThin(
-                                    Color.White,
+                                    colors.background,
                                 ),
                             )
                             .fillMaxWidth(),
@@ -186,6 +203,7 @@ fun YearButton(yearPreview: YearPreview, navigateToYear: () -> Unit, showPicture
                 text = yearPreview.year,
                 style = typography.action,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
+                color = colors.onBackground,
             )
         }
     }

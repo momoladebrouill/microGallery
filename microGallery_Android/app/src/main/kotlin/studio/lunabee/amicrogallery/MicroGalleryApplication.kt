@@ -16,9 +16,7 @@ class MicroGalleryApplication : Application() {
 
         KoinHelper.init {
             androidLogger(level = Level.INFO)
-
             androidContext(this@MicroGalleryApplication)
-
             modules(presentersModule)
             modules(repositoryModule)
             modules(remoteDatasourceModule)

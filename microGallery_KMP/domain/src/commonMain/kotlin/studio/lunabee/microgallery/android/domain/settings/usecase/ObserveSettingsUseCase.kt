@@ -2,12 +2,12 @@ package studio.lunabee.microgallery.android.domain.settings.usecase
 
 import kotlinx.coroutines.flow.Flow
 import studio.lunabee.microgallery.android.data.SettingsData
-import studio.lunabee.microgallery.android.domain.settings.SettingsRepository
+import studio.lunabee.microgallery.android.domain.SettingsDataRepository
 
 class ObserveSettingsUseCase(
-    val settingsRepository: SettingsRepository,
+    val settingsDataRepository: SettingsDataRepository,
 ) {
     operator fun invoke(): Flow<SettingsData> {
-        return settingsRepository.getSettingsData()
+        return settingsDataRepository.getSettingsData()
     }
 }

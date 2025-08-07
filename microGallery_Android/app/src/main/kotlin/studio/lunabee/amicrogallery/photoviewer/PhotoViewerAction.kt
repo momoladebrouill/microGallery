@@ -1,5 +1,8 @@
 package studio.lunabee.amicrogallery.photoviewer
 
+<<<<<<<<< Temporary merge branch 1
+import studio.lunabee.microgallery.android.data.MicroPicture
+=========
 import android.content.Context
 import android.content.Intent
 import androidx.activity.compose.ManagedActivityResultLauncher
