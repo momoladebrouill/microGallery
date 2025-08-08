@@ -9,6 +9,6 @@ class ObserveSettingsUseCase(
     val settingsDataRepository: SettingsDataRepository,
 ) {
     operator fun invoke(): Flow<SettingsData> {
-        return settingsRepository.getSettingsData().filterNotNull()
+        return settingsDataRepository.getSettingsData().filterNotNull()
     }
 }

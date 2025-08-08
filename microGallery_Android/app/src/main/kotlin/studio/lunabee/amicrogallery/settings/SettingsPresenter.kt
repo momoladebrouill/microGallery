@@ -9,6 +9,7 @@ import studio.lunabee.amicrogallery.snackbar.SnackBarManager
 import studio.lunabee.compose.presenter.LBSinglePresenter
 import studio.lunabee.compose.presenter.LBSingleReducer
 import studio.lunabee.microgallery.android.data.SettingsData
+import studio.lunabee.microgallery.android.domain.settings.SettingsRepository
 import studio.lunabee.microgallery.android.domain.settings.usecase.EmptyPhotoDbUseCase
 import studio.lunabee.microgallery.android.domain.settings.usecase.ObserveSettingsUseCase
 import studio.lunabee.microgallery.android.domain.status.usecase.ObserveStatusUseCase
@@ -22,6 +23,7 @@ class SettingsPresenter(
     val setSettingsUseCase: SetSettingsUseCase,
     val setStatusUseCase: SetStatusUseCase,
     val snackBarManager: SnackBarManager,
+    val settingsRepository: SettingsRepository
 ) : LBSinglePresenter<SettingsUiState, SettingsNavScope, SettingsAction>() {
 
     val settingsData = observeSettingsUseCase().map {

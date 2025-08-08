@@ -4,7 +4,5 @@ import kotlinx.coroutines.flow.Flow
 import studio.lunabee.microgallery.android.data.RemoteStatus
 
 interface SettingsRepository {
-
-    fun getStatus(): Flow<RemoteStatus>
     suspend fun clearPictureDB()
 }

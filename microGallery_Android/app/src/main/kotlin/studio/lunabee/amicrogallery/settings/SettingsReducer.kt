@@ -7,6 +7,7 @@ import studio.lunabee.amicrogallery.snackbar.CoreSnackBarData
 import studio.lunabee.amicrogallery.snackbar.SnackBarManager
 import studio.lunabee.amicrogallery.snackbar.SnackbarType
 import studio.lunabee.compose.core.LbcTextSpec
+import studio.lunabee.compose.core.LbcTextSpec.*
 import studio.lunabee.compose.presenter.LBSingleReducer
 import studio.lunabee.compose.presenter.ReduceResult
 import studio.lunabee.compose.presenter.asResult
@@ -69,7 +70,7 @@ class SettingsReducer(
             is SettingsAction.Clear -> actualState withSideEffect {
                 snackBarManager.showSnackBar(
                     CoreSnackBarData(
-                        message = LbcTextSpec.StringResource(R.string.clearing_cache),
+                        message = StringResource(R.string.clearing_cache),
                         type = SnackbarType.Default,
                     ),
                 )
@@ -88,6 +89,10 @@ class SettingsReducer(
 
             SettingsAction.ResetSettings -> actualState withSideEffect {
                 setSettingsUseCase(SettingsData())
+            }
+
+            SettingsAction.GetRemote -> actualState withSideEffect {
+                setStatusUseCase()
             }
         }
     }

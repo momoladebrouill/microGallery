@@ -58,6 +58,8 @@ fun WaitingForResponse(uiState: LoadingUiState.Fetching) {
             Text(
                 text = stringResource(R.string.waitingForData),
                 style = typography.header,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
             )
             Text(
                 text = stringResource(R.string.notLong),
@@ -72,6 +74,8 @@ fun WaitingForResponse(uiState: LoadingUiState.Fetching) {
             uiState.years.forEach {
                 Text(
                     text = stringResource(R.string.year_found, it),
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center
                 )
             }
         }

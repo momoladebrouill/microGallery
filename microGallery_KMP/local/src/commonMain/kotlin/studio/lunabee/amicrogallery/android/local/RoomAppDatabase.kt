@@ -13,6 +13,7 @@ import studio.lunabee.amicrogallery.android.local.dao.StatusDao
 import studio.lunabee.amicrogallery.android.local.entity.PictureEntity
 import studio.lunabee.amicrogallery.android.local.entity.SettingsEntity
 import studio.lunabee.amicrogallery.android.local.entity.SettingsTable
+import studio.lunabee.amicrogallery.android.local.entity.StatusEntity
 import studio.lunabee.microgallery.android.data.SettingsData
 import kotlin.coroutines.CoroutineContext
 
