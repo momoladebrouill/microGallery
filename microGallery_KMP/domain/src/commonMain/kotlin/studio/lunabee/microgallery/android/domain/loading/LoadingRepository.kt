@@ -12,4 +12,5 @@ interface LoadingRepository {
     suspend fun pictureDbFreshStart()
     suspend fun isPictureDbEmpty(): Boolean
     suspend fun savePicturesInDb(pictures: List<Picture>)
+    fun setBaseRemoteUrl(url: String)
 }

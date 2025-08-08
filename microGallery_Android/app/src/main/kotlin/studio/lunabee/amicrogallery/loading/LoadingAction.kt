@@ -10,5 +10,8 @@ sealed interface LoadingAction {
         val years: List<MYear>,
     ) : FetchingAction
 
+    object JumpToSettings : ErrorAction, FetchingAction
+    object Restart : ErrorAction
+
     data class Error(val errorMessage: String?) : FetchingAction
 }

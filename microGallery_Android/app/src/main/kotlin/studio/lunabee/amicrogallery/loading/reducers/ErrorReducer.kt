@@ -5,6 +5,7 @@ import studio.lunabee.amicrogallery.loading.LoadingUiState
 import studio.lunabee.compose.presenter.LBReducer
 import studio.lunabee.compose.presenter.ReduceResult
 import studio.lunabee.compose.presenter.asResult
+import studio.lunabee.compose.presenter.withSideEffect
 
 class ErrorReducer(
     override val coroutineScope: CoroutineScope,
@@ -15,14 +16,23 @@ class ErrorReducer(
         action: LoadingAction.ErrorAction,
         performNavigation: (LoadingNavScope.() -> Unit) -> Unit,
     ): ReduceResult<LoadingUiState> {
-        return actualState.asResult()
+        return when (action) {
+            LoadingAction.JumpToSettings -> actualState withSideEffect {
+                performNavigation { navigateToSettings() }
+            }
+
+            LoadingAction.Restart -> LoadingUiState.Fetching(
+                years = emptyList(),
+                jumpToSettings = actualState.jumpToSettings,
+            ).asResult()
+        }
     }
 
     override fun filterAction(action: LoadingAction): Boolean {
-        return action is LoadingAction.FetchingAction
+        return action is LoadingAction.ErrorAction
     }
 
     override fun filterUiState(actualState: LoadingUiState): Boolean {
-        return actualState is LoadingUiState.Fetching
+        return actualState is LoadingUiState.Error
     }
 }

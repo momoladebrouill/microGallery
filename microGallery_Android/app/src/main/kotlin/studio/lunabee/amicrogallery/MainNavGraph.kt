@@ -9,6 +9,8 @@ import androidx.navigation.compose.rememberNavController
 import studio.lunabee.amicrogallery.dashboard.DashboardDestination
 import studio.lunabee.amicrogallery.loading.LoadingDestination
 import studio.lunabee.amicrogallery.loading.LoadingNavScope
+import studio.lunabee.amicrogallery.settings.SettingsDestination
+import studio.lunabee.amicrogallery.settings.SettingsNavScope
 import kotlin.reflect.KClass
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -33,6 +35,23 @@ fun MainNavGraph(
                 navScope = object : LoadingNavScope {
                     override val navigateToDashboard = {
                         navHostController.navigate(DashboardDestination)
+                    }
+                    override val navigateToSettings = {
+                        navHostController.navigate(SettingsDestination)
+                    }
+                },
+            )
+            SettingsDestination.composable(
+                navGraphBuilder = this,
+                navScope = object : SettingsNavScope {
+                    override fun jumpBack() {
+                        navHostController.navigateUp()
+                    }
+
+                    override fun jumpUntimed() {}
+
+                    override fun jumpDashBoard() {
+                        navHostController.navigate(LoadingDestination)
                     }
                 },
             )
