@@ -2,6 +2,11 @@ package studio.lunabee.amicrogallery.settings
 
 import coil3.imageLoader
 import kotlinx.coroutines.CoroutineScope
+import studio.lunabee.amicrogallery.app.R
+import studio.lunabee.amicrogallery.snackbar.CoreSnackBarData
+import studio.lunabee.amicrogallery.snackbar.SnackBarManager
+import studio.lunabee.amicrogallery.snackbar.SnackbarType
+import studio.lunabee.compose.core.LbcTextSpec
 import studio.lunabee.compose.presenter.LBSingleReducer
 import studio.lunabee.compose.presenter.ReduceResult
 import studio.lunabee.compose.presenter.asResult
@@ -9,10 +14,15 @@ import studio.lunabee.compose.presenter.withSideEffect
 import studio.lunabee.microgallery.android.data.SettingsData
 import studio.lunabee.microgallery.android.domain.settings.usecase.EmptyPhotoDbUseCase
 import studio.lunabee.microgallery.android.domain.settings.usecase.SetSettingsUseCase
+import studio.lunabee.microgallery.android.domain.settings.SettingsRepository
+import studio.lunabee.microgallery.android.domain.status.usecase.SetStatusUseCase
 
 class SettingsReducer(
     override val coroutineScope: CoroutineScope,
     override val emitUserAction: (SettingsAction) -> Unit,
+    val settingsRepository: SettingsRepository,
+    val setStatusUseCase: SetStatusUseCase,
+    val snackBarManager: SnackBarManager,
     val setSettingsUseCase: SetSettingsUseCase,
     val emptyPhotoDbUseCase: EmptyPhotoDbUseCase,
 ) : LBSingleReducer<SettingsUiState, SettingsNavScope, SettingsAction>() {
@@ -57,6 +67,12 @@ class SettingsReducer(
             ).asResult()
 
             is SettingsAction.Clear -> actualState withSideEffect {
+                snackBarManager.showSnackBar(
+                    CoreSnackBarData(
+                        message = LbcTextSpec.StringResource(R.string.clearing_cache),
+                        type = SnackbarType.Default,
+                    ),
+                )
                 val imageLoader = action.context.imageLoader
                 imageLoader.memoryCache?.clear()
                 emptyPhotoDbUseCase()

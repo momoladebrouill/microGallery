@@ -9,6 +9,9 @@ sealed interface SettingsAction {
     object JumpBack : SettingsAction
     object JumpUntimed : SettingsAction
     object JumpDashBoard : SettingsAction
+
+    object GetRemote : SettingsAction
+
     data class Clear(
         val context: Context,
     ) : SettingsAction

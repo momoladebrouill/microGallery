@@ -2,16 +2,17 @@ package studio.lunabee.amicrogallery.android.local.datasource
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import studio.lunabee.amicrogallery.android.local.dao.PictureDao
 import studio.lunabee.amicrogallery.android.local.entity.PictureEntity
-import studio.lunabee.amicrogallery.picture.PictureLocal
 import studio.lunabee.microgallery.android.data.MMonth
 import studio.lunabee.microgallery.android.data.MYear
 import studio.lunabee.microgallery.android.data.MicroPicture
 import studio.lunabee.microgallery.android.data.Picture
 import studio.lunabee.microgallery.android.data.YearPreview
 import studio.lunabee.microgallery.android.domain.settings.usecase.ObserveSettingsUseCase
+import studio.lunabee.microgallery.android.repository.datasource.local.PictureLocal
 
 class PictureLocalDatasource(
     private val pictureDao: PictureDao,
@@ -32,7 +33,7 @@ class PictureLocalDatasource(
     override fun getYearPreviews(): Flow<List<YearPreview>> {
         val years: Flow<List<MYear>> = pictureDao.getYears()
 
-        return years.combine(settingsData) { years, settingsData ->
+        return years.combine(settingsData.filterNotNull()) { years, settingsData ->
             years.map { year ->
                 YearPreview(
                     year = year,
@@ -55,19 +56,19 @@ class PictureLocalDatasource(
         year: MYear,
         month: MMonth,
     ): Flow<List<MicroPicture>> {
-        return pictureDao.picturesInMonth(year, month).combine(settingsData) { pictures, settings ->
+        return pictureDao.picturesInMonth(year, month).combine(settingsData.filterNotNull()) { pictures, settings ->
             pictures.map { it.toMicroPicture(settings) }
         }
     }
 
     override fun getPicturesUntimed(): Flow<List<MicroPicture>> {
-        return pictureDao.picturesUntimed().combine(settingsData) { pictureEntities, data ->
+        return pictureDao.picturesUntimed().combine(settingsData.filterNotNull()) { pictureEntities, data ->
             pictureEntities.map { it.toMicroPicture(data) }
         }
     }
 
     override fun getPictureById(id: Long): Flow<MicroPicture> {
-        return pictureDao.pictureEntityFromId(id = id).combine(settingsData) { pictureEntity, data ->
+        return pictureDao.pictureEntityFromId(id = id).combine(settingsData.filterNotNull()) { pictureEntity, data ->
             pictureEntity.toMicroPicture(data)
         }
     }

@@ -13,6 +13,8 @@ import studio.lunabee.microgallery.android.domain.photoviewer.usecase.GetNeighbo
 import studio.lunabee.microgallery.android.domain.photoviewer.usecase.ObservePictureByIdUseCase
 import studio.lunabee.microgallery.android.domain.settings.usecase.EmptyPhotoDbUseCase
 import studio.lunabee.microgallery.android.domain.settings.usecase.ObserveSettingsUseCase
+import studio.lunabee.microgallery.android.domain.status.usecase.ObserveStatusUseCase
+import studio.lunabee.microgallery.android.domain.status.usecase.SetStatusUseCase
 import studio.lunabee.microgallery.android.domain.settings.usecase.ObserveStatusUseCase
 import studio.lunabee.microgallery.android.domain.settings.usecase.SetSettingsUseCase
 import studio.lunabee.microgallery.android.domain.untimed.usecase.ObserveUntimedUseCase
@@ -26,6 +28,7 @@ val useCaseModule = module {
     factoryOf(::LoadPartialTreeUseCase)
     factoryOf(::UpdateTreeUseCase)
     factoryOf(::ObserveStatusUseCase)
+    factoryOf(::SetStatusUseCase)
     factoryOf(::GetNeighborsByPictureUseCase)
     factoryOf(::PhotoDbIsEmptyUseCase)
     factoryOf(::EmptyPhotoDbUseCase)

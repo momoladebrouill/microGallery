@@ -1,12 +1,12 @@
 package studio.lunabee.microgallery.android.repository.impl
 
 import kotlinx.coroutines.flow.Flow
-import studio.lunabee.amicrogallery.picture.PictureLocal
 import studio.lunabee.microgallery.android.data.MMonth
 import studio.lunabee.microgallery.android.data.MYear
 import studio.lunabee.microgallery.android.data.MicroPicture
 import studio.lunabee.microgallery.android.data.YearPreview
 import studio.lunabee.microgallery.android.domain.calendar.CalendarRepository
+import studio.lunabee.microgallery.android.repository.datasource.local.PictureLocal
 
 class CalendarRepositoryImpl(
     private val pictureLocal: PictureLocal,

@@ -10,10 +10,13 @@ import studio.lunabee.amicrogallery.android.local.RoomAppDatabase
 import studio.lunabee.amicrogallery.android.local.buildRoomDatabase
 import studio.lunabee.amicrogallery.android.local.dao.PictureDao
 import studio.lunabee.amicrogallery.android.local.dao.SettingsDao
+import studio.lunabee.amicrogallery.android.local.dao.StatusDao
 import studio.lunabee.amicrogallery.android.local.datasource.PictureLocalDatasource
 import studio.lunabee.amicrogallery.android.local.datasource.SettingsLocalDatasource
-import studio.lunabee.amicrogallery.picture.PictureLocal
-import studio.lunabee.amicrogallery.settings.SettingsLocal
+import studio.lunabee.amicrogallery.android.local.datasource.StatusLocalDatasource
+import studio.lunabee.microgallery.android.repository.datasource.local.PictureLocal
+import studio.lunabee.microgallery.android.repository.datasource.local.SettingsLocal
+import studio.lunabee.microgallery.android.repository.datasource.local.StatusLocal
 
 internal val LocalModule: Module = module {
 
@@ -28,8 +31,10 @@ internal val LocalModule: Module = module {
     // Bind repository expectations
     singleOf(::PictureLocalDatasource) bind PictureLocal::class
     singleOf(::SettingsLocalDatasource) bind SettingsLocal::class
+    singleOf(::StatusLocalDatasource) bind StatusLocal::class
 
     // Dao
     single<PictureDao> { get<RoomAppDatabase>().pictureDao() }
     single<SettingsDao> { get<RoomAppDatabase>().settingsDao() }
+    single<StatusDao> { get<RoomAppDatabase>().statusDao() }
 }
