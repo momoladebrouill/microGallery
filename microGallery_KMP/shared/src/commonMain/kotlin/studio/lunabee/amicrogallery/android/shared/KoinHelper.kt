@@ -15,7 +15,7 @@ object KoinHelper {
                 RemoteModule,
                 PlatformSpecificModule,
 
-            )
+                )
             block()
         }
     }

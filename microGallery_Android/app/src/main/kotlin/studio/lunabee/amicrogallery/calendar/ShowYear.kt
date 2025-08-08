@@ -44,11 +44,11 @@ fun MonthLabel(year: MYear, month: MMonth) {
     Box {
         Text(
             text =
-            stringResource(
-                R.string.calendar_title,
-                getMonthName(month, stringArrayResource(R.array.months)),
-                year,
-            ),
+                stringResource(
+                    R.string.calendar_title,
+                    getMonthName(month, stringArrayResource(R.array.months)),
+                    year,
+                ),
             color = colors.onBackground,
             modifier = Modifier
                 .fillMaxWidth()

@@ -1,10 +1,15 @@
 package studio.lunabee.amicrogallery.photoviewer
 
+import android.content.Context
+import android.content.Intent
+import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.activity.result.ActivityResult
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import studio.lunabee.amicrogallery.photoviewer.reducers.PhotoViewerHasPhotoReducer
 import studio.lunabee.amicrogallery.photoviewer.reducers.PhotoViewerWaitingReducer
@@ -16,16 +21,30 @@ import studio.lunabee.microgallery.android.domain.photoviewer.usecase.ObservePic
 class PhotoViewerPresenter(
     savedStateHandle: SavedStateHandle,
     val observePictureByIdUseCase: ObservePictureByIdUseCase,
-    val getNeighborsByPictureUseCase: GetNeighborsByPictureUseCase,
-
-) : LBPresenter<PhotoViewerUiState, PhotoViewerNavScope, PhotoViewerAction>() {
+) : LBSinglePresenter<PhotoViewerUiState, PhotoViewerNavScope, PhotoViewerAction>() {
 
     private val params: PhotoViewerDestination = savedStateHandle.toRoute()
-    override val flows: List<Flow<PhotoViewerAction>> = emptyList()
+    val pictureById = observePictureByIdUseCase(params.pictureId).map { PhotoViewerAction.FoundPicture(it) }
+
+    override val flows: List<Flow<PhotoViewerAction>> = listOf(
+        pictureById,
+    )
+
+    override fun initReducer(): LBSingleReducer<PhotoViewerUiState, PhotoViewerNavScope, PhotoViewerAction> {
+        return PhotoViewerReducer(
+            coroutineScope = viewModelScope,
+            emitUserAction = ::emitUserAction,
+        )
+    }
 
     init {
+        getPictureById(params.pictureId)
+    }
+
+    fun getPictureById(pictureId: Long) {
         viewModelScope.launch {
-            emitUserAction(PhotoViewerAction.GetPictures(params.pictureId))
+            val pic: MicroPicture = observePictureByIdUseCase(pictureId).first()
+            emitUserAction(PhotoViewerAction.FoundPicture(pic))
         }
     }
 
@@ -41,14 +60,12 @@ class PhotoViewerPresenter(
                 getNeighborsByPictureUseCase = getNeighborsByPictureUseCase,
             )
 
-            is PhotoViewerUiState.HasPicture -> PhotoViewerHasPhotoReducer(
-                coroutineScope = viewModelScope,
-                emitUserAction = ::emitUserAction,
-                observePictureByIdUseCase = observePictureByIdUseCase,
-                getNeighborsByPictureUseCase = getNeighborsByPictureUseCase,
-            )
-        }
-    }
+    override fun getInitialState(): PhotoViewerUiState = PhotoViewerUiState(
+        picture = null,
+        loading = false,
+        share = ::emitShare,
+        stopLoading = { emitUserAction(PhotoViewerAction.StopLoading) },
+    )
 
     override val content: @Composable (PhotoViewerUiState) -> Unit = { PhotoViewerScreen(it) }
 }

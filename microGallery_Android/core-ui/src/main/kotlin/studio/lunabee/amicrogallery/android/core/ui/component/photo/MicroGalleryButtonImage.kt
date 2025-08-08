@@ -30,7 +30,7 @@ fun MicroGalleryButtonImage(
     showMe: (Long) -> Unit,
     modifier: Modifier = Modifier,
 
-) {
+    ) {
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(radius.RadiusMedium))
@@ -55,6 +55,6 @@ fun MicroGalleryButtonImage(
                 .wrapContentHeight(),
             errorPainter = painterResource(R.drawable.nopicture),
 
-        )
+            )
     }
 }

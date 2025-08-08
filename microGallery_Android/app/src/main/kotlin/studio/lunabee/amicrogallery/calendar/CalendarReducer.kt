@@ -13,7 +13,7 @@ class CalendarReducer(
     override val emitUserAction: (CalendarAction) -> Unit,
     val calendarRepository: CalendarRepository,
 
-) : LBSingleReducer<CalendarUiState, CalendarNavScope, CalendarAction>() {
+    ) : LBSingleReducer<CalendarUiState, CalendarNavScope, CalendarAction>() {
 
     override suspend fun reduce(
         actualState: CalendarUiState,

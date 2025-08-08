@@ -153,6 +153,7 @@ fun YearButton(yearPreview: YearPreview, navigateToYear: () -> Unit, showPicture
             }
             .clip(RoundedCornerShape(radius.RadiusLarge)),
 
+
     ) {
         val hazeLabelState = HazeState()
         Column(modifier = Modifier.padding(PaddingValues(horizontal = spacing.SpacingSmall, vertical = spacing.SpacingMedium))) {
@@ -195,7 +196,7 @@ fun YearButton(yearPreview: YearPreview, navigateToYear: () -> Unit, showPicture
                             )
                             .fillMaxWidth(),
 
-                    )
+                        )
                 }
             }
             Text(

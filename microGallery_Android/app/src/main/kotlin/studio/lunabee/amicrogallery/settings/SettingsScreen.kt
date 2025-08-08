@@ -55,7 +55,7 @@ fun SettingsScreen(uiState: SettingsUiState) {
             contentPadding = PaddingValues(spacing.SpacingMedium),
             verticalArrangement = Arrangement.spacedBy(spacing.SpacingLarge),
 
-        ) {
+            ) {
             items(settingsEntries) { entry ->
                 Column {
                     entry(entryModifier)

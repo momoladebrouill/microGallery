@@ -89,7 +89,7 @@ fun HasElements(uiState: LastMonthUiState) {
                     Spacer(modifier = Modifier.height(spacing.SpacingMedium))
                     Text(
                         text =
-                        stringResource(R.string.lastmonth_title),
+                            stringResource(R.string.lastmonth_title),
                         color = colors.onMain,
                         modifier = Modifier
                             .fillMaxWidth()
