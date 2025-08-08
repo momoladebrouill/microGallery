@@ -1,21 +1,48 @@
 package studio.lunabee.amicrogallery.android.core.ui.theme
 
+import androidx.compose.ui.graphics.Color
+
 object CoreColorPalette {
-    // Here goes all your colors.
-    // val Gray900 = Color(0xFF1A1532)
+    val darkGreen = Color(0xFF797D62)
+    val lightGreen = Color(0xFF9B9B7A)
+    val softPink = Color(0xFFD9AE94)
+    val warmYellow = Color(0xFFF1DCA7)
+    val mustardYellow = Color(0xFFFFCB69)
+    val milkChocolateBrown = Color(0XFFD08C60)
+    val greyBrown = Color(0xFF997B66)
+    val cinemaRed = Color(0XFF960B05)
+    val darkCinemaRed = Color(0XFF370402)
+    val coolWhite = Color.LightGray
+
+    val salmonRed = Color(0XFFEA6B66)
+    val yellowSun = Color(0XFFFFE599)
+    val brownMoon = Color(0xFF824100)
+    val theaterRed = Color(0xFFD0635F)
 }
 
 interface CoreColorTheme {
-    //  Here goes expected app colors.
-    // val text: Color
+    val main: Color
+    val second: Color
+    val background: Color
+    val onMain: Color
+    val onBackground: Color
+    val disabled: Color
 }
 
 object CoreColorLightTheme : CoreColorTheme {
-    // Here goes the light implementation
-    // override val text: Color = CoreColorPalette.Gray900
+    override val main: Color = CoreColorPalette.yellowSun
+    override val second: Color = CoreColorPalette.salmonRed
+    override val background: Color = Color.White
+    override val onMain: Color = Color.Black
+    override val onBackground: Color = CoreColorPalette.darkCinemaRed
+    override val disabled: Color = CoreColorPalette.darkCinemaRed.copy(alpha = 0.3f)
 }
 
 object CoreColorDarkTheme : CoreColorTheme {
-    // Here goes the dark implementation
-    // override val text: Color = CoreColorPalette.Gray900
+    override val main: Color = CoreColorPalette.theaterRed
+    override val second: Color = CoreColorPalette.yellowSun
+    override val background: Color = Color.Black
+    override val onMain: Color = Color.Black
+    override val onBackground: Color = Color.White
+    override val disabled: Color = CoreColorPalette.salmonRed
 }

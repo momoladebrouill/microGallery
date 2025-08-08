@@ -6,8 +6,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(projects.data)
-            implementation(projects.local)
-         //   implementation(projects.remote)
+            implementation(projects.domain)
         }
     }
 }

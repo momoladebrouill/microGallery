@@ -21,12 +21,9 @@ kotlin {
             implementation(libs.koinCore)
 
             implementation(projects.domain)
-            //implementation(projects.featureTemplate)
             implementation(projects.local)
-            implementation(projects.localRoom)
             implementation(projects.remote)
             implementation(projects.remoteKtor)
-            //implementation(projects.repoTemplate)
             implementation(projects.repository)
         }
 

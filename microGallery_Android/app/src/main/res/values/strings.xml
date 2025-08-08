@@ -1,3 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string-array name="months">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+    <string name="loading">Loading picture %s in webp</string>
+    <string name="waitingForData">Downloading data</string>
+    <string name="notLong">Should not take too long</string>
+    <string name="calendar_title">%s %s</string>
+    <string name="errorOccured">An Error Occured while loading</string>
+    <string name="reload">Reload</string>
+    <string name="untimed_title">Date less pictures</string>
+    <string name="lastmonth_title">This month</string>
+    <string name="nothing_this_month">No photo for this month</string>
+    <string name="share">Share</string>
+    <string name="month_year">%s %s</string>
+    <string name="settings">Settings</string>
+    <string name="adress_of_server">IP address of storage server</string>
+    <string name="ipv4">ip address v4</string>
+    <string name="ipv6">ip address v6</string>
+    <string name="previsualisation_options">Preview option</string>
+    <string name="preview_in_hd">Preview pictures in the highest definition</string>
+    <string name="consumes_more">consumes more data</string>
+    <string name="cache">Cache</string>
+    <string name="use_cache">Use a cache</string>
+    <string name="consume_less_but_more_storage">Consumes less data but use more storage</string>
+    <string name="empty_cache">Clear cache</string>
+    <string name="server_statistics">Remote statistics</string>
+    <string name="celcius">%.2f °C</string>
+    <string name="temperature">Temperature :</string>
+    <string name="quantity_of_pictures">"Number of photos : "</string>
+    <string name="nphotos">%,d photos</string>
+    <string name="refresh">Refresh</string>
+    <string name="navigate_back">Navigate to previous screen</string>
+    <string name="select_year">Select a year</string>
+    <string name="use_ipv6">Use IPv6 in priority</string>
+    <string name="wifi_prevention">May not work over certain Wifi</string>
+    <string name="quantity_of_pictures_low_res">Number of photos in fast access :</string>
+    <string name="disk_is_plugged">Disk is plugged</string>
+    <string name="disk_not_plugged">Disk is not plugged</string>
+    <string name="visualisation_option">Viewing options</string>
+    <string name="view_in_hd">View pictures in the highest resolution</string>
+    <string name="only_low_res">Only low resolutions pictures will be visible</string>
+    <string name="share_picture">Share picture %s</string>
+    <string name="found_settings">Found settings</string>
+    <string name="clearing_cache">Clearing cache</string>
+    <string name="cache_cleared">Cache cleared</string>
+    <string name="view_untimed">View</string>
+    <string name="view_date_less">View date less pictures</string>
+    <string name="pictures_without_date">Pictures without timestamp</string>
+    <string name="year_found">found %s</string>
+    <string name="reset_data">Restore defaults</string>
+    <string name="cache_and_settings">Reset settings and cache</string>
 </resources>
